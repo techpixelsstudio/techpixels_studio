@@ -1,0 +1,436 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Video Editing & VFX | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       HERO SECTION SPECIFIC CSS
+       ========================================= */
+    .inner-hero { 
+        min-height: 72vh; 
+        display: flex; 
+        align-items: center; 
+        padding-top: 120px; 
+        padding-bottom: 25px; 
+        position: relative; 
+        z-index: 2;
+    }
+    
+    .breadcrumb-pill { 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 8px; 
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border); 
+        padding: 8px 20px; 
+        border-radius: 100px; 
+        font-size: 12px; 
+        font-weight: 600; 
+        color: var(--text-muted); 
+        margin-bottom: 25px; 
+        backdrop-filter: blur(10px); 
+    }
+    
+    .breadcrumb-pill span { 
+        color: #8b5cf6; 
+    }
+    
+    .inner-title { 
+        font-size: 4.2rem; 
+        font-weight: 800; 
+        line-height: 1.15; 
+        letter-spacing: -2px; 
+        margin-bottom: 20px; 
+        color: var(--text-main); 
+    }
+    
+    .inner-desc { 
+        font-size: 17px; 
+        color: var(--text-muted); 
+        max-width: 580px; 
+        line-height: 1.7; 
+        font-weight: 500; 
+    }
+
+    /* =========================================
+       INTERACTIVE TIMELINE EDITOR MOCKUP
+       ========================================= */
+    .editor-mockup {
+        background: #111; 
+        border: 1px solid rgba(255,255,255,0.1); 
+        border-radius: 16px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5); 
+        overflow: hidden; 
+        width: 100%;
+        position: relative; 
+        cursor: none;
+    }
+    
+    body.light-mode .editor-mockup { 
+        background: #1e293b; 
+        border-color: transparent;
+    }
+    
+    .editor-header { 
+        background: #1a1a1a; 
+        padding: 10px 15px; 
+        display: flex; 
+        justify-content: space-between; 
+        border-bottom: 1px solid rgba(255,255,255,0.1); 
+        font-size: 11px; 
+        color: #888;
+    }
+    
+    .editor-timeline { 
+        padding: 20px 15px; 
+        position: relative; 
+        min-height: 180px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px;
+    }
+    
+    .track { 
+        height: 35px; 
+        background: rgba(255,255,255,0.03); 
+        border-radius: 6px; 
+        position: relative; 
+        display: flex; 
+        align-items: center; 
+        padding: 0 10px; 
+        border: 1px solid rgba(255,255,255,0.02);
+    }
+    
+    .clip-video { 
+        position: absolute; 
+        left: 10%; 
+        width: 40%; 
+        height: 25px; 
+        background: #8b5cf6; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        padding-left: 0.5rem; 
+        padding-right: 0.5rem; 
+        font-size: 10px; 
+        font-weight: bold; 
+        color: #fff;
+    }
+    
+    .clip-audio { 
+        position: absolute; 
+        left: 10%; 
+        width: 60%; 
+        height: 25px; 
+        background: #0ea5e9; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        padding-left: 0.5rem; 
+        padding-right: 0.5rem; 
+        font-size: 10px; 
+        font-weight: bold; 
+        color: #fff;
+    }
+    
+    .clip-vfx { 
+        position: absolute; 
+        left: 30%; 
+        width: 25%; 
+        height: 25px; 
+        background: #ec4899; 
+        border-radius: 4px; 
+        display: flex; 
+        align-items: center; 
+        padding-left: 0.5rem; 
+        padding-right: 0.5rem; 
+        font-size: 10px; 
+        font-weight: bold; 
+        color: #fff;
+    }
+    
+    .playhead { 
+        position: absolute; 
+        top: 0; 
+        bottom: 0; 
+        left: 25%; 
+        width: 2px; 
+        background: #ff3b30; 
+        z-index: 10; 
+        box-shadow: 0 0 10px #ff3b30; 
+        animation: play 4s linear infinite;
+    }
+    
+    .playhead::before { 
+        content: ''; 
+        position: absolute; 
+        top: 0; 
+        left: -4px; 
+        width: 10px; 
+        height: 10px; 
+        background: #ff3b30; 
+        clip-path: polygon(50% 100%, 0 0, 100% 0); 
+    }
+    
+    @keyframes play { 
+        0% { left: 5%; } 
+        100% { left: 95%; } 
+    }
+
+    /* =========================================
+       SPOTLIGHT CARDS
+       ========================================= */
+    .spotlight-card { 
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border); 
+        border-radius: 20px; 
+        padding: 40px; 
+        height: 100%; 
+        position: relative; 
+        overflow: hidden; 
+        transition: 0.3s ease; 
+    }
+    
+    .spotlight-card::before { 
+        content: ""; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(139, 92, 246, 0.08), transparent 80%); 
+        z-index: 1; 
+        pointer-events: none; 
+    }
+    
+    .feature-icon-box { 
+        width: 60px; 
+        height: 60px; 
+        border-radius: 14px; 
+        background: rgba(139, 92, 246, 0.08); 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        margin-bottom: 25px; 
+        font-size: 24px; 
+        color: #8b5cf6; 
+    }
+    
+    .spotlight-card:hover { 
+        transform: translateY(-8px); 
+        border-color: #8b5cf6; 
+    }
+    
+    .feature-title { 
+        font-size: 1.4rem; 
+        font-weight: 800; 
+        margin-bottom: 15px; 
+        color: var(--text-main); 
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* =========================================
+       PROCESS TIMELINE GRID
+       ========================================= */
+    .process-grid-custom { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+        gap: 30px; 
+        position: relative; 
+    }
+    
+    .process-box { 
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border); 
+        border-radius: 20px; 
+        padding: 40px 30px; 
+        transition: all 0.3s ease; 
+    }
+    
+    .process-box:hover { 
+        transform: translateY(-5px); 
+        border-color: #8b5cf6; 
+    }
+    
+    .process-num { 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-size: 4rem; 
+        font-weight: 800; 
+        background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent); 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        position: absolute; 
+        top: 10px; 
+        right: 20px; 
+    }
+
+    /* =========================================
+       RESPONSIVE RULES
+       ========================================= */
+    @media (max-width: 991px) {
+        .inner-hero { 
+            padding: 120px 0 60px; 
+            text-align: center; 
+        }
+        .inner-title { 
+            font-size: 3rem; 
+        }
+        .editor-mockup { 
+            margin-top: 40px; 
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- HERO SECTION -->
+    <section class="inner-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 text-lg-start text-center gsap-fade">
+                    <div class="breadcrumb-pill">
+                        Home <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i> Services <i class="fa-solid fa-chevron-right" style="font-size: 9px;"></i> <span>Video Editing & VFX</span>
+                    </div>
+                    <h1 class="inner-title">Cinematic <br><span class="text-gradient">Visual Storytelling.</span></h1>
+                    <p class="inner-desc mt-3 me-lg-4">Capture attention in the first 3 seconds. We produce high-retention social reels, 3D motion graphics, and corporate storytelling that converts.</p>
+                    <div class="mt-4">
+                        <a href="/#contact" class="magnetic-btn magnetic interactive">Discuss Your Vision <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 gsap-card">
+                    <!-- Interactive Editor Mockup -->
+                    <div class="editor-mockup interactive">
+                        <div class="editor-header">
+                            <div><i class="fa-solid fa-scissors me-2"></i> Sequence_01_Final.prproj</div>
+                            <div>00:00:14:23</div>
+                        </div>
+                        <div class="editor-timeline">
+                            <div class="playhead"></div>
+                            <div class="track">
+                                <span class="text-muted" style="font-size: 10px; position:absolute; left: 10px;">V2</span>
+                                <div class="clip-vfx"><i class="fa-solid fa-wand-magic-sparkles me-2"></i> Motion Graphics.aep</div>
+                            </div>
+                            <div class="track">
+                                <span class="text-muted" style="font-size: 10px; position:absolute; left: 10px;">V1</span>
+                                <div class="clip-video"><i class="fa-solid fa-film me-2"></i> A_Roll_Footage.mp4</div>
+                            </div>
+                            <div class="track mt-2">
+                                <span class="text-muted" style="font-size: 10px; position:absolute; left: 10px;">A1</span>
+                                <div class="clip-audio"><i class="fa-solid fa-music me-2"></i> Background_Beat.wav</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE CAPABILITIES -->
+    <section class="container py-5 my-4">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <div class="spotlight-card interactive">
+                    <div class="feature-icon-box">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <h3 class="feature-title">High-Retention Reels</h3>
+                    <p class="text-muted mb-0">Fast-paced editing, dynamic captions, and trend-optimized audio mixing designed specifically for Instagram and TikTok algorithms.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <div class="spotlight-card interactive">
+                    <div class="feature-icon-box" style="background: rgba(0, 210, 255, 0.08); color: #00d2ff;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 class="feature-title">VFX & Motion Graphics</h3>
+                    <p class="text-muted mb-0">Integrating 3D elements, seamless transitions, and professional After Effects compositions to elevate your brand's visual identity.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card mx-md-auto">
+                <div class="spotlight-card interactive">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Color Grading</h3>
+                    <p class="text-muted mb-0">Hollywood-style DaVinci Resolve color correction that sets the mood, fixes lighting issues, and maintains brand consistency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDITING TIMELINE -->
+    <section class="container py-5 my-5 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 gsap-fade">
+            <h2 class="inner-title" style="font-size: 2.8rem;">The Post-Production Workflow.</h2>
+            <p class="text-muted">How we turn raw footage into cinematic masterpieces.</p>
+        </div>
+        <div class="process-grid-custom">
+            <div class="process-box gsap-card interactive">
+                <div class="process-num">01</div>
+                <h4 class="feature-title text-cyan">Storyboard & Prep</h4>
+                <p class="text-muted mb-0 small">Reviewing raw files, syncing multiple camera angles, and organizing assets according to the creative brief.</p>
+            </div>
+            <div class="process-box gsap-card interactive">
+                <div class="process-num">02</div>
+                <h4 class="feature-title text-purple">The Assembly Cut</h4>
+                <p class="text-muted mb-0 small">Creating the base narrative structure, removing dead air, and laying down the primary audio tracks.</p>
+            </div>
+            <div class="process-box gsap-card interactive">
+                <div class="process-num">03</div>
+                <h4 class="feature-title text-cyan">VFX & Sound Design</h4>
+                <p class="text-muted mb-0 small">Adding motion graphics, lower thirds, Foley sound effects, and mixing audio to broadcast standards.</p>
+            </div>
+            <div class="process-box gsap-card interactive">
+                <div class="process-num">04</div>
+                <h4 class="feature-title text-purple">Color & Render</h4>
+                <p class="text-muted mb-0 small">Applying cinematic color grading and exporting optimized formats for web, social, or broadcast.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.spotlight-card').forEach((card) => {
+        card.addEventListener('mousemove', (e) => { 
+            const rect = card.getBoundingClientRect(); 
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top; 
+            card.style.setProperty('--mouse-x', `${x}px`); 
+            card.style.setProperty('--mouse-y', `${y}px`); 
+        });
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from(".inner-title", { y: 40, opacity: 0, duration: 0.8, ease: "power3.out" });
+    gsap.from(".inner-desc", { y: 25, opacity: 0, duration: 0.8, delay: 0.15, ease: "power2.out" });
+    
+    gsap.utils.toArray('.gsap-card').forEach(card => { 
+        gsap.from(card, { 
+            scrollTrigger: { 
+                trigger: card, 
+                start: "top 90%" 
+            }, 
+            y: 30, 
+            opacity: 0, 
+            duration: 0.7, 
+            ease: "power2.out" 
+        }); 
+    });
+    
+    gsap.utils.toArray('.gsap-fade').forEach(fade => { 
+        gsap.from(fade, { 
+            scrollTrigger: { 
+                trigger: fade, 
+                start: "top 90%" 
+            }, 
+            opacity: 0, 
+            duration: 0.8, 
+            ease: "power2.out" 
+        }); 
+    });
+</script>
+{% endblock %}

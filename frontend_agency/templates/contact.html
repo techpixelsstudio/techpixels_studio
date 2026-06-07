@@ -1,0 +1,309 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED CONTACT PAGE STYLES
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute; width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* Custom Form Inputs */
+    .glass-input {
+        width: 100%;
+        background: rgba(0,0,0,0.2);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        color: var(--text-main);
+        font-size: 14px;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    body.light-mode .glass-input { background: rgba(255,255,255,0.5); }
+    
+    .glass-input:focus {
+        border-color: #00F0FF;
+        box-shadow: 0 0 15px rgba(0,240,255,0.2);
+        background: rgba(0,240,255,0.02);
+    }
+    .glass-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+
+    /* FAQ Accordion for Contact Process */
+    .faq-card {
+        background: transparent; border-bottom: 1px solid var(--card-border);
+        margin-bottom: 5px; transition: 0.3s;
+    }
+    .faq-header { padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--text-main); }
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; color: var(--text-muted); font-size: 14px; }
+    .faq-card.active .faq-content { max-height: 150px; padding-bottom: 20px; }
+    .faq-icon { transition: transform 0.3s; color: #00F0FF; }
+    .faq-card.active .faq-icon { transform: rotate(180deg); color: #B026FF; }
+
+    /* Floating Animations */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="relative pt-32 pb-16 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 right-1/4 w-[300px] h-[300px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
+            <i class="fa-solid fa-handshake mr-2"></i> LET'S COLLABORATE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 gs-reveal transition-colors">
+            Ready to <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Innovate?</span>
+        </h1>
+        <p class="text-[var(--text-muted)] text-lg max-w-2xl mx-auto mb-12 gs-reveal transition-colors">
+            Whether you need a scalable SaaS platform, a high-converting marketing engine, or a cinematic ad film—we are ready to build it. Reach out today.
+        </p>
+    </div>
+</section>
+
+<section class="py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gs-slide-up">
+            
+            <div class="glass-card-premium p-8 interactive text-center group">
+                <div class="card-glow-orb"></div>
+                <div class="w-16 h-16 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-2xl mx-auto mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">Email Us</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-4">For general queries & project proposals.</p>
+                <a href="mailto:hello@techpixels.studio" class="text-[#00F0FF] font-bold hover:underline">hello@techpixels.studio</a>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-center group" style="transition-delay: 100ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-full bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-2xl mx-auto mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">Call Us</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-4">Mon-Fri from 10am to 7pm (IST).</p>
+                <a href="tel:+919876543210" class="text-[#B026FF] font-bold hover:underline">+91 98765 43210</a>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-center group" style="transition-delay: 200ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center text-2xl mx-auto mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">Headquarters</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-4">TechPixels Innovation Hub</p>
+                <span class="text-orange-500 font-bold">Pune, Maharashtra, India</span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10 border-t border-[var(--card-border)] bg-black/5 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-16">
+            
+            <div class="lg:w-5/12 gs-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-6">Let's craft your next big success story.</h2>
+                <p class="text-[var(--text-muted)] mb-10 leading-relaxed">Fill out the form with your project details. We value your time, so you can expect a comprehensive reply from our technical directors within 24 hours.</p>
+                
+                <div class="mb-10">
+                    <h4 class="text-[var(--text-main)] font-bold text-lg mb-4">What happens next?</h4>
+                    
+                    <div class="faq-card interactive" onclick="toggleFaq(this)">
+                        <div class="faq-header">
+                            <span>01. Discovery Call</span>
+                            <i class="fa-solid fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-content">
+                            <p class="mt-2">We will schedule a 30-minute Google Meet to deeply understand your vision, technical requirements, and business goals.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-card interactive" onclick="toggleFaq(this)">
+                        <div class="faq-header">
+                            <span>02. Strategy & Proposal</span>
+                            <i class="fa-solid fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-content">
+                            <p class="mt-2">Our team crafts a custom blueprint outlining the tech stack, deliverables, exact timeline, and a transparent pricing quote.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-card interactive" onclick="toggleFaq(this)">
+                        <div class="faq-header">
+                            <span>03. NDAs & Kickoff</span>
+                            <i class="fa-solid fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-content">
+                            <p class="mt-2">We sign Non-Disclosure Agreements (if required) to protect your IP, assign a dedicated project manager, and begin execution.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl relative overflow-hidden interactive group">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-[#00F0FF]"></div>
+                    <i class="fa-solid fa-quote-left text-3xl text-[var(--card-border)] absolute top-4 right-4"></i>
+                    <p class="text-[var(--text-muted)] text-sm italic mb-4">"We don't just build websites or run ads. We engineer scalable systems that act as an unstoppable growth engine for your business."</p>
+                    <div class="flex items-center gap-3 mt-4">
+                        <div class="flex -space-x-3">
+                            <img class="w-8 h-8 rounded-full border-2 border-[var(--card-bg)]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Mohan">
+                            <img class="w-8 h-8 rounded-full border-2 border-[var(--card-bg)]" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&q=80" alt="Nikhil">
+                        </div>
+                        <div>
+                            <p class="text-[var(--text-main)] text-xs font-bold">Mohan & Nikhil</p>
+                            <p class="text-[#00F0FF] text-[10px] uppercase tracking-wider font-bold">Founders, TechPixels</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:w-7/12 w-full gs-slide-up">
+                <div class="glass-card-premium p-8 md:p-10 interactive">
+                    <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.05;"></div>
+                    
+                    <h3 class="text-2xl font-bold text-[var(--text-main)] mb-6">Send us a message</h3>
+                    
+                    <form id="contactForm" onsubmit="submitForm(event)">
+                        {% csrf_token %}
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">First Name *</label>
+                                <input type="text" id="fname" required class="glass-input interactive" placeholder="Mohan">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Last Name</label>
+                                <input type="text" id="lname" class="glass-input interactive" placeholder="Nikam">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Email Address *</label>
+                                <input type="email" id="email" required class="glass-input interactive" placeholder="techixels@gmail.com">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Phone Number</label>
+                                <input type="tel" id="phone" class="glass-input interactive" placeholder="+91 98765 43210">
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">What service do you need? *</label>
+                            <select id="service" required class="glass-input appearance-none interactive" style="cursor: pointer;">
+                                <option value="" disabled selected>Select an option...</option>
+                                <option value="web">Enterprise Web Development</option>
+                                <option value="saas">SaaS Product / Custom ERP</option>
+                                <option value="seo">SEO & Digital Marketing</option>
+                                <option value="video">Video Editing & Ad Films</option>
+                                <option value="other">Other / Spontaneous Query</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-8">
+                            <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Tell us about your project *</label>
+                            <textarea id="message" rows="5" required class="glass-input resize-none interactive" placeholder="Briefly describe your goals, timeline, and current bottlenecks..."></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all transform hover:-translate-y-1 interactive text-sm tracking-widest uppercase">
+                            Send Request <i class="fa-solid fa-paper-plane ml-2"></i>
+                        </button>
+
+                        <p class="text-[10px] text-center text-[var(--text-muted)] mt-4"><i class="fa-solid fa-lock mr-1 text-[#00F0FF]"></i> Your data is secure and will never be shared.</p>
+                    </form>
+
+                    <div id="successMessage" class="hidden mt-6 bg-green-500/10 border border-green-500/30 text-green-500 p-4 rounded-xl text-center">
+                        <i class="fa-solid fa-circle-check text-3xl mb-2"></i>
+                        <h4 class="font-bold">Message Sent Successfully!</h4>
+                        <p class="text-xs mt-1">Our team will get back to you within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center gs-reveal">
+        <h2 class="text-3xl font-bold text-[var(--text-main)] mb-4">Hate filling out forms?</h2>
+        <p class="text-[var(--text-muted)] mb-8">Skip the line and directly schedule a 30-minute discovery call with our Tech Director at a time that suits you best.</p>
+        
+        <a href="#" class="inline-flex items-center px-8 py-4 bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-main)] rounded-full font-bold hover:border-[#B026FF] hover:text-[#B026FF] transition-all hover:shadow-[0_0_20px_rgba(176,38,255,0.2)] interactive">
+            <i class="fa-regular fa-calendar-days text-2xl mr-3"></i> BOOK A GOOGLE MEET
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 40, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+
+    // 2. FAQ Accordion Logic
+    function toggleFaq(card) {
+        const isActive = card.classList.contains('active');
+        document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('active'));
+        if (!isActive) card.classList.add('active');
+    }
+
+    // 3. Form Submission Simulation (For Demo)
+    function submitForm(event) {
+        event.preventDefault(); // Prevent page reload
+        
+        // Hide form, show success message with animation
+        const form = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMessage');
+        
+        gsap.to(form, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
+            form.style.display = 'none';
+            successMsg.classList.remove('hidden');
+            gsap.fromTo(successMsg, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" });
+        }});
+    }
+</script>
+{% endblock %}

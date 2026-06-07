@@ -1,0 +1,472 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Latest SEO & Technology Blogs | TechPixels{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED BLOG STYLES (Light/Dark Safe)
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Newsletter & Special Boxes Glow */
+    .newsletter-box, .resource-box {
+        position: relative;
+        background: linear-gradient(145deg, rgba(176,38,255,0.05) 0%, rgba(0,240,255,0.05) 100%);
+        border: 1px solid rgba(0,240,255,0.2);
+    }
+    .bg-glow-effect {
+        position: absolute;
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 100%; height: 100%;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        filter: blur(40px);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* Interactive Tags */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .tag-item {
+        padding: 8px 16px; background: var(--card-bg); border: 1px solid var(--card-border);
+        border-radius: 100px; color: var(--text-muted); font-size: 12px; font-weight: 700;
+        transition: 0.3s; cursor: pointer;
+    }
+    .tag-item:hover { border-color: #B026FF; color: #B026FF; transform: translateY(-3px) rotate(2deg); }
+
+    /* Blog Card Image Zoom */
+    .blog-img-container { overflow: hidden; position: relative; }
+    .blog-img-container img { transition: transform 0.7s cubic-bezier(0.165, 0.84, 0.44, 1); }
+    .glass-card-premium:hover .blog-img-container img { transform: scale(1.1); }
+
+    /* Instagram Reels Section */
+    .ig-card {
+        border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 9/16;
+        border: 2px solid transparent; transition: 0.4s;
+        background: linear-gradient(var(--bg-main), var(--bg-main)) padding-box, 
+                    linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) border-box;
+    }
+    .ig-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(220, 39, 67, 0.3); }
+    .ig-icon-overlay {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 35px; color: white; opacity: 0; transition: 0.3s;
+        text-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .ig-card:hover .ig-icon-overlay { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    
+    /* Daily Hack Cards */
+    .hack-card {
+        border-left: 4px solid #00F0FF;
+        background: var(--card-bg);
+        border-radius: 0 15px 15px 0;
+        padding: 20px;
+        transition: 0.3s;
+        border-top: 1px solid var(--card-border);
+        border-right: 1px solid var(--card-border);
+        border-bottom: 1px solid var(--card-border);
+    }
+    .hack-card:hover { transform: translateX(10px); border-left-color: #B026FF; }
+
+    /* Glow Orb for Authors */
+    .card-glow-orb {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        opacity: 0;
+        z-index: -1;
+        transition: all 0.6s ease;
+        filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="relative pt-32 pb-16 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-0 right-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-gray-300 text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
+            <i class="fa-solid fa-fire mr-2 text-orange-500"></i> INSIGHTS & ARTICLES
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-12 gs-reveal transition-colors">
+            Our Latest <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#B026FF] to-[#00F0FF]">Tech & Marketing Radar</span>
+        </h1>
+
+        <div class="glass-card-premium text-left overflow-hidden flex flex-col md:flex-row h-auto md:h-[400px] gs-slide-up group interactive">
+            <div class="md:w-1/2 w-full h-[250px] md:h-full relative blog-img-container">
+                <div class="absolute top-4 left-4 z-10 bg-[#B026FF] text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">FEATURED</div>
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Tech" class="w-full h-full object-cover">
+            </div>
+            <div class="md:w-1/2 w-full p-8 md:p-12 flex flex-col justify-center">
+                <div class="flex items-center text-xs text-[var(--text-muted)] mb-4 space-x-4">
+                    <span class="flex items-center"><i class="fa-regular fa-calendar mr-2"></i> Today</span>
+                    <span class="flex items-center"><i class="fa-solid fa-clock mr-2"></i> 8 Min Read</span>
+                </div>
+                <h2 class="text-2xl md:text-4xl font-bold text-[var(--text-main)] mb-4 group-hover:text-[#00F0FF] transition-colors">The Future of Automation: Python & AI in 2026</h2>
+                <p class="text-[var(--text-muted)] text-sm md:text-base leading-relaxed mb-8">Explore how integrating custom Python scripts with generative AI is saving enterprise companies over 40 hours a week on manual data entry and lead processing.</p>
+                <a href="#" class="inline-flex items-center text-[var(--text-main)] text-sm font-bold hover:text-[#00F0FF] transition-colors">
+                    Read Full Blueprint <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-8 gs-reveal">
+            <div>
+                <h2 class="text-2xl font-bold text-[var(--text-main)]"><i class="fa-solid fa-download text-[#00F0FF] mr-2"></i> Free Digital Assets</h2>
+                <p class="text-[var(--text-muted)] text-sm mt-1">Download our exclusive cheat sheets and playbooks.</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gs-slide-up">
+            <div class="resource-box rounded-2xl p-6 flex items-center justify-between interactive hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-shadow">
+                <div>
+                    <span class="text-[10px] text-[#B026FF] font-bold uppercase tracking-wider mb-1 block">PDF E-Book</span>
+                    <h4 class="text-[var(--text-main)] font-bold text-lg">2026 SEO Playbook</h4>
+                </div>
+                <button class="w-12 h-12 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center hover:bg-[#00F0FF] hover:text-black transition-colors"><i class="fa-solid fa-arrow-down"></i></button>
+            </div>
+            <div class="resource-box rounded-2xl p-6 flex items-center justify-between interactive hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-shadow">
+                <div>
+                    <span class="text-[10px] text-[#00F0FF] font-bold uppercase tracking-wider mb-1 block">Cheatsheet</span>
+                    <h4 class="text-[var(--text-main)] font-bold text-lg">Django Query Hacks</h4>
+                </div>
+                <button class="w-12 h-12 rounded-full bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center hover:bg-[#B026FF] hover:text-white transition-colors"><i class="fa-solid fa-arrow-down"></i></button>
+            </div>
+            <div class="resource-box rounded-2xl p-6 flex items-center justify-between interactive hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-shadow">
+                <div>
+                    <span class="text-[10px] text-orange-500 font-bold uppercase tracking-wider mb-1 block">Template</span>
+                    <h4 class="text-[var(--text-main)] font-bold text-lg">Meta Ads ROI Tracker</h4>
+                </div>
+                <button class="w-12 h-12 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center hover:bg-orange-500 hover:text-white transition-colors"><i class="fa-solid fa-arrow-down"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 relative z-10 min-h-[50vh]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-wrap justify-center gap-3 gs-reveal mb-12" id="filter-container">
+            <button class="filter-btn interactive px-6 py-2 rounded-full font-bold text-xs tracking-wider transition-all duration-300 bg-[#00F0FF] text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]" data-filter="all">ALL</button>
+            <button class="filter-btn interactive px-6 py-2 rounded-full font-bold text-xs tracking-wider transition-all duration-300 bg-[var(--card-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--card-border)]" data-filter="automation">AUTOMATION</button>
+            <button class="filter-btn interactive px-6 py-2 rounded-full font-bold text-xs tracking-wider transition-all duration-300 bg-[var(--card-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--card-border)]" data-filter="webdev">WEB DEV</button>
+            <button class="filter-btn interactive px-6 py-2 rounded-full font-bold text-xs tracking-wider transition-all duration-300 bg-[var(--card-bg)] text-[var(--text-muted)] hover:text-[var(--text-main)] border border-[var(--card-border)]" data-filter="marketing">MARKETING</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+            
+            {% for post in posts %}
+            <div class="glass-card-premium blog-card group gs-slide-up interactive" data-category="{{ post.category|lower }}">
+                <div class="h-48 blog-img-container">
+                    {% if post.cover_image %}
+                    <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tech" class="w-full h-full object-cover">
+                    {% endif %}
+                    <div class="absolute top-4 left-4 bg-[#B026FF]/90 backdrop-blur-sm px-3 py-1 rounded-md text-[10px] font-bold text-white tracking-wider uppercase z-10">{{ post.category }}</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-xs text-[var(--text-muted)] mb-3 space-x-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> {{ post.date_posted|date:"M d, Y" }}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 leading-tight group-hover:text-[#B026FF] transition-colors">{{ post.title }}</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 line-clamp-3">{{ post.content|truncatewords:15 }}</p>
+                    <a href="{% url 'blog_detail' post.slug %}" class="inline-flex items-center text-[var(--text-main)] text-sm font-bold hover:text-[#00F0FF] transition-colors">Read Full Article <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="glass-card-premium blog-card group gs-slide-up interactive" data-category="automation">
+                <div class="h-48 blog-img-container">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tech">
+                    <div class="absolute top-4 left-4 bg-[#B026FF]/90 backdrop-blur-sm px-3 py-1 rounded-md text-[10px] font-bold text-white tracking-wider uppercase z-10">Business Automation</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-xs text-[var(--text-muted)] mb-3 space-x-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> May 19, 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 leading-tight group-hover:text-[#B026FF] transition-colors">Business Automation for Small Business: The Ultimate Guide</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 line-clamp-3">Are you wasting hours every single day copying rows between sheets or manually messaging leads? Discover how to automate your entire workflow.</p>
+                    <a href="#" class="inline-flex items-center text-[var(--text-main)] text-sm font-bold hover:text-[#00F0FF] transition-colors">Admin panel madhun post add kara <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            <div class="glass-card-premium blog-card group gs-slide-up interactive" data-category="webdev">
+                <div class="h-48 blog-img-container">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Web">
+                    <div class="absolute top-4 left-4 bg-[#00F0FF]/90 backdrop-blur-sm px-3 py-1 rounded-md text-[10px] font-bold text-black tracking-wider uppercase z-10">Web Development</div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center text-xs text-[var(--text-muted)] mb-3 space-x-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> May 15, 2026</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-3 leading-tight group-hover:text-[#00F0FF] transition-colors">Why Your Business Needs a Premium Website in 2026</h3>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 line-clamp-3">In 2026, a website is no longer a luxury—it is your ultimate digital identity. Discover why custom-coded platforms outrank generic templates.</p>
+                    <a href="#" class="inline-flex items-center text-[var(--text-main)] text-sm font-bold hover:text-[#00F0FF] transition-colors">Admin panel madhun post add kara <i class="fa-solid fa-arrow-right ml-2"></i></a>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% if posts %}
+        <div class="text-center mt-12 gs-reveal">
+            <a href="{% url 'all_blogs' %}" class="inline-flex items-center px-8 py-3 rounded-full border border-[#00F0FF] text-[#00F0FF] font-bold tracking-wide hover:bg-[#00F0FF] hover:text-black transition-colors">
+                View All Articles <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        {% endif %}
+
+        <div id="no-results" class="hidden py-20 text-center">
+            <div class="w-16 h-16 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center mx-auto mb-4 text-[var(--text-muted)]">
+                <i class="fa-solid fa-folder-open text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">No articles found</h3>
+            <p class="text-[var(--text-muted)]">Check back later for new insights in this category.</p>
+        </div>
+    </div>
+</section>
+
+<section class="py-12 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-[var(--text-main)] mb-8 gs-reveal"><i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i> TechPixels Quick Hacks</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 gs-slide-up">
+            <div class="hack-card interactive">
+                <span class="text-[10px] text-[#00F0FF] font-bold uppercase tracking-wider mb-2 block">Python / Django</span>
+                <p class="text-[var(--text-main)] text-sm font-medium">Use <code class="bg-[var(--bg-main)] px-1 rounded border border-[var(--card-border)] text-[#B026FF]">select_related()</code> in Django ORM to prevent N+1 query problems and speed up your database fetches instantly.</p>
+            </div>
+            <div class="hack-card interactive" style="border-left-color: #B026FF;">
+                <span class="text-[10px] text-[#B026FF] font-bold uppercase tracking-wider mb-2 block">Meta Ads</span>
+                <p class="text-[var(--text-main)] text-sm font-medium">Always exclude "purchasers" from your Retargeting campaigns in Meta Ads. You're wasting ad spend showing ads to people who already bought.</p>
+            </div>
+            <div class="hack-card interactive" style="border-left-color: #00F0FF;">
+                <span class="text-[10px] text-[#00F0FF] font-bold uppercase tracking-wider mb-2 block">Frontend Speed</span>
+                <p class="text-[var(--text-main)] text-sm font-medium">Convert all your website PNG/JPEG images to WEBP format. It reduces image size by 70% without losing quality, boosting your SEO score.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-end mb-12 gs-reveal">
+            <div>
+                <h2 class="text-3xl font-bold text-[var(--text-main)] mb-2"><i class="fa-brands fa-instagram text-[#E1306C] mr-2"></i> Instagram Reels</h2>
+                <p class="text-[var(--text-muted)]">Follow us for daily 60-second agency insights.</p>
+            </div>
+            <a href="https://www.instagram.com/techpixels.studio/" target="_blank" class="hidden md:inline-flex items-center text-[#B026FF] font-bold text-sm interactive hover:text-[#00F0FF] transition-colors">
+                Follow @techpixels <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 gs-slide-up">
+            {% if reels %}
+                {% for reel in reels %}
+                <a href="{{ reel.reel_url }}" target="_blank" class="ig-card interactive block">
+                    <img src="{{ reel.thumbnail.url }}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/30"></div>
+                    <div class="ig-icon-overlay"><i class="fa-brands fa-instagram"></i></div>
+                    <div class="absolute bottom-0 left-0 w-full p-4">
+                        <p class="text-white font-bold text-xs"><i class="fa-solid fa-play text-[10px] mr-1"></i> {{ reel.views }} Views</p>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="ig-card interactive"><img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Reel 1" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/30"></div><div class="ig-icon-overlay"><i class="fa-brands fa-instagram"></i></div><div class="absolute bottom-0 left-0 w-full p-4"><p class="text-white font-bold text-xs"><i class="fa-solid fa-play text-[10px] mr-1"></i> 15.2K Views</p></div></div>
+                <div class="ig-card interactive"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Reel 2" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/30"></div><div class="ig-icon-overlay"><i class="fa-brands fa-instagram"></i></div><div class="absolute bottom-0 left-0 w-full p-4"><p class="text-white font-bold text-xs"><i class="fa-solid fa-play text-[10px] mr-1"></i> 8.4K Views</p></div></div>
+                <div class="ig-card interactive"><img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Reel 3" class="w-full h-full object-cover"><div class="absolute inset-0 bg-black/30"></div><div class="ig-icon-overlay"><i class="fa-brands fa-instagram"></i></div><div class="absolute bottom-0 left-0 w-full p-4"><p class="text-white font-bold text-xs"><i class="fa-solid fa-play text-[10px] mr-1"></i> 22.1K Views</p></div></div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10 border-t border-[var(--card-border)] bg-[var(--bg-main)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-center text-3xl font-bold text-[var(--text-main)] mb-12 gs-reveal">Voices of TechPixels</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
+            <div class="glass-card-premium p-8 interactive text-left group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%); top: -20px; left: -20px;"></div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-5">
+                    <div class="w-14 h-14 rounded-xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-2xl font-black border border-[#00F0FF]/30 shadow-[0_0_15px_rgba(0,240,255,0.2)] group-hover:scale-110 transition-transform">M</div>
+                    <div>
+                        <h4 class="text-[var(--text-main)] font-extrabold text-2xl tracking-wide">Mohan Nikam</h4>
+                        <p class="text-[#00F0FF] text-xs font-bold uppercase tracking-widest mt-1">Lead Architect & Developer</p>
+                    </div>
+                </div>
+                <p class="text-[var(--text-muted)] text-sm leading-relaxed border-t border-[var(--card-border)] pt-5">
+                    Architects highly scalable Python/Django backend systems and crafts robust web infrastructure. Specializes in custom REST APIs, database performance optimization, and ensuring zero-downtime server deployments for enterprise clients.
+                </p>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-left group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%); top: -20px; right: -20px;"></div>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-5">
+                    <div class="w-14 h-14 rounded-xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-2xl font-black border border-[#B026FF]/30 shadow-[0_0_15px_rgba(176,38,255,0.2)] group-hover:scale-110 transition-transform">N</div>
+                    <div>
+                        <h4 class="text-[var(--text-main)] font-extrabold text-2xl tracking-wide">Nikhil</h4>
+                        <p class="text-[#B026FF] text-xs font-bold uppercase tracking-widest mt-1">Technical Director</p>
+                    </div>
+                </div>
+                <p class="text-[var(--text-muted)] text-sm leading-relaxed border-t border-[var(--card-border)] pt-5">
+                    Directs overarching project strategy, comprehensive cloud infrastructure deployments, and agency operations. Ensures a seamless, ROI-driven integration between complex engineering logic and aggressive marketing growth funnels.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-4xl mx-auto px-4 text-center gs-reveal">
+        <h3 class="text-xl font-bold text-[var(--text-main)] mb-6">Popular Topics</h3>
+        <div class="tag-cloud interactive">
+            <span class="tag-item">#DjangoSetup</span>
+            <span class="tag-item">#ReactJS</span>
+            <span class="tag-item">#MetaAds</span>
+            <span class="tag-item">#SEOTips</span>
+            <span class="tag-item">#ServerHosting</span>
+            <span class="tag-item">#UIUXDesign</span>
+            <span class="tag-item">#AppDevelopment</span>
+            <span class="tag-item">#Automation</span>
+            <span class="tag-item">#Python</span>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="newsletter-box p-10 md:p-16 rounded-[40px] text-center gs-slide-up interactive">
+            <div class="bg-glow-effect"></div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-4">Join The <span class="text-[#00F0FF]">Inner Circle.</span></h2>
+            <p class="text-[var(--text-muted)] mb-10 max-w-2xl mx-auto">Get our best technical blueprints, code snippets, and marketing growth hacks delivered directly to your inbox every week.</p>
+            
+            <form id="newsletter-form" class="max-w-lg mx-auto flex flex-col sm:flex-row gap-4">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Enter your email address" required class="flex-grow bg-[var(--bg-main)] border border-[var(--card-border)] rounded-xl px-6 py-4 text-[var(--text-main)] focus:outline-none focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] transition-all">
+                <button type="submit" class="bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold px-8 py-4 rounded-xl hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all transform hover:-translate-y-1 whitespace-nowrap">
+                    SUBSCRIBE <i class="fa-solid fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+            <p class="text-[10px] text-[var(--text-muted)] mt-6 uppercase tracking-wider"><i class="fa-solid fa-lock mr-1"></i> No spam. Unsubscribe anytime.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // 1. Initial Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem, i) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 90%" },
+            y: 40, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+
+    // 2. Dynamic Filtering Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const blogCards = document.querySelectorAll('.blog-card');
+    const noResults = document.getElementById('no-results');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-[#00F0FF]', 'text-black', 'shadow-[0_0_15px_rgba(0,240,255,0.4)]');
+                b.classList.add('bg-[var(--card-bg)]', 'text-[var(--text-muted)]', 'border-[var(--card-border)]');
+            });
+            btn.classList.add('bg-[#00F0FF]', 'text-black', 'shadow-[0_0_15px_rgba(0,240,255,0.4)]');
+            btn.classList.remove('bg-[var(--card-bg)]', 'text-[var(--text-muted)]', 'border-[var(--card-border)]');
+
+            const filterValue = btn.getAttribute('data-filter');
+            let visibleCount = 0;
+
+            blogCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (filterValue === 'all' || category === filterValue) {
+                    card.style.display = 'block';
+                    gsap.to(card, { scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" });
+                    visibleCount++;
+                } else {
+                    gsap.to(card, {
+                        scale: 0.9, opacity: 0, duration: 0.3, ease: "power2.in",
+                        onComplete: () => { card.style.display = 'none'; }
+                    });
+                }
+            });
+
+            setTimeout(() => {
+                if(visibleCount === 0) {
+                    noResults.classList.remove('hidden');
+                    gsap.fromTo(noResults, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.4});
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            }, 350);
+        });
+    });
+
+    // 3. Newsletter Submission Logic (Pop-up -> Redirect)
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        const formData = new FormData(this);
+        
+        fetch("{% url 'subscribe' %}", {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.status === 'success') {
+                Swal.fire({
+                    title: 'Welcome to the club!',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'Awesome',
+                    confirmButtonColor: '#00F0FF',
+                    background: '#1a1a1a',
+                    color: '#fff'
+                }).then((result) => {
+                    window.location.href = "{% url 'home' %}";
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

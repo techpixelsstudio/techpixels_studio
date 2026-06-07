@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enterprise Web Engineering | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED WEB DEV STYLES (Light/Dark Safe)
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute; width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* 3D Browser Mockup for Hero */
+    .hero-browser-mockup { 
+        background: var(--card-bg); border: 1px solid var(--card-border); 
+        border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.4); 
+        backdrop-filter: blur(15px); position: relative; 
+    }
+    .browser-header { 
+        background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--card-border); 
+        padding: 12px 20px; display: flex; align-items: center; gap: 8px; 
+    }
+    body.light-mode .browser-header { background: rgba(255,255,255,0.5); }
+    .browser-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
+    .browser-dot:nth-child(2) { background: #ffbd2e; } .browser-dot:nth-child(3) { background: #27c93f; }
+    .browser-address { 
+        background: var(--input-bg); border-radius: 6px; font-size: 11px; 
+        color: var(--text-muted); padding: 4px 30px; margin-left: 20px; width: 220px; text-align: center; border: 1px solid var(--input-border);
+    }
+
+    /* Interactive Performance Simulator */
+    .perf-simulator { padding: 40px; }
+    .speed-bar { height: 12px; border-radius: 20px; background: rgba(128, 128, 128, 0.2); overflow: hidden; position: relative; margin-top: 10px;}
+    .speed-fill-slow { width: 0%; height: 100%; background: #ff5f56; transition: width 2s cubic-bezier(0.25, 1, 0.5, 1); }
+    .speed-fill-fast { width: 0%; height: 100%; background: linear-gradient(90deg, #00F0FF, #B026FF); transition: width 2s cubic-bezier(0.25, 1, 0.5, 1); }
+    .simulate-active .speed-fill-slow { width: 35%; }
+    .simulate-active .speed-fill-fast { width: 99%; }
+
+    /* Demo Cards Showcase */
+    .demo-image-wrapper { position: relative; overflow: hidden; aspect-ratio: 16/10; border-bottom: 1px solid var(--card-border); }
+    .demo-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); opacity: 0.8;}
+    .glass-card-premium:hover .demo-img { transform: scale(1.08); opacity: 1; }
+    
+    .tech-tag { font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
+
+    /* 3D Tilt */
+    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
+    .tilt-content { transform: translateZ(40px); }
+
+    /* Process Timeline Big Numbers */
+    .process-num { 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-size: 5rem; font-weight: 900; 
+        background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        position: absolute; top: 10px; right: 20px; z-index: -1;
+    }
+
+    /* Floating Animations */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2 gs-reveal">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg">
+                    Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#00F0FF]">Web Development</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                    Engineering High-End <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Digital Flagships.</span>
+                </h1>
+                <p class="text-[var(--text-muted)] text-lg mb-8 leading-relaxed max-w-lg transition-colors">
+                    We code highly customized, extremely responsive, and clean web systems. No templates, no bloatware—just high-grade Python and React architecture built to scale and convert.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#demos" class="inline-block text-center py-4 px-8 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider transition-transform transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] interactive">
+                        EXPLORE SHOWCASES <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
+                <div class="tilt-content animate-float">
+                    <div class="hero-browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+                            <div class="browser-address">techpixels.studio/scale</div>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Tech Dashboard Mockup" class="w-full h-auto opacity-90">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10 bg-black/5 border-b border-[var(--card-border)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium perf-simulator gs-slide-up" id="simulator-trigger">
+            <div class="flex flex-col md:flex-row align-items-center gap-10">
+                <div class="md:w-5/12">
+                    <h3 class="text-3xl font-bold text-[var(--text-main)] mb-4">Experience Ultra Speed.</h3>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">See the core difference in responsiveness, database querying, and rendering quality between standard generic themes and our custom-coded web architectures.</p>
+                </div>
+                <div class="md:w-7/12 w-full flex flex-col justify-center">
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-[var(--text-muted)] text-xs uppercase tracking-wider">Standard Agency Theme Built</span>
+                            <span class="text-red-500 font-bold text-xs">35% Score (4.2s Delay)</span>
+                        </div>
+                        <div class="speed-bar"><div class="speed-fill-slow"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-bold text-[#00F0FF] text-xs uppercase tracking-wider">TechPixels Handcrafted Engine</span>
+                            <span class="text-green-500 font-bold text-xs">99% Score (0.4s Fast)</span>
+                        </div>
+                        <div class="speed-bar"><div class="speed-fill-fast"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3 gs-reveal">OUR ARSENAL</h4>
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-12 gs-reveal">Powered by Enterprise Tech</h2>
+        
+        <div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 gs-slide-up">
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-python text-5xl text-blue-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Python</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-solid fa-code text-5xl text-green-600 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Django</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-react text-5xl text-[#00F0FF] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">React JS</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-solid fa-database text-5xl text-indigo-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">PostgreSQL</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-aws text-5xl text-orange-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">AWS Cloud</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="demos" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4 transition-colors">Engineered Showcases.</h2>
+            <p class="text-[var(--text-muted)] max-w-2xl mx-auto">Explore mock renders showing how we build clean UI layouts and robust backends across various niches.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 gs-slide-up">
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-[#00F0FF]">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="E-Commerce Interface" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-[#00F0FF]/30 text-[#00F0FF] mb-4">E-Commerce Engine</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">Aura Luxe Retail</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">An API-driven headless shopping portal optimized for 10,000+ concurrent SKU data reads with zero lag.</p>
+                </div>
+            </div>
+
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-[#B026FF]">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="SaaS Interface" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-[#B026FF]/30 text-[#B026FF] mb-4" style="background: rgba(176,38,255,0.1);">SaaS Analytics</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">OmniFlow Platform</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">Real-time data visualization system with dynamic widgets built for fast parsing on large enterprise screens.</p>
+                </div>
+            </div>
+
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-orange-500">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Corporate System" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-orange-500/30 text-orange-500 mb-4" style="background: rgba(255,165,0,0.1);">Product Platform</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">Apex Capital Hub</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">A highly secure asset management layout rendering dynamic financial charts instantly via WebSocket connections.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Enterprise Capabilities</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8 interactive group">
+                <i class="fa-solid fa-server text-3xl text-[#00F0FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">API-First Architecture</h4>
+                <p class="text-[var(--text-muted)] text-sm">We build robust backend logic using Django REST Framework to ensure seamless data flow across web and mobile.</p>
+            </div>
+            <div class="glass-card-premium p-8 interactive group">
+                <i class="fa-solid fa-shield-halved text-3xl text-[#B026FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">Bank-Grade Security</h4>
+                <p class="text-[var(--text-muted)] text-sm">Implementation of JWT authentication, CSRF protection, and strict SQL injection defenses.</p>
+            </div>
+            <div class="glass-card-premium p-8 interactive group">
+                <i class="fa-solid fa-magnifying-glass-chart text-3xl text-orange-500 mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3">SEO-Optimized Code</h4>
+                <p class="text-[var(--text-muted)] text-sm">Server-side rendering (SSR) via Next.js to guarantee lightening fast load times and perfect Core Web Vitals.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4">Our Engineering Framework.</h2>
+            <p class="text-[var(--text-muted)]">A systematic blueprint ensuring seamless architecture development.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">01</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">System Scope</h4>
+                <p class="text-[var(--text-muted)] text-sm">Mapping interaction loops, optimizing database routes, and preparing technical blueprints.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">02</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">UI/UX Design</h4>
+                <p class="text-[var(--text-muted)] text-sm">Fleshing out functional Figma layouts, handling interface touchpoints, and ensuring smooth UX.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">03</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">App Code</h4>
+                <p class="text-[var(--text-muted)] text-sm">Deploying Django backend APIs, constructing React frontend code, and connecting secure databases.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">04</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">CI/CD & Launch</h4>
+                <p class="text-[var(--text-muted)] text-sm">Running regression tests, configuring AWS load balancers, and deploying to live production servers.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
+            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.1;"></div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Ready to Build Your Platform?</h2>
+            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
+                Stop relying on slow, generic templates. Let our engineering team construct a high-performance web architecture tailored to your business logic.
+            </p>
+            <div class="flex justify-center relative z-10">
+                <a href="{% url 'contact' %}" class="px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all transform hover:-translate-y-1">
+                    START A PROJECT
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem, i) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+
+    // 3D Tilt Effect for Hero Dashboard
+    const cards = document.querySelectorAll('.tilt-3d');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; 
+            const rotateY = ((x - centerX) / centerX) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+
+    // Performance Simulator Trigger
+    ScrollTrigger.create({
+        trigger: "#simulator-trigger",
+        start: "top 75%",
+        onEnter: () => document.getElementById("simulator-trigger").classList.add("simulate-active")
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,421 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Careers | Join TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED CAREER STYLES (Light/Dark Safe)
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Glow Effects */
+    .bg-glow-effect {
+        position: absolute;
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 100%; height: 100%;
+        background: radial-gradient(circle, rgba(176,38,255,0.15) 0%, transparent 70%);
+        filter: blur(40px);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    /* Culture Bento Box Images */
+    .culture-img-box {
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--card-border);
+    }
+    .culture-img-box img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .culture-img-box:hover img { transform: scale(1.08); }
+
+    /* Interactive Job Accordion */
+    .job-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        margin-bottom: 15px;
+        transition: 0.3s;
+        overflow: hidden;
+    }
+    .job-card:hover { border-color: #B026FF; box-shadow: 0 10px 30px rgba(176,38,255,0.1); }
+    .job-header {
+        padding: 25px 30px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .job-content {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+        padding: 0 30px;
+        background: rgba(0,0,0,0.2);
+    }
+    body.light-mode .job-content { background: rgba(0,0,0,0.03); }
+    .job-content.active {
+        max-height: 1000px;
+        opacity: 1;
+        padding: 20px 30px 30px;
+        border-top: 1px solid var(--card-border);
+    }
+    .chevron { transition: transform 0.3s; }
+    .job-card.active .chevron { transform: rotate(180deg); color: #00F0FF; }
+
+    /* Timeline Process Styles */
+    .process-line {
+        position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+        background: var(--card-border); transform: translateX(-50%);
+    }
+    .process-dot {
+        position: absolute; left: 50%; transform: translateX(-50%);
+        width: 20px; height: 20px; border-radius: 50%;
+        background: var(--bg-main); border: 4px solid #00F0FF; z-index: 10;
+        box-shadow: 0 0 20px rgba(0,240,255,0.5);
+    }
+
+    @media (max-width: 991px) {
+        .process-line { left: 30px; }
+        .process-dot { left: 30px; }
+        .job-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        .job-header > div:last-child { align-self: flex-end; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     1. HERO SECTION
+     ========================================== -->
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
+            <i class="fa-solid fa-code-branch mr-2"></i> JOIN THE ELITE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 gs-reveal">
+            Build The Future <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">With TechPixels.</span>
+        </h1>
+        <p class="text-[var(--text-muted)] text-lg max-w-2xl mx-auto mb-10 gs-reveal">
+            We are looking for crazy engineers, data-driven marketers, and creative designers who want to build highly scalable enterprise SaaS products and marketing engines.
+        </p>
+        <a href="#open-roles" class="magnetic-btn magnetic interactive gs-reveal">
+            VIEW OPEN ROLES <i class="fa-solid fa-arrow-down ml-2"></i>
+        </a>
+    </div>
+</section>
+
+<!-- ==========================================
+     2. CULTURE VIBE (Bento Box Images)
+     ========================================== -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Our Culture Vibe</h2>
+            <p class="text-[var(--text-muted)]">Work hard, build epic stuff, and enjoy the journey.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px] gs-slide-up interactive">
+            <div class="culture-img-box md:col-span-2 md:row-span-2">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Team Collaboration">
+                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1 rounded-full text-white text-xs font-bold border border-white/20">Team Brainstorming</div>
+            </div>
+            <div class="culture-img-box md:col-span-1 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Code">
+                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1 rounded-full text-white text-xs font-bold border border-white/20">Deep Work</div>
+            </div>
+            <div class="culture-img-box md:col-span-1 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Remote">
+                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1 rounded-full text-white text-xs font-bold border border-white/20">Remote Flexibility</div>
+            </div>
+            <div class="culture-img-box md:col-span-2 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Meetings">
+                <div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1 rounded-full text-white text-xs font-bold border border-white/20">Strategy Sessions</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. PREMIUM PERKS & BENEFITS
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-[var(--bg-main)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[#B026FF] font-bold tracking-widest text-sm uppercase mb-3">Why Join Us</h4>
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)]">Premium Team Benefits</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8 interactive text-center">
+                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mx-auto mb-6 border border-[#00F0FF]/30">
+                    <i class="fa-brands fa-apple"></i>
+                </div>
+                <h4 class="text-[var(--text-main)] font-bold mb-3">Top-Tier Gear</h4>
+                <p class="text-[var(--text-muted)] text-sm">We provide the latest M-Series MacBooks and high-res monitors for peak productivity.</p>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-center">
+                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mx-auto mb-6 border border-[#B026FF]/30">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <h4 class="text-[var(--text-main)] font-bold mb-3">Work From Anywhere</h4>
+                <p class="text-[var(--text-muted)] text-sm">Pune HQ or Bali beach? We offer 100% remote flexibility and flexible working hours.</p>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-center">
+                <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl mx-auto mb-6 border border-orange-500/30">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h4 class="text-[var(--text-main)] font-bold mb-3">Learning Budget</h4>
+                <p class="text-[var(--text-muted)] text-sm">Annual allowance for premium courses, tech conferences, and certifications to upskill.</p>
+            </div>
+
+            <div class="glass-card-premium p-8 interactive text-center">
+                <div class="w-16 h-16 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-3xl mx-auto mb-6 border border-green-500/30">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h4 class="text-[var(--text-main)] font-bold mb-3">Health & Wellness</h4>
+                <p class="text-[var(--text-muted)] text-sm">Comprehensive medical insurance for you and your family, plus gym memberships.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. ELITE JOB BOARD (Interactive Accordion)
+     ========================================== -->
+<section id="open-roles" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Current Openings</h2>
+            <p class="text-[var(--text-muted)]">Find your role and let's build something epic together.</p>
+        </div>
+
+        <div class="gs-slide-up">
+            
+            <!-- DATABASE MADHUN JOBS YETIL -->
+            {% for job in jobs %}
+            <div class="job-card interactive">
+                <div class="job-header" onclick="toggleJob(this)">
+                    <div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">{{ job.title }}</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-[#00F0FF]/10 text-[#00F0FF] text-[10px] font-bold uppercase rounded-full border border-[#00F0FF]/20">{{ job.tag1 }}</span>
+                            <span class="px-3 py-1 bg-[var(--bg-main)] text-[var(--text-muted)] text-[10px] font-bold uppercase rounded-full border border-[var(--card-border)]">{{ job.tag2 }}</span>
+                            <span class="px-3 py-1 bg-[var(--bg-main)] text-[var(--text-muted)] text-[10px] font-bold uppercase rounded-full border border-[var(--card-border)]">{{ job.tag3 }}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center text-[var(--text-muted)] font-bold text-sm">
+                        View Details <i class="fa-solid fa-chevron-down ml-3 chevron"></i>
+                    </div>
+                </div>
+                <div class="job-content">
+                    <p class="text-[var(--text-muted)] text-sm mb-4 leading-relaxed mt-2">{{ job.description|linebreaksbr }}</p>
+                    <a href="#apply-now" class="inline-block bg-[#00F0FF] text-black font-bold px-6 py-2 rounded-xl text-sm hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all mb-4">Apply for this role</a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-10 glass-card-premium">
+                <p class="text-[var(--text-muted)] text-lg font-bold">No current openings, but we are always looking for talent!</p>
+                <p class="text-[var(--text-muted)] text-sm mt-2">Feel free to drop your resume in the open application form below.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. HIRING TIMELINE
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Our Hiring Process</h2>
+            <p class="text-[var(--text-muted)]">No drawn-out interviews. Fast, transparent, and respectful of your time.</p>
+        </div>
+
+        <div class="relative pb-10">
+            <div class="process-line"></div>
+            
+            <div class="space-y-12">
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-[var(--text-main)]">01. Application Review</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2">We review your GitHub, Portfolio, and past projects. Show us your best code or campaigns.</p>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 md:pl-16 w-full hidden md:block">
+                        <div class="glass-card-premium p-4 inline-block border-[#00F0FF]/30"><i class="fa-solid fa-file-code text-2xl text-[#00F0FF]"></i></div>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: #B026FF; box-shadow: 0 0 20px rgba(176,38,255,0.5);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0 order-1 md:order-1 opacity-0 md:opacity-100 hidden md:block">
+                        <div class="glass-card-premium p-4 inline-block border-[#B026FF]/30 float-right"><i class="fa-solid fa-laptop-code text-2xl text-[#B026FF]"></i></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
+                        <h3 class="text-xl font-bold text-[var(--text-main)]">02. Technical Assignment</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2">A short, real-world task to evaluate your problem-solving skills. No leetcode puzzles, just practical work.</p>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: orange; box-shadow: 0 0 20px rgba(255,165,0,0.5);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
+                        <h3 class="text-xl font-bold text-[var(--text-main)]">03. Culture Fit Interview</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2">A 30-minute chat with the founders to see if our values and goals align perfectly.</p>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full hidden md:block">
+                        <div class="glass-card-premium p-4 inline-block border-orange-500/30"><i class="fa-solid fa-users text-2xl text-orange-500"></i></div>
+                    </div>
+                </div>
+
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: #00F0FF; box-shadow: 0 0 20px rgba(0,240,255,0.5);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0 order-1 md:order-1 opacity-0 md:opacity-100 hidden md:block">
+                        <div class="glass-card-premium p-4 inline-block border-[#00F0FF]/30 float-right"><i class="fa-solid fa-handshake text-2xl text-[#00F0FF]"></i></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
+                        <h3 class="text-xl font-bold text-[var(--text-main)]">04. The Offer</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2">Welcome to TechPixels! We send over the paperwork and gear up for your onboarding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     6. APPLICATION FORM (Glassmorphism CTA)
+     ========================================== -->
+<section id="apply-now" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-8 md:p-12 gs-reveal text-center">
+            <div class="bg-glow-effect"></div>
+            <div class="mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-2">Ready to Apply?</h2>
+                <p class="text-[var(--text-muted)] text-sm">Drop your details below. We review every single application manually.</p>
+            </div>
+            
+            <!-- BACKEND LOGIC: Added enctype for file uploads and dynamic action URL -->
+            <form method="POST" action="{% url 'career' %}" enctype="multipart/form-data" class="text-left">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Full Name</label>
+                        <input type="text" name="full_name" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all interactive" placeholder="Mohan Nikam">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Email Address</label>
+                        <input type="email" name="email" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all interactive" placeholder="techixels@gmail.com">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Role Applying For</label>
+                        <select name="role" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all appearance-none interactive">
+                            <option value="" disabled selected>Select Role...</option>
+                            {% for job in jobs %}
+                                <option value="{{ job.title }}">{{ job.title }}</option>
+                            {% endfor %}
+                            <option value="Open Application / Spontaneous">Open Application / Spontaneous</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Portfolio / GitHub / LinkedIn</label>
+                        <input type="url" name="portfolio" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all interactive" placeholder="https://github.com/yourprofile">
+                    </div>
+                </div>
+
+                <!-- ADDED: RESUME UPLOAD FIELD -->
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Upload Resume (PDF/DOCX)</label>
+                    <input type="file" name="resume" accept=".pdf,.doc,.docx" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all cursor-pointer interactive file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#B026FF]/10 file:text-[#B026FF] hover:file:bg-[#B026FF]/20">
+                </div>
+
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Why TechPixels? (Short Note)</label>
+                    <textarea name="short_note" rows="4" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all resize-none interactive" placeholder="Tell us about your proudest project..."></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(176,38,255,0.4)] transition-all transform hover:-translate-y-1 interactive text-lg tracking-wide">
+                    SUBMIT APPLICATION <i class="fa-solid fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.gs-reveal').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 40, opacity: 0, duration: 0.8, ease: "power3.out"
+        });
+    });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 90%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+
+    // 2. Accordion Logic for Job Board
+    function toggleJob(headerElement) {
+        const card = headerElement.parentElement;
+        const content = card.querySelector('.job-content');
+        
+        // Close other open cards
+        document.querySelectorAll('.job-card').forEach(otherCard => {
+            if (otherCard !== card && otherCard.classList.contains('active')) {
+                otherCard.classList.remove('active');
+                otherCard.querySelector('.job-content').classList.remove('active');
+            }
+        });
+
+        // Toggle current card
+        card.classList.toggle('active');
+        content.classList.toggle('active');
+    }
+</script>
+{% endblock %}

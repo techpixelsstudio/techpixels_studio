@@ -1,0 +1,489 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enterprise App Engineering | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED APP DEV STYLES (Light/Dark Safe)
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #B026FF;
+        box-shadow: 0 20px 40px rgba(176, 38, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute; width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(176,38,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* Interactive Phone Simulator */
+    .simulator-container { position: relative; display: flex; justify-content: center; }
+    .phone-bezel { 
+        width: 300px; height: 600px; background: #0f172a; 
+        border: 12px solid #1e293b; border-radius: 45px; 
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.1); 
+        padding: 0; position: relative; overflow: hidden; 
+    }
+    body.light-mode .phone-bezel { border-color: #cbd5e1; box-shadow: 0 30px 60px rgba(15,23,42,0.2); }
+    .phone-notch { 
+        width: 120px; height: 25px; background: #1e293b; 
+        position: absolute; top: 0; left: 50%; transform: translateX(-50%); 
+        border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 10; 
+    }
+    body.light-mode .phone-notch { background: #cbd5e1; }
+    
+    .phone-screen { 
+        width: 100%; height: 100%; background: #05050a; 
+        position: relative; display: flex; flex-direction: column; 
+        padding: 35px 20px 20px; 
+    }
+    
+    .screen-status-bar { display: flex; justify-content: space-between; font-size: 11px; color: #fff; font-weight: 700; margin-bottom: 30px; }
+    .screen-ui-data { text-align: center; margin-top: 40px; transition: all 0.3s ease; }
+    
+    .feature-selector-btn { 
+        background: var(--card-bg); border: 1px solid var(--card-border); 
+        color: var(--text-main); padding: 14px 20px; border-radius: 16px; 
+        font-size: 13px; font-weight: 700; width: 100%; text-align: left; 
+        transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer;
+    }
+    .feature-selector-btn:hover { border-color: #B026FF; transform: translateX(5px); }
+    .feature-selector-btn.active { 
+        background: linear-gradient(135deg, #B026FF, #00F0FF); 
+        color: #fff; border-color: transparent; box-shadow: 0 10px 20px rgba(176,38,255,0.3); transform: translateX(10px);
+    }
+    .feature-selector-btn.active i { color: #fff !important; }
+
+    /* App Showcases */
+    .demo-image-wrapper { position: relative; overflow: hidden; aspect-ratio: 4/5; border-bottom: 1px solid var(--card-border); }
+    .demo-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); opacity: 0.9;}
+    .glass-card-premium:hover .demo-img { transform: scale(1.08); opacity: 1; }
+    .tech-tag { font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; }
+
+    /* Timeline Process Numbers */
+    .process-num { 
+        font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 900; 
+        background: linear-gradient(to bottom, rgba(176,38,255,0.15), transparent); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        position: absolute; top: 10px; right: 20px; z-index: -1;
+    }
+
+    /* 3D Tilt Effect */
+    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
+    .tilt-content { transform: translateZ(40px); }
+
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     1. HERO SECTION (Interactive Phone Simulator)
+     ========================================== -->
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            
+            <!-- Left Content: Text & Interactive Buttons -->
+            <div class="lg:w-1/2 gs-reveal text-center lg:text-left">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg interactive">
+                    Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#B026FF]">App Development</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                    Next-Generation <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#B026FF] to-[#00F0FF]">Mobile Engines.</span>
+                </h1>
+                <p class="text-[var(--text-muted)] text-lg mb-10 leading-relaxed max-w-lg mx-auto lg:mx-0 transition-colors">
+                    We architect clean, fluid, and robust iOS & Android applications. From native hardware integration to unified cloud frameworks—we engineer high-retention mobile systems.
+                </p>
+                
+                <!-- Interactive Controls for Phone Simulator -->
+                <div class="grid grid-cols-2 gap-4 max-w-lg mx-auto lg:mx-0">
+                    <button class="feature-selector-btn active interactive" onclick="updateSimulator('biometrics', this)">
+                        <i class="fa-solid fa-fingerprint text-[#B026FF] text-lg"></i> Biometrics
+                    </button>
+                    <button class="feature-selector-btn interactive" onclick="updateSimulator('offline', this)">
+                        <i class="fa-solid fa-database text-[#00F0FF] text-lg"></i> Offline Sync
+                    </button>
+                    <button class="feature-selector-btn interactive" onclick="updateSimulator('notifications', this)">
+                        <i class="fa-solid fa-bell text-[#B026FF] text-lg"></i> Push Alerts
+                    </button>
+                    <button class="feature-selector-btn interactive" onclick="updateSimulator('location', this)">
+                        <i class="fa-solid fa-location-crosshairs text-[#00F0FF] text-lg"></i> Geofencing
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: 3D Phone Mockup -->
+            <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
+                <div class="tilt-content animate-float">
+                    <div class="simulator-container">
+                        <div class="phone-bezel">
+                            <div class="phone-notch"></div>
+                            <div class="phone-screen">
+                                <div class="screen-status-bar">
+                                    <span>9:41</span>
+                                    <div><i class="fa-solid fa-signal mr-1"></i><i class="fa-solid fa-wifi mr-1"></i><i class="fa-solid fa-battery-full"></i></div>
+                                </div>
+                                
+                                <div class="screen-ui-data" id="phone-screen-data">
+                                    <div class="mx-auto mb-4 w-16 h-16 rounded-2xl bg-[#B026FF]/20 flex justify-center items-center border border-[#B026FF]/50 shadow-[0_0_15px_rgba(176,38,255,0.3)]">
+                                        <i class="fa-solid fa-fingerprint text-[#B026FF] text-3xl"></i>
+                                    </div>
+                                    <h3 class="font-bold text-xl text-white mb-2">FaceID Secured</h3>
+                                    <p class="text-gray-400 text-xs px-4 leading-relaxed">Biometric handshake parsed in under 0.1 seconds.</p>
+                                </div>
+
+                                <div class="mt-auto flex justify-center pb-2">
+                                    <div class="w-24 h-1 bg-gray-600 rounded-full opacity-50"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     2. APP STATS (New Section)
+     ========================================== -->
+<section class="py-12 relative z-10 border-b border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">99.9%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Crash-Free Sessions</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors"><2s</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">App Load Time</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">60fps</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Smooth UI Rendering</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">100%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">App Store Approval</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. MOBILE CAPABILITIES (Bento Box Grid)
+     ========================================== -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">CORE FEATURES</h4>
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">Enterprise <span class="text-[#B026FF]">Architecture</span></h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
+            <!-- Native Performance -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Native Performance</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">We leverage React Native and Flutter to deliver near-native 60fps performance across iOS and Android from a single robust codebase.</p>
+            </div>
+            
+            <!-- Offline-First -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Offline-First Sync</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Implementing local SQLite/Realm databases so your users can navigate and perform actions even when completely disconnected from the internet.</p>
+            </div>
+
+            <!-- Custom APIs -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Custom API Integrations</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Connecting your mobile frontend seamlessly with custom Django/Node backends, payment gateways, and third-party CRM tools.</p>
+            </div>
+
+            <!-- Hardware Access -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Deep Hardware Access</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Full utilization of device capabilities including Camera, GPS Geofencing, Bluetooth BLE, and precise Push Notification engines.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. MOBILE TECH STACK ARSENAL
+     ========================================== -->
+<section class="py-20 relative z-10 border-y border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h3 class="text-xl font-bold text-[var(--text-main)] mb-10 gs-reveal">The Mobile Tech Arsenal</h3>
+        <div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 gs-slide-up">
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-react text-5xl text-[#00F0FF] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">React Native</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-apple text-5xl text-[var(--text-main)] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Swift (iOS)</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-android text-5xl text-green-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Kotlin</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-solid fa-fire text-5xl text-orange-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Firebase</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. PROJECT SHOWCASES (Bento Grid)
+     ========================================== -->
+<section id="demos" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4 transition-colors">Recent Showcases.</h2>
+            <p class="text-[var(--text-muted)] max-w-2xl mx-auto">Explore high-fidelity builds designed for massive commercial operations.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 gs-slide-up">
+            <!-- Demo 1 -->
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-[#B026FF]">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Fintech App" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-[#B026FF]/30 text-[#B026FF] mb-4" style="background: rgba(176,38,255,0.1);">Fintech System</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">Velo Asset Portal</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">A biometric-driven banking pipeline hosting unified data charts and real-time responsive transactions.</p>
+                </div>
+            </div>
+
+            <!-- Demo 2 -->
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-[#00F0FF]">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Logistics App" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-[#00F0FF]/30 text-[#00F0FF] mb-4" style="background: rgba(0,240,255,0.1);">On-Demand Logistics</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">Rapid Courier Hub</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">Unified delivery coordination system mapping real-time navigation paths on native tablet layouts.</p>
+                </div>
+            </div>
+
+            <!-- Demo 3 -->
+            <div class="glass-card-premium interactive group flex flex-col h-full hover:border-pink-500">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%);"></div>
+                <div class="demo-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Healthcare App" class="demo-img">
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-center">
+                    <span class="tech-tag border border-pink-500/30 text-pink-500 mb-4" style="background: rgba(236,72,153,0.1);">Healthcare Engine</span>
+                    <h4 class="text-2xl font-bold text-[var(--text-main)] mb-3">Sanctum TeleHealth</h4>
+                    <p class="text-[var(--text-muted)] text-sm leading-relaxed">HIPAA-compliant client-doctor platform featuring dynamic consultation pipelines and low latency WebRTC.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     6. THE ENGINEERING FRAMEWORK
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4">Our Engineering Framework.</h2>
+            <p class="text-[var(--text-muted)]">A systematic blueprint ensuring seamless mobile architecture development.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">01</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">System Scope</h4>
+                <p class="text-[var(--text-muted)] text-sm">Mapping interaction loops, optimizing database routes, and preparing interactive UI wireframes.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">02</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">UI/UX Design</h4>
+                <p class="text-[var(--text-muted)] text-sm">Fleshing out functional layouts, handling interface touchpoints, and ensuring smooth gesture transitions.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">03</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">App Code</h4>
+                <p class="text-[var(--text-muted)] text-sm">Deploying backend APIs, constructing cross-platform code, and configuring mobile cloud parameters.</p>
+            </div>
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">04</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Store Launch</h4>
+                <p class="text-[var(--text-muted)] text-sm">Running regression validations, passing App Store/Play Store requirements, and deploying live builds.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     7. CTA SECTION
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
+            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.1;"></div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Ready to Launch Your App?</h2>
+            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
+                Stop losing customers to clunky interfaces. Let us engineer a world-class mobile experience that scales with your business.
+            </p>
+            <div class="flex justify-center relative z-10">
+                <a href="{% url 'contact' %}" class="px-10 py-4 bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(176,38,255,0.5)] transition-all transform hover:-translate-y-1">
+                    DISCUSS YOUR APP IDEA
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. Phone Simulator Logic
+    const mockScreenData = {
+        biometrics: { 
+            icon: "fa-solid fa-fingerprint text-[#B026FF]", 
+            title: "FaceID Secured", 
+            desc: "Biometric handshake parsed in under 0.1 seconds.", 
+            bg: "rgba(176, 38, 255, 0.2)",
+            borderColor: "rgba(176, 38, 255, 0.5)"
+        },
+        offline: { 
+            icon: "fa-solid fa-database text-[#00F0FF]", 
+            title: "Offline Sync Active", 
+            desc: "100% database access. Queued actions automatically sync once online.", 
+            bg: "rgba(0, 240, 255, 0.2)",
+            borderColor: "rgba(0, 240, 255, 0.5)"
+        },
+        notifications: { 
+            icon: "fa-solid fa-bell text-[#B026FF]", 
+            title: "Push Alerts", 
+            desc: "Custom payloads triggered within 15ms using FCM engines.", 
+            bg: "rgba(176, 38, 255, 0.2)",
+            borderColor: "rgba(176, 38, 255, 0.5)"
+        },
+        location: { 
+            icon: "fa-solid fa-location-crosshairs text-[#00F0FF]", 
+            title: "Geofencing", 
+            desc: "Passive geographic tracking updates mapping routes smoothly.", 
+            bg: "rgba(0, 240, 255, 0.2)",
+            borderColor: "rgba(0, 240, 255, 0.5)"
+        }
+    };
+
+    function updateSimulator(feature, button) {
+        // Update Buttons
+        document.querySelectorAll('.feature-selector-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Animate Screen Content
+        const screen = document.getElementById("phone-screen-data");
+        const data = mockScreenData[feature];
+        
+        screen.style.opacity = 0;
+        screen.style.transform = "translateY(15px)";
+        
+        setTimeout(() => {
+            screen.innerHTML = `
+                <div class="mx-auto mb-4 w-16 h-16 rounded-2xl flex justify-center items-center shadow-lg transition-colors" 
+                     style="background: ${data.bg}; border: 1px solid ${data.borderColor};">
+                    <i class="${data.icon} text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-xl text-white mb-2">${data.title}</h3>
+                <p class="text-gray-400 text-xs px-4 leading-relaxed">${data.desc}</p>
+            `;
+            screen.style.opacity = 1;
+            screen.style.transform = "translateY(0)";
+        }, 300);
+    }
+
+    // 2. 3D Tilt Effect for Phone Mockup
+    const tiltCards = document.querySelectorAll('.tilt-3d');
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10; 
+            const rotateY = ((x - centerX) / centerX) * 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+
+    // 3. GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+</script>
+{% endblock %}

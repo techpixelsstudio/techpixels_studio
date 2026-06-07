@@ -1,0 +1,479 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Premium SaaS Products | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED GLASSMORPHISM & 3D STYLES
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Product Sneak Peek Showcase */
+    .dashboard-mockup {
+        background: #0f172a;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        position: relative;
+        aspect-ratio: 16/9;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+    .dashboard-mockup img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.6;
+        transition: opacity 0.4s, transform 0.8s;
+    }
+    .glass-card-premium:hover .dashboard-mockup img {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+    .live-preview-badge {
+        position: absolute;
+        top: 15px; left: 15px;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #00F0FF;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 2;
+    }
+    .live-preview-badge .dot {
+        width: 6px; height: 6px; background: #00F0FF; border-radius: 50%; animation: pulse 2s infinite;
+    }
+
+    /* Interactive ROI Range Slider */
+    .roi-slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.1);
+        outline: none;
+    }
+    .roi-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #00F0FF;
+        cursor: pointer;
+        box-shadow: 0 0 15px #00F0FF;
+        transition: transform 0.1s;
+    }
+    .roi-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+    /* Comparison Table Styles */
+    .compare-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .compare-box {
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid var(--card-border);
+    }
+    .compare-traditional { background: rgba(255,0,0,0.05); border-color: rgba(255,0,0,0.2); }
+    .compare-techpixels { background: rgba(0,240,255,0.05); border-color: #00F0FF; position: relative; overflow: hidden; }
+
+    /* Pricing Cards */
+    .pricing-card {
+        padding: 40px;
+        border-radius: 24px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        transition: 0.3s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .pricing-card:hover { border-color: #B026FF; transform: translateY(-10px); }
+    .pricing-popular {
+        border-color: #00F0FF;
+        background: linear-gradient(to bottom, rgba(0,240,255,0.05), transparent);
+    }
+
+    /* Background Blobs */
+    .bg-blob-1 { position: absolute; top: 10%; left: -10%; width: 500px; height: 500px; background: #00F0FF; filter: blur(150px); opacity: 0.15; border-radius: 50%; pointer-events: none; z-index: 0; }
+    .bg-blob-2 { position: absolute; bottom: 20%; right: -10%; width: 600px; height: 600px; background: #B026FF; filter: blur(150px); opacity: 0.15; border-radius: 50%; pointer-events: none; z-index: 0; }
+
+    @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Ambient Backgrounds -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="bg-blob-1"></div>
+    <div class="bg-blob-2"></div>
+</div>
+
+<!-- ==========================================
+     1. HERO SECTION 
+     ========================================== -->
+<section class="relative pt-32 pb-16 z-10 border-b border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[#00F0FF]/30 text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+            <i class="fa-solid fa-server mr-2"></i> ENTERPRISE SOFTWARE SUITE
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 gs-reveal">
+            Powerful Architecture. <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-glow-cyan">Ready to Deploy.</span>
+        </h1>
+        <p class="text-[var(--text-muted)] text-lg max-w-3xl mx-auto mb-10 gs-reveal">
+            Why wait 6 months for custom development? Deploy our pre-engineered, highly scalable SaaS products in 7 days. Tailored to your brand, hosted on secure clouds, and built to handle millions of transactions.
+        </p>
+    </div>
+</section>
+
+<!-- ==========================================
+     2. THE SAAS PRODUCT GRID (6 Products with Admin Mockups)
+     ========================================== -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Our Core Products</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
+            
+            <!-- PRODUCT 1: iTravel -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge"><div class="dot"></div> Admin UI Preview</div>
+                        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Travel Dashboard">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">iTravel Engine</h3>
+                        <span class="px-3 py-1 bg-[#00F0FF]/10 text-[#00F0FF] text-xs font-bold rounded-full border border-[#00F0FF]/20">Tour & Travel</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">End-to-end management for travel agencies. Handle bookings, generate dynamic itineraries, and process global payments through a unified dashboard.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Automated Invoicing</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Multi-Currency Setup</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Agent Portals</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>API Integrations</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#00F0FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#00F0FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 2: Shopo E-commerce -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group" style="transition-delay: 100ms;">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge" style="color:#B026FF;"><div class="dot" style="background:#B026FF;"></div> Sales Dashboard</div>
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="E-Commerce Admin">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">Shopo Commerce</h3>
+                        <span class="px-3 py-1 bg-[#B026FF]/10 text-[#B026FF] text-xs font-bold rounded-full border border-[#B026FF]/20">E-Commerce</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">A scalable, headless e-commerce architecture. Manage 100,000+ SKUs, automate inventory syncing, and utilize abandoned cart recovery systems.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Real-time Inventory</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Discount Engines</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Logistics API</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Customer Wallets</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#B026FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#B026FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 3: Pro Job Portal -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge"><div class="dot"></div> ATS Preview</div>
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Job Portal Admin">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">Pro Job Portal</h3>
+                        <span class="px-3 py-1 bg-[#00F0FF]/10 text-[#00F0FF] text-xs font-bold rounded-full border border-[#00F0FF]/20">HR Tech</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">Launch your own recruitment platform. Features smart CV parsing, applicant tracking (ATS), and separate dashboards for employers and candidates.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Smart CV Parsing</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Employer Dashboards</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Job Alerts System</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Payment Plans</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#00F0FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#00F0FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 4: CRM Software -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group" style="transition-delay: 100ms;">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge" style="color:#B026FF;"><div class="dot" style="background:#B026FF;"></div> CRM Kanban</div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CRM Dashboard">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">Omni CRM</h3>
+                        <span class="px-3 py-1 bg-[#B026FF]/10 text-[#B026FF] text-xs font-bold rounded-full border border-[#B026FF]/20">Sales & CRM</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">Stop losing leads. A centralized system to track customer relationships, automate follow-up emails, and analyze sales team performance.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Lead Routing</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>WhatsApp Integration</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Sales Kanban</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Performance Analytics</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#B026FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#B026FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 5: EduLMS (New) -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge"><div class="dot"></div> Instructor Panel</div>
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="LMS Dashboard">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">EduLMS Platform</h3>
+                        <span class="px-3 py-1 bg-[#00F0FF]/10 text-[#00F0FF] text-xs font-bold rounded-full border border-[#00F0FF]/20">EdTech</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">Sell your courses online. A complete Learning Management System with video streaming security, student progress tracking, and certification generation.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Video Protection</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Quiz Engine</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Drip Content</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#00F0FF] mr-2"></i>Auto-Certificates</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#00F0FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#00F0FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PRODUCT 6: HealthSync (New) -->
+            <div class="glass-card-premium gs-slide-up flex flex-col h-full group" style="transition-delay: 100ms;">
+                <div class="p-6 pb-0">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge" style="color:#B026FF;"><div class="dot" style="background:#B026FF;"></div> Clinic Software</div>
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hospital Admin">
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)]">HealthSync ERP</h3>
+                        <span class="px-3 py-1 bg-[#B026FF]/10 text-[#B026FF] text-xs font-bold rounded-full border border-[#B026FF]/20">HealthTech</span>
+                    </div>
+                    <p class="text-[var(--text-muted)] text-sm mb-6 flex-grow">HIPAA-compliant clinic management system. Handle patient appointments, digital prescriptions, inventory of pharmacy, and billing effortlessly.</p>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Patient Records (EMR)</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Appointment Booking</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Digital Prescriptions</div>
+                        <div class="text-[var(--text-muted)] text-xs"><i class="fa-solid fa-check text-[#B026FF] mr-2"></i>Pharmacy Inventory</div>
+                    </div>
+                    <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#B026FF] text-[var(--text-main)] text-center rounded-xl font-bold text-sm tracking-wider transition-all hover:bg-[#B026FF]/10">
+                        REQUEST ADMIN DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. INTERACTIVE ROI CALCULATOR
+     ========================================== -->
+<section class="py-24 relative z-10 border-y border-[var(--card-border)] bg-black/20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center gs-reveal">
+        <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Calculate Your ROI</h2>
+        <p class="text-[var(--text-muted)] mb-10">See how much time and money our automation software saves you monthly.</p>
+
+        <div class="glass-card-premium p-8 md:p-12 text-left">
+            <label class="block text-[var(--text-main)] font-bold mb-4">Number of Manual Bookings/Orders per Month: <span id="sliderValue" class="text-[#00F0FF] text-2xl ml-2">500</span></label>
+            <input type="range" min="100" max="5000" step="100" value="500" class="roi-slider w-full mb-10" id="roiInput">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-[var(--bg-main)] p-6 rounded-2xl border border-[var(--card-border)] text-center">
+                    <p class="text-[var(--text-muted)] text-sm mb-2">Time Saved</p>
+                    <h3 class="text-3xl font-black text-[#B026FF]" id="timeSaved">125 Hours</h3>
+                </div>
+                <div class="bg-[var(--bg-main)] p-6 rounded-2xl border border-[#00F0FF]/50 text-center shadow-[0_0_20px_rgba(0,240,255,0.1)]">
+                    <p class="text-[var(--text-muted)] text-sm mb-2">Monthly Cost Savings</p>
+                    <h3 class="text-3xl font-black text-[#00F0FF]" id="moneySaved">₹ 25,000</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. SPEED TO MARKET & TRUST (Zero Downtime)
+     ========================================== -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Why Buy vs Build?</h2>
+            <p class="text-[var(--text-muted)]">Don't reinvent the wheel. Launch faster and dominate your market.</p>
+        </div>
+
+        <div class="compare-grid mb-20 gs-slide-up">
+            <div class="compare-box compare-traditional">
+                <h4 class="text-xl font-bold text-red-500 mb-4">Building From Scratch</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-start text-[var(--text-muted)]"><i class="fa-solid fa-xmark text-red-500 mt-1 mr-3"></i> Takes 4 to 6 months to develop.</li>
+                    <li class="flex items-start text-[var(--text-muted)]"><i class="fa-solid fa-xmark text-red-500 mt-1 mr-3"></i> High upfront engineering costs.</li>
+                    <li class="flex items-start text-[var(--text-muted)]"><i class="fa-solid fa-xmark text-red-500 mt-1 mr-3"></i> Unpredictable bugs and delays.</li>
+                </ul>
+            </div>
+            <div class="compare-box compare-techpixels">
+                <div class="absolute top-0 right-0 bg-[#00F0FF] text-black text-[10px] font-bold px-3 py-1 rounded-bl-lg">THE SMART CHOICE</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-4">TechPixels SaaS Products</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-start text-[var(--text-main)]"><i class="fa-solid fa-check text-[#00F0FF] mt-1 mr-3"></i> Go live in just 7 to 10 days.</li>
+                    <li class="flex items-start text-[var(--text-main)]"><i class="fa-solid fa-check text-[#00F0FF] mt-1 mr-3"></i> Low setup cost, affordable pricing.</li>
+                    <li class="flex items-start text-[var(--text-main)]"><i class="fa-solid fa-check text-[#00F0FF] mt-1 mr-3"></i> Pre-tested, bug-free, and highly secure.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bento Box: Security, API, Migration -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8">
+                <i class="fa-solid fa-shield-halved text-3xl text-[#00F0FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Bank-Grade Security</h4>
+                <p class="text-[var(--text-muted)] text-sm">256-bit encryption, JWT authentication, and strict SQL injection protections baked in.</p>
+            </div>
+            <div class="glass-card-premium p-8">
+                <i class="fa-solid fa-database text-3xl text-[#B026FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">Zero-Downtime Migration</h4>
+                <p class="text-[var(--text-muted)] text-sm">Moving from Excel or old systems? We securely migrate 100% of your data without business interruption.</p>
+            </div>
+            <div class="glass-card-premium p-8">
+                <i class="fa-solid fa-plug text-3xl text-[#00F0FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-2">API Ecosystem</h4>
+                <p class="text-[var(--text-muted)] text-sm">Pre-integrated with Razorpay, Stripe, Twilio (SMS), WhatsApp API, and GA4 Analytics.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. LICENSING / PRICING MODELS
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Flexible Licensing Options</h2>
+            <p class="text-[var(--text-muted)]">Choose the model that fits your business scale.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
+            <!-- SaaS Model -->
+            <div class="pricing-card">
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-2">Cloud SaaS Plan</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-6">Best for startups wanting low upfront costs.</p>
+                <div class="text-4xl font-black text-[#00F0FF] mb-8">Monthly <span class="text-lg text-[var(--text-muted)] font-normal">subscription</span></div>
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center text-[var(--text-muted)]"><i class="fa-solid fa-cloud text-[#00F0FF] mr-3"></i> Hosted on our secure AWS servers</li>
+                    <li class="flex items-center text-[var(--text-muted)]"><i class="fa-solid fa-wrench text-[#00F0FF] mr-3"></i> Free regular bug fixes & updates</li>
+                    <li class="flex items-center text-[var(--text-muted)]"><i class="fa-solid fa-headset text-[#00F0FF] mr-3"></i> 24/7 Priority Support</li>
+                </ul>
+                <a href="{% url 'contact' %}" class="w-full py-3 bg-[var(--card-bg)] border border-[var(--card-border)] hover:border-[#00F0FF] text-[var(--text-main)] text-center rounded-xl font-bold transition-all">Select Plan</a>
+            </div>
+
+            <!-- Enterprise Model -->
+            <div class="pricing-card pricing-popular relative">
+                <div class="absolute top-4 right-4 bg-[#B026FF] text-white text-[10px] font-bold px-3 py-1 rounded-full">POPULAR FOR AGENCIES</div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-2">Enterprise White-Label</h3>
+                <p class="text-[var(--text-muted)] text-sm mb-6">Own the software. Best for scaling businesses.</p>
+                <div class="text-4xl font-black text-[#B026FF] mb-8">One-Time <span class="text-lg text-[var(--text-muted)] font-normal">purchase</span></div>
+                <ul class="space-y-4 mb-8 flex-grow">
+                    <li class="flex items-center text-[var(--text-main)]"><i class="fa-solid fa-code text-[#B026FF] mr-3"></i> You get the Full Source Code</li>
+                    <li class="flex items-center text-[var(--text-main)]"><i class="fa-solid fa-server text-[#B026FF] mr-3"></i> Deployed on your own servers/domain</li>
+                    <li class="flex items-center text-[var(--text-main)]"><i class="fa-solid fa-paint-roller text-[#B026FF] mr-3"></i> 100% Brand Customization</li>
+                    <li class="flex items-center text-[var(--text-main)]"><i class="fa-solid fa-file-contract text-[#B026FF] mr-3"></i> Lifetime License</li>
+                </ul>
+                <a href="{% url 'contact' %}" class="w-full py-3 bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white text-center rounded-xl font-bold transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]">Request Quote</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.gs-reveal').forEach((elem) => {
+        gsap.from(elem, { scrollTrigger: { trigger: elem, start: "top 85%" }, y: 40, opacity: 0, duration: 0.8, ease: "power3.out" });
+    });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, { scrollTrigger: { trigger: elem, start: "top 90%" }, y: 60, opacity: 0, duration: 0.8, ease: "power2.out" });
+    });
+
+    // 2. Interactive ROI Calculator Logic
+    const roiInput = document.getElementById('roiInput');
+    const sliderValue = document.getElementById('sliderValue');
+    const timeSaved = document.getElementById('timeSaved');
+    const moneySaved = document.getElementById('moneySaved');
+
+    // Formula: 1 booking = 15 mins saved. 1 hour = ₹200 saved.
+    roiInput.addEventListener('input', function() {
+        const bookings = parseInt(this.value);
+        sliderValue.textContent = bookings;
+        
+        const hours = Math.round(bookings * 0.25); // 15 mins = 0.25 hours
+        const money = hours * 200;
+
+        timeSaved.textContent = hours.toLocaleString('en-IN') + ' Hours';
+        moneySaved.textContent = '₹ ' + money.toLocaleString('en-IN');
+    });
+</script>
+{% endblock %}

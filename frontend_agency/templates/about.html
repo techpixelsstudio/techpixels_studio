@@ -1,0 +1,554 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About TechPixels | The Innovation Agency{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED 3D & GLASSMORPHISM STYLES (Light/Dark Mode Safe)
+       ========================================= */
+    
+    /* Ultimate Glass Card for Trust Section (Screenshot 2 Fix) */
+    .premium-glass-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    
+    .premium-glass-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: #00F0FF;
+        box-shadow: 0 25px 50px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Motion Graphic Glow inside Trust Cards */
+    .card-glow-orb {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(176,38,255,0.4) 0%, rgba(0,240,255,0) 70%);
+        border-radius: 50%;
+        top: -50px;
+        right: -50px;
+        opacity: 0;
+        z-index: -1;
+        transition: all 0.6s ease;
+        filter: blur(20px);
+    }
+    .premium-glass-card:hover .card-glow-orb {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    /* 3D Tilt Effect for Hero Card */
+    .tilt-3d {
+        transform-style: preserve-3d;
+        transform: perspective(1000px);
+    }
+    .tilt-content {
+        transform: translateZ(40px);
+    }
+
+    /* REPLACED UGLY TEXT WITH TECH ARSENAL MARQUEE */
+    .tech-marquee-wrapper {
+        display: flex;
+        overflow: hidden;
+        background: var(--card-bg);
+        border-top: 1px solid var(--card-border);
+        border-bottom: 1px solid var(--card-border);
+        padding: 30px 0;
+        position: relative;
+        backdrop-filter: blur(10px);
+    }
+    .tech-marquee-wrapper::before,
+    .tech-marquee-wrapper::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        z-index: 2;
+    }
+    .tech-marquee-wrapper::before {
+        left: 0;
+        background: linear-gradient(to right, var(--bg-main), transparent);
+    }
+    .tech-marquee-wrapper::after {
+        right: 0;
+        background: linear-gradient(to left, var(--bg-main), transparent);
+    }
+    .tech-marquee-content {
+        display: flex;
+        gap: 3rem;
+        animation: marqueeScroll 25s linear infinite;
+        white-space: nowrap;
+        align-items: center;
+    }
+    .tech-pill {
+        background: var(--bg-main);
+        border: 1px solid var(--card-border);
+        padding: 12px 24px;
+        border-radius: 100px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        color: var(--text-main);
+        font-size: 14px;
+        box-shadow: var(--box-shadow);
+        transition: 0.3s ease;
+    }
+    .tech-pill:hover {
+        border-color: #B026FF;
+        color: #B026FF;
+        transform: translateY(-3px);
+    }
+    @keyframes marqueeScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* Dynamic Color Blending Blob */
+    .color-blend-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        mix-blend-mode: screen;
+        z-index: 0;
+        pointer-events: none;
+        animation: morphBlob 15s ease-in-out infinite alternate;
+    }
+    body.light-mode .color-blend-blob {
+        mix-blend-mode: multiply;
+        opacity: 0.15 !important;
+    }
+    @keyframes morphBlob {
+        0% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; transform: rotate(0deg) scale(1); }
+        100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(360deg) scale(1.2); }
+    }
+
+    /* Timeline Process Styles */
+    .process-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--card-border);
+        transform: translateX(-50%);
+    }
+    .process-dot {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--bg-main);
+        border: 4px solid #B026FF;
+        box-shadow: 0 0 20px rgba(176,38,255,0.4);
+        z-index: 10;
+    }
+
+    /* Zig Zag Image Hover Advanced */
+    .zig-zag-img {
+        transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+        filter: grayscale(20%) contrast(1.1);
+    }
+    .zig-zag-container:hover .zig-zag-img {
+        transform: scale(1.05) rotateZ(1deg);
+        filter: grayscale(0%) contrast(1.2);
+    }
+
+    @media (max-width: 991px) {
+        .process-line { left: 30px; }
+        .process-dot { left: 30px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ============================================================== -->
+<!-- 1. TUZHA JUNA CONTENT ETHE AHE (Preserved Original Content)    -->
+<!-- ============================================================== -->
+<section class="relative pt-32 pb-10 z-10">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-4 transition-colors">About TechPixels</h1>
+        <p class="text-[var(--text-muted)] max-w-2xl mx-auto transition-colors">
+            Welcome to TechPixels Studio. We are a digital innovation agency building the future of the web.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- 2. NEW ADVANCED CONTENT STARTS HERE                            -->
+<!-- ============================================================== -->
+
+<!-- DYNAMIC BLENDING BACKGROUNDS -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="color-blend-blob bg-[#00F0FF] w-[500px] h-[500px] top-[20%] left-[-10%] opacity-20"></div>
+    <div class="color-blend-blob bg-[#B026FF] w-[600px] h-[600px] top-[50%] right-[-10%] opacity-15" style="animation-delay: -5s;"></div>
+</div>
+
+<!-- A. WHO ARE WE & STATS (Glassmorphism & 3D) -->
+<section class="py-20 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="premium-glass-card tilt-3d p-8 md:p-16 gs-reveal interactive">
+            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; opacity: 0.1;"></div>
+            <div class="tilt-content flex flex-col lg:flex-row gap-12 items-center">
+                <div class="lg:w-1/2">
+                    <div class="inline-flex items-center px-4 py-1.5 rounded-full border border-[#00F0FF]/30 text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 bg-[var(--bg-main)] shadow-md">
+                        <i class="fa-solid fa-user-astronaut mr-2"></i> Who Are We
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                        We are architects of the <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Digital Frontier.</span>
+                    </h2>
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed mb-6 transition-colors">
+                        TechPixels Studio is an elite collective of systems engineers, creative designers, and data-driven marketers. We don't just build websites; we engineer highly scalable SaaS platforms and craft growth funnels that dominate the market.
+                    </p>
+                    <p class="text-[var(--text-muted)] text-lg leading-relaxed transition-colors">
+                        With a combined experience of over a decade, our core mission is simple: Transform complex technical problems into elegant, high-converting digital solutions for startups and enterprises worldwide.
+                    </p>
+                </div>
+                
+                <div class="lg:w-1/2 w-full grid grid-cols-2 gap-4">
+                    <div class="bg-[var(--bg-main)] border border-[var(--card-border)] rounded-2xl p-6 text-center transform transition-all duration-300 hover:-translate-y-2 hover:border-[#00F0FF] shadow-lg">
+                        <h3 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-2 transition-colors">15+</h3>
+                        <p class="text-[#00F0FF] text-xs font-bold uppercase tracking-wider">Elite Members</p>
+                    </div>
+                    <div class="bg-[var(--bg-main)] border border-[var(--card-border)] rounded-2xl p-6 text-center transform transition-all duration-300 hover:-translate-y-2 hover:border-[#B026FF] shadow-lg">
+                        <h3 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-2 transition-colors">50+</h3>
+                        <p class="text-[#B026FF] text-xs font-bold uppercase tracking-wider">Projects Delivered</p>
+                    </div>
+                    <div class="bg-[var(--bg-main)] border border-[var(--card-border)] rounded-2xl p-6 text-center transform transition-all duration-300 hover:-translate-y-2 hover:border-[#00F0FF] shadow-lg">
+                        <h3 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-2 transition-colors">12+</h3>
+                        <p class="text-[#00F0FF] text-xs font-bold uppercase tracking-wider">SaaS Products</p>
+                    </div>
+                    <div class="bg-[var(--bg-main)] border border-[var(--card-border)] rounded-2xl p-6 text-center transform transition-all duration-300 hover:-translate-y-2 hover:border-[#B026FF] shadow-lg">
+                        <h3 class="text-4xl md:text-5xl font-black text-[var(--text-main)] mb-2 transition-colors">350%</h3>
+                        <p class="text-[#B026FF] text-xs font-bold uppercase tracking-wider">Avg ROI Boost</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- B. REPLACED SCROLLING TEXT: THE TECH ARSENAL MARQUEE -->
+<div class="tech-marquee-wrapper z-10">
+    <div class="tech-marquee-content interactive">
+        <!-- Programming & Backend -->
+        <div class="tech-pill"><i class="fa-brands fa-python text-[#3776AB] text-lg"></i> Python</div>
+        <div class="tech-pill"><i class="fa-solid fa-code text-[#092E20] text-lg"></i> Django</div>
+        <div class="tech-pill"><i class="fa-solid fa-server text-[#00F0FF] text-lg"></i> REST APIs</div>
+        <!-- Data Science -->
+        <div class="tech-pill"><i class="fa-solid fa-database text-[#150458] text-lg"></i> Pandas</div>
+        <div class="tech-pill"><i class="fa-solid fa-table-cells text-[#013243] text-lg"></i> NumPy</div>
+        <div class="tech-pill"><i class="fa-solid fa-chart-line text-[#11557c] text-lg"></i> Matplotlib</div>
+        <!-- Marketing & Editing -->
+        <div class="tech-pill"><i class="fa-brands fa-meta text-[#0668E1] text-lg"></i> Meta Ads</div>
+        <div class="tech-pill"><i class="fa-brands fa-google text-[#EA4335] text-lg"></i> GA4 Analytics</div>
+        <div class="tech-pill"><i class="fa-solid fa-video text-[#9999FF] text-lg"></i> Premiere Pro</div>
+        <div class="tech-pill"><i class="fa-solid fa-wand-magic-sparkles text-[#9999FF] text-lg"></i> After Effects</div>
+        
+        <!-- Duplicated for Infinite Loop -->
+        <div class="tech-pill"><i class="fa-brands fa-python text-[#3776AB] text-lg"></i> Python</div>
+        <div class="tech-pill"><i class="fa-solid fa-code text-[#092E20] text-lg"></i> Django</div>
+        <div class="tech-pill"><i class="fa-solid fa-server text-[#00F0FF] text-lg"></i> REST APIs</div>
+        <div class="tech-pill"><i class="fa-solid fa-database text-[#150458] text-lg"></i> Pandas</div>
+        <div class="tech-pill"><i class="fa-solid fa-table-cells text-[#013243] text-lg"></i> NumPy</div>
+        <div class="tech-pill"><i class="fa-solid fa-chart-line text-[#11557c] text-lg"></i> Matplotlib</div>
+        <div class="tech-pill"><i class="fa-brands fa-meta text-[#0668E1] text-lg"></i> Meta Ads</div>
+        <div class="tech-pill"><i class="fa-brands fa-google text-[#EA4335] text-lg"></i> GA4 Analytics</div>
+        <div class="tech-pill"><i class="fa-solid fa-video text-[#9999FF] text-lg"></i> Premiere Pro</div>
+        <div class="tech-pill"><i class="fa-solid fa-wand-magic-sparkles text-[#9999FF] text-lg"></i> After Effects</div>
+    </div>
+</div>
+
+<!-- C. WHAT WE DO (Advanced Zig-Zag View Transitions) -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-20 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4 transition-colors">What We Do Best</h2>
+            <p class="text-[var(--text-muted)] max-w-2xl mx-auto transition-colors">End-to-end digital solutions powered by modern tech stacks.</p>
+        </div>
+
+        <div class="space-y-24">
+            <!-- Zig Zag 1: Web Dev (Image Left) -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 zig-zag-container gs-reveal">
+                <div class="lg:w-1/2 w-full relative group">
+                    <div class="absolute inset-0 bg-[#00F0FF] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 rounded-3xl"></div>
+                    <div class="premium-glass-card p-2 interactive border-[#00F0FF]/30">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Web Development" class="rounded-2xl zig-zag-img w-full h-[350px] object-cover">
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--card-bg)] text-[#00F0FF] flex items-center justify-center mb-6 border border-[var(--card-border)] shadow-lg">
+                        <i class="fa-solid fa-code text-xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-[var(--text-main)] mb-4 transition-colors">Custom Web Architecture</h3>
+                    <p class="text-[var(--text-muted)] leading-relaxed mb-6 transition-colors">We don't use generic templates. Every line of code is written from scratch using Python, Django, and React to align perfectly with your business logic. We build platforms that load in milliseconds and scale infinitely.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#00F0FF] mr-3"></i> Full-Stack Python/Django Dev</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#00F0FF] mr-3"></i> Custom REST API Creation</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#00F0FF] mr-3"></i> Secure SQL Database Architecture</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Zig Zag 2: Mobile Apps (Image Right / Reversed) -->
+            <div class="flex flex-col lg:flex-row-reverse items-center gap-12 zig-zag-container gs-reveal">
+                <div class="lg:w-1/2 w-full relative group">
+                    <div class="absolute inset-0 bg-[#B026FF] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 rounded-3xl"></div>
+                    <div class="premium-glass-card p-2 interactive border-[#B026FF]/30">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80" alt="Mobile Apps" class="rounded-2xl zig-zag-img w-full h-[350px] object-cover">
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--card-bg)] text-[#B026FF] flex items-center justify-center mb-6 border border-[var(--card-border)] shadow-lg">
+                        <i class="fa-brands fa-app-store text-xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-[var(--text-main)] mb-4 transition-colors">Data-Driven Applications</h3>
+                    <p class="text-[var(--text-muted)] leading-relaxed mb-6 transition-colors">We leverage deep data analytics using Pandas and NumPy to understand user behavior, creating high-retention apps that solve real-world problems and sync seamlessly offline.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#B026FF] mr-3"></i> Data Analytics & Visualization</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#B026FF] mr-3"></i> UI/UX Prototyping</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-[#B026FF] mr-3"></i> Cross-Platform App Engines</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Zig Zag 3: Marketing (Image Left) -->
+            <div class="flex flex-col lg:flex-row items-center gap-12 zig-zag-container gs-reveal">
+                <div class="lg:w-1/2 w-full relative group">
+                    <div class="absolute inset-0 bg-orange-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 rounded-3xl"></div>
+                    <div class="premium-glass-card p-2 interactive border-orange-500/30">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Digital Marketing" class="rounded-2xl zig-zag-img w-full h-[350px] object-cover">
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--card-bg)] text-orange-500 flex items-center justify-center mb-6 border border-[var(--card-border)] shadow-lg">
+                        <i class="fa-solid fa-bullseye text-xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-bold text-[var(--text-main)] mb-4 transition-colors">Performance Marketing & VFX</h3>
+                    <p class="text-[var(--text-muted)] leading-relaxed mb-6 transition-colors">Stop burning ad spend. We engineer hyper-targeted Meta Ads and produce Hollywood-grade video edits using Premiere Pro & After Effects to maximize engagement and ROI.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-orange-500 mr-3"></i> Meta Ads & GA4 Tracking</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-orange-500 mr-3"></i> High-Retention Video Editing</li>
+                        <li class="flex items-center text-[var(--text-muted)] transition-colors"><i class="fa-solid fa-check text-orange-500 mr-3"></i> Motion Graphics & VFX</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- D. OUR WORKING PROCESS (Scroll-driven interactive timeline) -->
+<section class="py-24 relative z-10 border-y border-[var(--card-border)]" style="background: rgba(0,0,0,0.03);">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Our Engineering Process</h2>
+            <p class="text-[var(--text-muted)] transition-colors">A systemic blueprint ensuring flawless execution.</p>
+        </div>
+
+        <div class="relative">
+            <!-- Center Line -->
+            <div class="process-line"></div>
+
+            <!-- Steps -->
+            <div class="space-y-16">
+                <!-- Step 1 -->
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] transition-colors">01. Discovery & Analysis</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Deep dive into data using Pandas, mapping your business logic and analyzing competitor funnels.</p>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 md:pl-16 w-full">
+                        <div class="premium-glass-card p-4 inline-block border-[#00F0FF]/50"><i class="fa-solid fa-magnifying-glass text-2xl text-[#00F0FF]"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: #00F0FF; box-shadow: 0 0 20px rgba(0,240,255,0.6);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0 order-1 md:order-1 opacity-0 md:opacity-100">
+                        <div class="premium-glass-card p-4 inline-block border-[#B026FF]/50 float-right"><i class="fa-solid fa-pen-ruler text-2xl text-[#B026FF]"></i></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] transition-colors">02. Architecture & UI/UX</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Designing SQL database schemas, drafting API blueprints, and setting up wireframes in Figma.</p>
+                        <div class="premium-glass-card p-4 inline-block border-[#B026FF]/50 mt-4 md:hidden"><i class="fa-solid fa-pen-ruler text-2xl text-[#B026FF]"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: orange; box-shadow: 0 0 20px rgba(255,165,0,0.6);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] transition-colors">03. Build & Optimize</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Writing pure Python/Django code, integrating secure payment gateways, and creating dynamic video content.</p>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full">
+                        <div class="premium-glass-card p-4 inline-block border-orange-500/50"><i class="fa-solid fa-code text-2xl text-orange-500"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative flex flex-col md:flex-row items-center gs-slide-up">
+                    <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: #00F0FF; box-shadow: 0 0 20px rgba(0,240,255,0.6);"></div>
+                    <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0 order-1 md:order-1 opacity-0 md:opacity-100">
+                        <div class="premium-glass-card p-4 inline-block border-[#00F0FF]/50 float-right"><i class="fa-solid fa-rocket text-2xl text-[#00F0FF]"></i></div>
+                    </div>
+                    <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
+                        <h3 class="text-2xl font-bold text-[var(--text-main)] transition-colors">04. Launch & Scale</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Deploying to cloud servers via GitHub, initiating Meta Ads campaigns, and monitoring live GA4 analytics.</p>
+                        <div class="premium-glass-card p-4 inline-block border-[#00F0FF]/50 mt-4 md:hidden"><i class="fa-solid fa-rocket text-2xl text-[#00F0FF]"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- E. WHY CHOOSE US (Ultimate Glassmorphism Trust Indicators) -->
+<section class="py-20 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Why Brands <span class="text-[#00F0FF]">Trust Us</span></h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="premium-glass-card p-8 gs-slide-up interactive">
+                <div class="card-glow-orb"></div>
+                <i class="fa-solid fa-handshake text-3xl text-[#00F0FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3 transition-colors">100% Transparency</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">No hidden fees, no tech-jargon confusion. You get direct access to our developers and a live dashboard to track project progress.</p>
+            </div>
+            
+            <div class="premium-glass-card p-8 gs-slide-up interactive" style="transition-delay: 100ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(0,240,255,0.4) 0%, rgba(0,240,255,0) 70%);"></div>
+                <i class="fa-solid fa-laptop-code text-3xl text-[#B026FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3 transition-colors">No Template Policy</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">We despise generic themes. Everything we build is custom-coded from the ground up to ensure maximum speed and unique brand identity.</p>
+            </div>
+            
+            <div class="premium-glass-card p-8 gs-slide-up interactive" style="transition-delay: 200ms;">
+                <div class="card-glow-orb"></div>
+                <i class="fa-solid fa-headset text-3xl text-[#00F0FF] mb-4"></i>
+                <h4 class="text-xl font-bold text-[var(--text-main)] mb-3 transition-colors">24/7 Dedicated Support</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Your business doesn't sleep, and neither do our servers. We provide continuous monitoring and instant bug fixes post-launch via GitHub integration.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- F. CONTACT FORM (Glassmorphism UI) -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="premium-glass-card p-8 md:p-12 gs-reveal">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-2 transition-colors">Let's Build Something <span class="text-[#B026FF]">Epic.</span></h2>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Fill out the form below. Our senior architect will review your details and contact you within 2 hours.</p>
+            </div>
+            
+            <form method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2 transition-colors">Your Name</label>
+                        <input type="text" name="name" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] outline-none transition-all interactive" placeholder="Mohan Nikam">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2 transition-colors">Phone Number</label>
+                        <input type="tel" name="phone" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] outline-none transition-all interactive" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2 transition-colors">Email ID</label>
+                        <input type="email" name="email" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] outline-none transition-all interactive" placeholder="techixels@gmail.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2 transition-colors">Interested Service</label>
+                        <select name="service_type" class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] outline-none transition-all appearance-none interactive">
+                            <option value="Web Development">Full Stack Python/Django Web Dev</option>
+                            <option value="App Development">App Development & Analytics</option>
+                            <option value="Digital Marketing">Meta Ads & SEO</option>
+                            <option value="Custom Software">Video Editing & VFX</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-8">
+                    <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2 transition-colors">Project Details</label>
+                    <textarea name="message" rows="4" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#00F0FF] focus:ring-1 focus:ring-[#00F0FF] outline-none transition-all resize-none interactive" placeholder="Tell us about your requirements..."></textarea>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] transition-all transform hover:-translate-y-1 interactive">
+                    SUBMIT INQUIRY <i class="fa-solid fa-paper-plane ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 1. Initialize GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade Ins
+    gsap.utils.toArray('.gs-reveal').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 40, opacity: 0, duration: 0.8, ease: "power3.out"
+        });
+    });
+
+    // Slide Ups
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 90%" },
+            y: 60, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+
+    // 2. Advanced 3D Hover Effect for Cards
+    const cards = document.querySelectorAll('.tilt-3d');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+</script>
+{% endblock %}

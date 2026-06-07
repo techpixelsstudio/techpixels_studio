@@ -1,0 +1,373 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cloud & Hosting Infrastructure | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED CLOUD PAGE STYLES
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute; width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* Interactive Server Mockup */
+    .server-mockup {
+        background: #0f172a; 
+        border: 1px solid rgba(255,255,255,0.1); 
+        border-radius: 20px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+        overflow: hidden; 
+        width: 100%; position: relative; 
+    }
+    .server-header { 
+        background: rgba(0,0,0,0.4); padding: 15px 20px; 
+        display: flex; justify-content: space-between; align-items: center;
+        border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #cbd5e1; font-weight: 700;
+    }
+    .status-badge { 
+        background: rgba(39,201,63,0.15); color: #27c93f; 
+        padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(39,201,63,0.3); 
+        display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px;
+    }
+    .pulse-dot { 
+        width: 8px; height: 8px; background: #27c93f; border-radius: 50%; 
+        box-shadow: 0 0 10px #27c93f; animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    
+    .server-body { padding: 25px 20px; }
+    .node-item { 
+        background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); 
+        padding: 18px 20px; border-radius: 12px; margin-bottom: 15px; 
+        display: flex; justify-content: space-between; align-items: center; 
+    }
+    .node-title { font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 12px;}
+    .node-metrics { font-size: 12px; font-family: 'Courier New', Courier, monospace; font-weight: bold;}
+    
+    .bar-bg { height: 6px; width: 80px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; display: inline-block; margin-left: 10px;}
+    .bar-fill { height: 100%; background: #00F0FF; width: 40%; transition: width 0.5s ease-in-out; }
+    .bar-fill.purple { background: #B026FF; }
+
+    /* Process Timeline Big Numbers */
+    .process-num { 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-size: 5rem; font-weight: 900; 
+        background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        position: absolute; top: 10px; right: 20px; z-index: -1;
+    }
+
+    /* 3D Tilt Effect */
+    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
+    .tilt-content { transform: translateZ(40px); }
+
+    /* Floating Animations */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     1. HERO SECTION (Server Mockup & Tilt)
+     ========================================== -->
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <!-- Left Content -->
+            <div class="lg:w-1/2 gs-reveal text-center lg:text-left">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg interactive">
+                    Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#00F0FF]">Cloud Hosting</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                    Enterprise Cloud <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Infrastructure.</span>
+                </h1>
+                <p class="text-[var(--text-muted)] text-lg mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 transition-colors">
+                    Deploying fault-tolerant, auto-scaling cloud architectures on AWS and GCP. We ensure 99.99% uptime, robust CI/CD pipelines, and bank-grade data security.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <a href="#audit" class="inline-block text-center py-4 px-8 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider transition-transform transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] interactive">
+                        CONSULT OUR DEVOPS <i class="fa-solid fa-server ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right 3D Server Mockup -->
+            <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
+                <div class="tilt-content animate-float">
+                    <div class="server-mockup">
+                        <div class="server-header">
+                            <div><i class="fa-brands fa-aws text-[#ff9900] text-lg mr-2"></i> AWS_Production_Cluster</div>
+                            <div class="status-badge"><div class="pulse-dot"></div> Systems Optimal</div>
+                        </div>
+                        <div class="server-body">
+                            <div class="node-item">
+                                <div class="node-title"><i class="fa-solid fa-network-wired text-[#B026FF]"></i> API Load Balancer</div>
+                                <div class="node-metrics text-[#B026FF]">Traffic: Routing</div>
+                            </div>
+                            <div class="node-item">
+                                <div class="node-title"><i class="fa-brands fa-linux text-gray-400"></i> Worker Node Alpha (US-East)</div>
+                                <div class="node-metrics text-[#00F0FF] flex items-center">
+                                    Load: <span id="load-1" class="ml-2 w-8 text-right">24%</span>
+                                    <div class="bar-bg"><div class="bar-fill" id="bar-1" style="width: 24%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="node-item">
+                                <div class="node-title"><i class="fa-brands fa-linux text-gray-400"></i> Worker Node Beta (EU-West)</div>
+                                <div class="node-metrics text-[#B026FF] flex items-center">
+                                    Load: <span id="load-2" class="ml-2 w-8 text-right">18%</span>
+                                    <div class="bar-bg"><div class="bar-fill purple" id="bar-2" style="width: 18%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-[rgba(255,255,255,0.05)] flex justify-between w-full text-[var(--text-muted)] text-[11px] uppercase tracking-wider font-bold">
+                                <span><i class="fa-solid fa-database mr-2 text-[#00F0FF]"></i> PostgreSQL: Active</span>
+                                <span>Uptime: <strong class="text-green-500">99.999%</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     2. UPTIME & STATS GRID
+     ========================================== -->
+<section class="py-12 relative z-10 border-b border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">99.99%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Guaranteed Uptime</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors"><50ms</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Global Latency</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">100%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Data Security</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">24/7</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">DevOps Support</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. CORE DEVOPS CAPABILITIES (Bento Box)
+     ========================================== -->
+<section class="py-24 relative z-10 bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">SYSTEM RELIABILITY</h4>
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">The <span class="text-[#00F0FF]">Infrastructure</span> Suite</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
+            <!-- Cloud Architecture -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-brands fa-aws"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Cloud Architecture</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Building robust Virtual Private Clouds (VPC) on AWS/GCP, utilizing EC2 instances, S3 buckets, and managed RDS for ultimate reliability and auto-scaling.</p>
+            </div>
+            
+            <!-- Containerization -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-brands fa-docker"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Containerization & K8s</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Using Docker and Kubernetes to containerize environments, ensuring code behaves identically across staging and production without configuration conflicts.</p>
+            </div>
+
+            <!-- CI/CD Pipelines -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-code-branch"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">CI/CD Pipelines</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Automating deployment processes via GitHub Actions or Jenkins. Code is tested, built, and pushed to servers seamlessly with zero downtime.</p>
+            </div>
+
+            <!-- Server Security -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-pink-500/10 text-pink-500 flex items-center justify-center text-3xl mb-6 border border-pink-500/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Server Security</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Implementing strict UFW firewalls, Nginx reverse proxies, SSL certifications, and automated daily backups to protect against DDoS and data loss.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. DEVOPS TECH STACK
+     ========================================== -->
+<section class="py-20 relative z-10 border-y border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h3 class="text-xl font-bold text-[var(--text-main)] mb-10 gs-reveal">Our Server Stack</h3>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 gs-reveal opacity-70">
+            <h2 class="text-3xl font-black text-orange-500 tracking-tighter">AWS</h2>
+            <h2 class="text-3xl font-black text-blue-500 tracking-tighter">Docker</h2>
+            <h2 class="text-3xl font-black text-green-500 tracking-tighter">NGINX</h2>
+            <h2 class="text-3xl font-black text-[var(--text-main)] tracking-tighter">Linux <span class="text-gray-400 font-medium">Ubuntu</span></h2>
+            <h2 class="text-3xl font-black text-[#B026FF] tracking-tighter">GitHub Actions</h2>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. INFRASTRUCTURE SETUP TIMELINE
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4">Infrastructure Setup.</h2>
+            <p class="text-[var(--text-muted)]">How we scale your software from local machines to global servers.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <!-- Step 1 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">01</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Assess & Architect</h4>
+                <p class="text-[var(--text-muted)] text-sm">Evaluating computational requirements, database sizes, and mapping out a cost-effective cloud topology.</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">02</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">Provisioning</h4>
+                <p class="text-[var(--text-muted)] text-sm">Configuring Linux environments, Nginx reverse proxies, SSL certifications, and strict firewall rules.</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">03</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Deploy & CI/CD</h4>
+                <p class="text-[var(--text-muted)] text-sm">Moving existing data securely, establishing Docker containers, and launching the application live via automated pipelines.</p>
+            </div>
+            <!-- Step 4 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">04</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">24/7 Monitoring</h4>
+                <p class="text-[var(--text-muted)] text-sm">Setting up Grafana/Prometheus alerts to track CPU spikes and database loads continuously.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     6. CTA: FREE INFRASTRUCTURE AUDIT
+     ========================================== -->
+<section id="audit" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
+            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.1;"></div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Is Your Server Costing Too Much?</h2>
+            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
+                Let our DevOps experts audit your current cloud setup. We identify performance bottlenecks, security vulnerabilities, and strategies to cut your AWS/GCP bills by up to 40%.
+            </p>
+            <div class="flex justify-center relative z-10">
+                <a href="{% url 'contact' %}" class="px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all transform hover:-translate-y-1">
+                    GET FREE SERVER AUDIT
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Server Load Simulator Logic
+    setInterval(() => {
+        let load1 = Math.floor(Math.random() * 25) + 10; // Random between 10-35
+        let load2 = Math.floor(Math.random() * 20) + 5;  // Random between 5-25
+        document.getElementById('load-1').innerText = load1 + '%';
+        document.getElementById('bar-1').style.width = load1 + '%';
+        document.getElementById('load-2').innerText = load2 + '%';
+        document.getElementById('bar-2').style.width = load2 + '%';
+    }, 2500);
+
+    // 3D Tilt Effect for Server Mockup
+    const tiltCards = document.querySelectorAll('.tilt-3d');
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; 
+            const rotateY = ((x - centerX) / centerX) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+</script>
+{% endblock %}

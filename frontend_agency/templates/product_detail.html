@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tour & Travel Platform | TechPixels Products{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED PRODUCT DETAILS STYLES (Light/Dark Safe)
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);
+        border-radius: 50%;
+        top: -50px;
+        right: -50px;
+        opacity: 0;
+        z-index: -1;
+        transition: all 0.6s ease;
+        filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* 3D Dashboard Mockup */
+    .dashboard-mockup {
+        background: #0f172a;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
+    }
+    .dashboard-mockup img {
+        width: 100%; height: auto; display: block;
+        opacity: 0.8; transition: opacity 0.4s, transform 0.8s;
+    }
+    .dashboard-mockup:hover img { opacity: 1; transform: scale(1.02); }
+    
+    .live-preview-badge {
+        position: absolute; top: 20px; left: 20px;
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 6px 15px; border-radius: 50px;
+        font-size: 11px; font-weight: 800; color: #00F0FF;
+        display: flex; align-items: center; gap: 8px; z-index: 2;
+    }
+    .live-preview-badge .dot {
+        width: 8px; height: 8px; background: #00F0FF; border-radius: 50%; animation: pulse 2s infinite;
+    }
+
+    /* 3D Tilt Effect applied via JS */
+    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
+    .tilt-content { transform: translateZ(30px); }
+
+    /* Floating Animations */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <a href="{% url 'products' %}" class="inline-flex items-center text-[var(--text-muted)] hover:text-[#00F0FF] transition-colors mb-8 text-sm font-bold tracking-wide interactive">
+            <i class="fa-solid fa-arrow-left mr-2"></i> BACK TO PRODUCTS
+        </a>
+        
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <div class="lg:w-1/2 gs-reveal">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg">
+                    <i class="fa-solid fa-plane-departure mr-2"></i> SaaS PRODUCT SUITE
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                    Tour & Travel <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Platform Engine.</span>
+                </h1>
+                <p class="text-[var(--text-muted)] text-lg mb-8 leading-relaxed max-w-lg transition-colors">
+                    A comprehensive, highly scalable platform for travel agencies and tour operators. Book tours, manage dynamic itineraries, and process global payments seamlessly from one powerful dashboard.
+                </p>
+                
+                <ul class="space-y-4 mb-10">
+                    <li class="flex items-center text-[var(--text-main)] font-bold text-sm transition-colors">
+                        <div class="w-6 h-6 rounded-full bg-[#00F0FF]/20 text-[#00F0FF] flex items-center justify-center mr-4 border border-[#00F0FF]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
+                            <i class="fa-solid fa-check text-[10px]"></i>
+                        </div>
+                        Automated Booking Management
+                    </li>
+                    <li class="flex items-center text-[var(--text-main)] font-bold text-sm transition-colors">
+                        <div class="w-6 h-6 rounded-full bg-[#00F0FF]/20 text-[#00F0FF] flex items-center justify-center mr-4 border border-[#00F0FF]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
+                            <i class="fa-solid fa-check text-[10px]"></i>
+                        </div>
+                        Intelligent Itinerary Planner
+                    </li>
+                    <li class="flex items-center text-[var(--text-main)] font-bold text-sm transition-colors">
+                        <div class="w-6 h-6 rounded-full bg-[#00F0FF]/20 text-[#00F0FF] flex items-center justify-center mr-4 border border-[#00F0FF]/50 shadow-[0_0_10px_rgba(0,240,255,0.3)]">
+                            <i class="fa-solid fa-check text-[10px]"></i>
+                        </div>
+                        Secure Global Multi-Currency Payments
+                    </li>
+                </ul>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{% url 'contact' %}" class="inline-block text-center py-4 px-8 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider transition-transform transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] interactive">
+                        REQUEST LIVE DEMO <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2 gs-reveal tilt-3d perspective-1000 interactive">
+                <div class="tilt-content animate-float">
+                    <div class="dashboard-mockup">
+                        <div class="live-preview-badge"><div class="dot"></div> LIVE ADMIN DASHBOARD</div>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Travel Dashboard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 bg-black/5 relative z-10 border-b border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">SYSTEM ARCHITECTURE</h4>
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">Everything You <span class="text-[#00F0FF]">Need</span></h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <div class="glass-card-premium rounded-2xl overflow-hidden interactive group">
+                <div class="card-glow-orb"></div>
+                <div class="h-40 bg-[var(--bg-main)] overflow-hidden relative border-b border-[var(--card-border)]">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Room Selection" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
+                <div class="p-6 relative">
+                    <div class="absolute -top-6 left-6 w-12 h-12 bg-[#00F0FF]/10 backdrop-blur-md rounded-xl flex items-center justify-center text-[#00F0FF] border border-[#00F0FF]/50 shadow-[0_0_15px_rgba(0,240,255,0.3)] group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-bed text-xl"></i>
+                    </div>
+                    <h3 class="text-[var(--text-main)] font-bold text-lg mt-6 mb-2 transition-colors">Room & Tour Selection</h3>
+                    <p class="text-[var(--text-muted)] text-sm transition-colors">Real-time availability, inventory management, and dynamic peak-season pricing.</p>
+                </div>
+            </div>
+
+            <div class="glass-card-premium rounded-2xl overflow-hidden interactive group" style="transition-delay: 100ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="h-40 bg-[var(--bg-main)] overflow-hidden relative border-b border-[var(--card-border)]">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="CRM" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
+                <div class="p-6 relative">
+                    <div class="absolute -top-6 left-6 w-12 h-12 bg-[#B026FF]/10 backdrop-blur-md rounded-xl flex items-center justify-center text-[#B026FF] border border-[#B026FF]/50 shadow-[0_0_15px_rgba(176,38,255,0.3)] group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-users-gear text-xl"></i>
+                    </div>
+                    <h3 class="text-[var(--text-main)] font-bold text-lg mt-6 mb-2 transition-colors">CRM & Lead Dashboard</h3>
+                    <p class="text-[var(--text-muted)] text-sm transition-colors">Manage hot leads, track agent commissions, and monitor team performance seamlessly.</p>
+                </div>
+            </div>
+
+            <div class="glass-card-premium rounded-2xl overflow-hidden interactive group" style="transition-delay: 200ms;">
+                <div class="card-glow-orb"></div>
+                <div class="h-40 bg-[var(--bg-main)] overflow-hidden relative border-b border-[var(--card-border)]">
+                    <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Checkout" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
+                <div class="p-6 relative">
+                    <div class="absolute -top-6 left-6 w-12 h-12 bg-[#00F0FF]/10 backdrop-blur-md rounded-xl flex items-center justify-center text-[#00F0FF] border border-[#00F0FF]/50 shadow-[0_0_15px_rgba(0,240,255,0.3)] group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-credit-card text-xl"></i>
+                    </div>
+                    <h3 class="text-[var(--text-main)] font-bold text-lg mt-6 mb-2 transition-colors">Secure Checkout</h3>
+                    <p class="text-[var(--text-muted)] text-sm transition-colors">Handle global multi-currency transactions easily with automated invoicing and tax calculations.</p>
+                </div>
+            </div>
+
+            <div class="glass-card-premium rounded-2xl overflow-hidden interactive group" style="transition-delay: 300ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="h-40 bg-[var(--bg-main)] overflow-hidden relative border-b border-[var(--card-border)]">
+                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Mobile App" class="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                </div>
+                <div class="p-6 relative">
+                    <div class="absolute -top-6 left-6 w-12 h-12 bg-[#B026FF]/10 backdrop-blur-md rounded-xl flex items-center justify-center text-[#B026FF] border border-[#B026FF]/50 shadow-[0_0_15px_rgba(176,38,255,0.3)] group-hover:rotate-12 transition-transform">
+                        <i class="fa-solid fa-mobile-screen text-xl"></i>
+                    </div>
+                    <h3 class="text-[var(--text-main)] font-bold text-lg mt-6 mb-2 transition-colors">Mobile App Access</h3>
+                    <p class="text-[var(--text-muted)] text-sm transition-colors">Native iOS & Android apps to allow your team and travelers to access bookings from anywhere.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 relative z-10 border-b border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gs-reveal mb-12">
+            <div class="md:w-1/2">
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Seamless <span class="text-[#B026FF]">Integrations</span></h2>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Our platform connects directly with the tools you already use, creating a centralized ecosystem for your entire business operations.</p>
+            </div>
+            <div class="md:w-1/2 flex justify-end mt-6 md:mt-0 gap-4 flex-wrap">
+                <div class="w-16 h-16 rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-lg"><i class="fa-brands fa-stripe text-3xl text-indigo-500"></i></div>
+                <div class="w-16 h-16 rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-lg"><i class="fa-brands fa-whatsapp text-3xl text-green-500"></i></div>
+                <div class="w-16 h-16 rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-lg"><i class="fa-solid fa-envelope text-3xl text-red-500"></i></div>
+                <div class="w-16 h-16 rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] flex items-center justify-center shadow-lg"><i class="fa-brands fa-google text-3xl text-yellow-500"></i></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10 border-b border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">WHY CHOOSE US</h4>
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">Success By <span class="text-[#00F0FF]">Numbers</span></h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
+            <div class="glass-card-premium p-8 text-center interactive group">
+                <div class="card-glow-orb"></div>
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">500+</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">TRAVEL AGENCIES</p>
+            </div>
+            
+            <div class="glass-card-premium p-8 text-center interactive group" style="transition-delay: 100ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">98%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">CUSTOMER SATISFACTION</p>
+            </div>
+
+            <div class="glass-card-premium p-8 text-center interactive group" style="transition-delay: 200ms;">
+                <div class="card-glow-orb"></div>
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">35%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">SALES INCREASE</p>
+            </div>
+
+            <div class="glass-card-premium p-8 text-center interactive group" style="transition-delay: 300ms;">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">24/7</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">SUPPORT AVAILABLE</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 relative z-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#00F0FF]/10 to-[#B026FF]/10"></div>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Ready to Get Started?</h2>
+            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
+                Join thousands of businesses already using our Travel Platform to transform their operations, automate manual work, and scale revenue instantly.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 relative z-10">
+                <a href="{% url 'contact' %}" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all transform hover:-translate-y-1">
+                    START FREE TRIAL
+                </a>
+                <a href="{% url 'contact' %}" class="w-full sm:w-auto px-10 py-4 border border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[#00F0FF]/10 hover:border-[#00F0FF] text-[var(--text-main)] rounded-xl font-bold tracking-wider transition-colors">
+                    CONTACT SALES
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.15,
+        ease: "power3.out"
+    });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem, i) => {
+        gsap.from(elem, {
+            scrollTrigger: {
+                trigger: elem,
+                start: "top 85%",
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        });
+    });
+
+    // 3D Tilt Effect for Hero Dashboard
+    const cards = document.querySelectorAll('.tilt-3d');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10; 
+            const rotateY = ((x - centerX) / centerX) * 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Custom Software & AI Solutions | TechPixels Studio{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* =========================================
+       ADVANCED CUSTOM TECH STYLES
+       ========================================= */
+    .glass-card-premium {
+        background: var(--card-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--card-border);
+        box-shadow: var(--box-shadow);
+        border-radius: 24px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        z-index: 1;
+    }
+    .glass-card-premium:hover {
+        transform: translateY(-8px);
+        border-color: #00F0FF;
+        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-glow-orb {
+        position: absolute; width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+    }
+    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
+
+    /* Terminal Mockup */
+    .terminal-mockup {
+        background: #05050a; 
+        border: 1px solid rgba(255,255,255,0.1); 
+        border-radius: 20px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(0, 240, 255, 0.05); 
+        overflow: hidden; 
+        width: 100%; position: relative; 
+    }
+    .terminal-header { 
+        background: rgba(255,255,255,0.05); padding: 12px 20px; 
+        display: flex; align-items: center; gap: 8px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
+    .terminal-dot:nth-child(2) { background: #ffbd2e; } .terminal-dot:nth-child(3) { background: #27c93f; }
+    .terminal-title { margin-left: 15px; font-size: 12px; color: #94a3b8; font-weight: 700; font-family: monospace; }
+    
+    .terminal-body { padding: 25px; font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.8; color: #00F0FF; }
+    .terminal-line { display: flex; opacity: 0; animation: fadeInLine 0.1s forwards; }
+    .terminal-line span:first-child { color: #B026FF; margin-right: 10px; }
+    .typewriter { overflow: hidden; white-space: nowrap; border-right: 2px solid #00F0FF; animation: typing 2s steps(40, end), blink-caret .75s step-end infinite; }
+    
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00F0FF; } }
+    @keyframes fadeInLine { to { opacity: 1; } }
+
+    /* Timeline Process Numbers */
+    .process-num { 
+        font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 900; 
+        background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        position: absolute; top: 10px; right: 20px; z-index: -1;
+    }
+
+    /* 3D Tilt Effect */
+    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
+    .tilt-content { transform: translateZ(40px); }
+
+    /* Floating Animations */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+    .animate-float { animation: float 5s ease-in-out infinite; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     1. HERO SECTION (Terminal Mockup & Tilt)
+     ========================================== -->
+<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center gap-16">
+            <!-- Left Content -->
+            <div class="lg:w-1/2 gs-reveal text-center lg:text-left">
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg interactive">
+                    Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#00F0FF]">Custom Tech</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
+                    Proprietary Tech <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">& AI Solutions.</span>
+                </h1>
+                <p class="text-[var(--text-muted)] text-lg mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 transition-colors">
+                    Stop forcing your business logic into generic, off-the-shelf software. We engineer highly scalable Custom SaaS, Enterprise ERPs, and generative AI integrations tailored exactly to your workflow.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <a href="#audit" class="inline-block text-center py-4 px-8 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider transition-transform transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] interactive">
+                        TALK TO AN ARCHITECT <i class="fa-solid fa-microchip ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right 3D Terminal Mockup -->
+            <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
+                <div class="tilt-content animate-float">
+                    <div class="terminal-mockup">
+                        <div class="terminal-header">
+                            <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
+                            <div class="terminal-title">techpixels_ai_engine ~ bash</div>
+                        </div>
+                        <div class="terminal-body" id="terminal-content">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     2. PERFORMANCE STATS GRID
+     ========================================== -->
+<section class="py-12 relative z-10 border-b border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">10x</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Workflow Efficiency</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">24/7</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Automated Systems</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#27c93f] transition-colors">100%</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Proprietary IP</p>
+            </div>
+            <div class="text-center group interactive">
+                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors"><100ms</h3>
+                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">API Latency</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     3. CORE CAPABILITIES (Bento Box)
+     ========================================== -->
+<section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">CORE CAPABILITIES</h4>
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">The <span class="text-[#00F0FF]">Software</span> Suite</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
+            <!-- SaaS Development -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-cloud"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Custom SaaS Platforms</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Turn your industry expertise into a recurring revenue software. We build end-to-end multi-tenant SaaS products with built-in billing and subscription management.</p>
+            </div>
+            
+            <!-- AI & Machine Learning -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">AI & LLM Integrations</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Automate operations using AI. We integrate OpenAI, custom fine-tuned LLMs, and computer vision models directly into your business pipelines.</p>
+            </div>
+
+            <!-- Enterprise ERP & CRM -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,189,46,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#ffbd2e]/10 text-[#ffbd2e] flex items-center justify-center text-3xl mb-6 border border-[#ffbd2e]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-network-wired"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Enterprise ERP & CRM</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Replace multiple disjointed tools with a centralized dashboard. We build custom ERPs that manage inventory, HR, sales, and analytics in one place.</p>
+            </div>
+
+            <!-- Legacy System Modernization -->
+            <div class="glass-card-premium p-10 interactive group">
+                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(39,201,63,0.2) 0%, transparent 70%);"></div>
+                <div class="w-16 h-16 rounded-2xl bg-[#27c93f]/10 text-[#27c93f] flex items-center justify-center text-3xl mb-6 border border-[#27c93f]/30 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Legacy Modernization</h3>
+                <p class="text-[var(--text-muted)] leading-relaxed">Is your 10-year-old software holding you back? We safely migrate legacy data and rebuild the architecture using modern, secure, and fast technologies.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     4. THE TECH STACK
+     ========================================== -->
+<section class="py-20 relative z-10 border-y border-[var(--card-border)] bg-black/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h3 class="text-xl font-bold text-[var(--text-main)] mb-10 gs-reveal">Our Engineering Arsenal</h3>
+        <div class="flex flex-wrap justify-center items-center gap-10 md:gap-16 gs-slide-up">
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-python text-5xl text-[#0088cc] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">Python / Django</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-react text-5xl text-[#00F0FF] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">React / Next.js</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-solid fa-robot text-5xl text-[#B026FF] group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">TensorFlow / AI</span>
+            </div>
+            <div class="flex flex-col items-center group interactive">
+                <i class="fa-brands fa-aws text-5xl text-orange-500 group-hover:scale-110 transition-transform mb-3"></i>
+                <span class="text-[var(--text-main)] font-bold text-sm">AWS Cloud</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     5. ENGINEERING TIMELINE
+     ========================================== -->
+<section class="py-24 relative z-10 border-t border-[var(--card-border)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 gs-reveal">
+            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4">The Development Lifecycle.</h2>
+            <p class="text-[var(--text-muted)]">A systematic approach to building complex, fail-proof systems.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
+            <!-- Step 1 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">01</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Discovery & Logic</h4>
+                <p class="text-[var(--text-muted)] text-sm">We map out every single user journey, database relation, and third-party API integration required.</p>
+            </div>
+            <!-- Step 2 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">02</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">System Architecture</h4>
+                <p class="text-[var(--text-muted)] text-sm">Designing scalable server environments and crafting highly intuitive UI/UX workflows in Figma.</p>
+            </div>
+            <!-- Step 3 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
+                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">03</div>
+                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Agile Sprints</h4>
+                <p class="text-[var(--text-muted)] text-sm">Writing clean, documented code. We deliver functional modules every two weeks so you can test as we build.</p>
+            </div>
+            <!-- Step 4 -->
+            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
+                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">04</div>
+                <h4 class="text-xl font-bold text-[#B026FF] mb-3">QA & Deployment</h4>
+                <p class="text-[var(--text-muted)] text-sm">Rigorous stress testing, security audits, and finally, deploying the software onto robust cloud clusters.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     6. CTA
+     ========================================== -->
+<section id="audit" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
+            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.1;"></div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Have a Complex Idea?</h2>
+            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
+                Stop compromising with off-the-shelf tools. Let our technical architects design a custom system that acts as a true moat for your business.
+            </p>
+            <div class="flex justify-center relative z-10">
+                <a href="{% url 'contact' %}" class="px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all transform hover:-translate-y-1">
+                    BOOK A DISCOVERY CALL
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Terminal Typing Effect Logic
+    const terminalLines = [
+        "[System] Initializing Neural Networks...",
+        "[Status] Connected to Secure Cloud Clusters",
+        "Loading Custom ERP Modules... [OK]",
+        "Configuring API Endpoints... [OK]",
+        "Optimizing Database Queries...",
+        "> Ready to scale operations."
+    ];
+    
+    const terminalContent = document.getElementById('terminal-content');
+    let currentLine = 0;
+
+    function typeLine() {
+        if (currentLine < terminalLines.length) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.animationDelay = `${currentLine * 0.5}s`;
+            
+            const isLastLine = currentLine === terminalLines.length - 1;
+            
+            if (isLastLine) {
+                line.innerHTML = `<span style="color: #27c93f;">root@techpixels:~$</span> <div class="typewriter" style="color: #fff; font-weight: bold;">${terminalLines[currentLine]}</div>`;
+            } else {
+                line.innerHTML = `<span>[${new Date().toLocaleTimeString().split(' ')[0]}]</span> ${terminalLines[currentLine]}`;
+            }
+            
+            terminalContent.appendChild(line);
+            currentLine++;
+            setTimeout(typeLine, 800);
+        }
+    }
+    
+    // Start terminal animation after a slight delay
+    setTimeout(typeLine, 1000);
+
+    // 3D Tilt Effect for Terminal Mockup
+    const tiltCards = document.querySelectorAll('.tilt-3d');
+    tiltCards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -5; 
+            const rotateY = ((x - centerX) / centerX) * 5;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.5s ease';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'none';
+        });
+    });
+
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
+
+    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
+        gsap.from(elem, {
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+    });
+</script>
+{% endblock %}

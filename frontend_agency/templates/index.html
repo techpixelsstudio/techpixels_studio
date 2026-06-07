@@ -1,0 +1,1983 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}TechPixels Studio | 360° Digital & Tech Agency{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Interactive Estimator UI */
+    .estimator-box {
+        background: rgba(0,0,0,0.2);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 30px;
+    }
+    body.light-mode .estimator-box { background: rgba(255,255,255,0.5); }
+    
+    .custom-checkbox {
+        display: none;
+    }
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background: var(--bg-main);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .checkbox-label i { color: var(--text-muted); transition: 0.3s; }
+    .custom-checkbox:checked + .checkbox-label {
+        border-color: #B026FF;
+        background: rgba(176,38,255,0.05);
+        box-shadow: inset 0 0 10px rgba(176,38,255,0.1);
+    }
+    .custom-checkbox:checked + .checkbox-label i { color: #00F0FF; }
+    /* =========================================
+       TAILWIND VS BOOTSTRAP FAQ COLLAPSE FIX
+       ========================================= */
+    .accordion-collapse { visibility: visible !important; }
+    .accordion-collapse:not(.show) { display: none !important; }
+    .accordion-collapse.show { display: block !important; }
+
+    /* =========================================
+       EXTRA MOVABLE MOTION GLOWS (NEW)
+       ========================================= */
+    .home-glow-1 { position: absolute; width: 500px; height: 500px; background: #00F0FF; filter: blur(180px); opacity: 0.25; border-radius: 50%; top: 15%; right: -150px; z-index: 0; animation: floatGlow1 12s ease-in-out infinite alternate; pointer-events: none; }
+    .home-glow-2 { position: absolute; width: 450px; height: 450px; background: #ff5f56; filter: blur(180px); opacity: 0.2; border-radius: 50%; top: 45%; left: -100px; z-index: 0; animation: floatGlow2 15s ease-in-out infinite alternate; pointer-events: none; }
+    .home-glow-3 { position: absolute; width: 600px; height: 600px; background: #B026FF; filter: blur(200px); opacity: 0.2; border-radius: 50%; bottom: 10%; right: 10%; z-index: 0; animation: floatGlow1 10s ease-in-out infinite alternate-reverse; pointer-events: none; }
+    
+    @keyframes floatGlow1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-50px, 50px) scale(1.1); } }
+    @keyframes floatGlow2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, -50px) scale(1.2); } }
+
+    /* =========================================
+       HERO SECTION SPECIFIC CSS
+       ========================================= */
+    .hero-section { 
+        min-height: 72vh; 
+        display: flex; 
+        align-items: center; 
+        padding-top: 100px; 
+        padding-bottom: 25px; 
+        position: relative;
+    }
+    
+    .hero-content-wrapper { 
+        position: relative; 
+        z-index: 2; 
+    }
+    
+    .hero-badge { 
+        display: inline-block; 
+        padding: 6px 16px; 
+        border: 1px solid rgba(14, 165, 233, 0.25); 
+        border-radius: 100px; 
+        font-size: 11px; 
+        letter-spacing: 1.5px; 
+        text-transform: uppercase; 
+        margin-bottom: 20px; 
+        color: #0ea5e9; 
+        background: rgba(14,165,233,0.03); 
+        font-weight: 700;
+    }
+    
+    .hero-title { 
+        font-size: 4.2rem; 
+        font-weight: 800; 
+        line-height: 1.15; 
+        letter-spacing: -2px; 
+        margin-bottom: 20px; 
+        color: var(--text-main); 
+    }
+    
+    .hero-desc { 
+        font-size: 17px; 
+        color: var(--text-muted); 
+        max-width: 580px; 
+        line-height: 1.7; 
+        font-weight: 500; 
+    }
+
+    /* =========================================
+       ADVANCED MOBILE MOCKUP GRAPHICS
+       ========================================= */
+    .mobile-mockup-container { 
+        position: relative; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        height: 440px; 
+        width: 100%; 
+        max-width: 440px; 
+        z-index: 2; 
+        margin: 0 auto;
+    }
+    
+    .mobile-frame {
+        position: relative; 
+        width: 220px; 
+        height: 440px; 
+        border-radius: 35px;
+        border: 8px solid #1e293b; 
+        background: #000;
+        box-shadow: 0 20px 50px rgba(14,165,233,0.15), inset 0 0 12px rgba(255,255,255,0.1);
+        overflow: hidden; 
+        z-index: 5; 
+        animation: levitate 6s ease-in-out infinite;
+    }
+    
+    .mobile-frame .notch {
+        position: absolute; 
+        top: 0; 
+        left: 50%; 
+        transform: translateX(-50%);
+        width: 90px; 
+        height: 20px; 
+        background: #1e293b;
+        border-bottom-left-radius: 10px; 
+        border-bottom-right-radius: 10px; 
+        z-index: 10;
+    }
+    
+    .mobile-screen { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        filter: brightness(0.85); 
+        transition: transform 0.5s ease, filter 0.5s ease; 
+    }
+
+    /* HOLOGRAPHIC SCAN SCANNER ON IMAGE */
+    .screen-scanner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: linear-gradient(to bottom, transparent, rgba(0, 210, 255, 0.5), transparent);
+        box-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+        z-index: 8;
+        animation: scan-mobile 3s ease-in-out infinite;
+    }
+
+    @keyframes scan-mobile {
+        0% { top: -20px; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+    
+    .mobile-frame:hover .mobile-screen { 
+        filter: brightness(1.0); 
+        transform: scale(1.03); 
+    }
+
+    /* =========================================
+       FLOATING BADGES AROUND MOCKUP
+       ========================================= */
+    .floating-service-card {
+        position: absolute; 
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border);
+        backdrop-filter: blur(12px); 
+        -webkit-backdrop-filter: blur(12px); 
+        padding: 9px 16px; 
+        border-radius: 100px;
+        color: var(--text-main); 
+        font-size: 11px; 
+        font-weight: 700; 
+        font-family: 'Space Grotesk', sans-serif;
+        display: flex !important; /* Ensure they show */
+        align-items: center; 
+        gap: 8px; 
+        box-shadow: var(--box-shadow);
+        z-index: 6; 
+        animation: float-cards 5s ease-in-out infinite; 
+        white-space: nowrap;
+    }
+    
+    .fc-1 { top: 12%; left: -5%; color: #0ea5e9 !important; border-color: rgba(14,165,233,0.2);}
+    .fc-2 { top: 18%; right: -5%; animation-delay: 1.5s; color: #8b5cf6 !important; border-color: rgba(139,92,246,0.2);}
+    .fc-3 { top: 45%; left: -12%; animation-delay: 0.8s; } .fc-3 i { color: #0ea5e9; }
+    .fc-4 { top: 50%; right: -15%; animation-delay: 2.2s; } .fc-4 i { color: #8b5cf6; }
+    .fc-5 { bottom: 15%; left: -5%; color: #0ea5e9 !important; border-color: rgba(14,165,233,0.2); animation-delay: 0.5s;}
+    .fc-6 { bottom: 10%; right: -2%; color: #8b5cf6 !important; border-color: rgba(139,92,246,0.2); animation-delay: 1.9s;}
+
+    @keyframes levitate { 
+        0%, 100% { transform: translateY(0); } 
+        50% { transform: translateY(-10px); } 
+    }
+    @keyframes float-cards { 
+        0%, 100% { transform: translateY(0) rotate(0deg); } 
+        50% { transform: translateY(-6px) rotate(1deg); } 
+    }
+
+    /* =========================================
+       STATS SECTION
+       ========================================= */
+    .stat-box { 
+        text-align: center; 
+        padding: 25px 10px; 
+        border-right: 1px solid var(--card-border); 
+    }
+    
+    .stat-number { 
+        font-size: 3.2rem; 
+        font-weight: 800; 
+        color: #0ea5e9; 
+        font-family: 'Space Grotesk', sans-serif; 
+        line-height: 1;
+    }
+    
+    .stat-label { 
+        font-size: 11px; 
+        color: var(--text-muted); 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        font-weight: 700; 
+        margin-top: 8px;
+    }
+
+    /* =========================================
+       PREMIUM PILL SLIDER
+       ========================================= */
+    .premium-slider-wrapper { 
+        overflow: hidden; 
+        white-space: nowrap; 
+        width: 100%; 
+        padding: 25px 0; 
+        position: relative; 
+        border-top: 1px solid var(--card-border); 
+        border-bottom: 1px solid var(--card-border); 
+        background: var(--bg-main); 
+        display: flex;
+    }
+    
+    .slider-track { 
+        display: flex; 
+        white-space: nowrap; 
+        animation: marquee 35s linear infinite; 
+    }
+    
+    .slider-pill { 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 10px; 
+        background: var(--pill-bg); 
+        border: 1px solid var(--card-border); 
+        padding: 12px 30px; 
+        border-radius: 100px; 
+        margin: 0 12px; 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-weight: 700; 
+        font-size: 14px; 
+        color: var(--text-main); 
+        box-shadow: var(--box-shadow); 
+        transition: 0.3s; 
+    }
+    
+    .slider-pill i { 
+        color: #0ea5e9; 
+        font-size: 18px; 
+    }
+    
+    .slider-pill:hover { 
+        border-color: #0ea5e9; 
+        transform: translateY(-4px); 
+        color: #0ea5e9;
+    }
+    
+    @keyframes marquee { 
+        0% { transform: translate3d(0, 0, 0); } 
+        100% { transform: translate3d(-50%, 0, 0); } 
+    }
+
+    /* =========================================
+       HEADINGS FOR SECTIONS
+       ========================================= */
+    .section-heading { 
+        font-size: 2.8rem; 
+        font-weight: 800; 
+        margin-bottom: 15px; 
+        letter-spacing: -1px; 
+        text-align: center; 
+        color: var(--text-main);
+    }
+    
+    .section-sub { 
+        font-size: 15px; 
+        color: var(--text-muted); 
+        text-align: center; 
+        margin-bottom: 45px; 
+        max-width: 620px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        line-height: 1.7; 
+        font-weight: 500;
+    }
+
+    /* =========================================
+       INTERACTIVE TECH STACK
+       ========================================= */
+    .tech-tabs-container { 
+        display: flex; 
+        flex-wrap: wrap; 
+        justify-content: center; 
+        gap: 10px; 
+        margin-bottom: 40px;
+    }
+    
+    .tech-tab-btn { 
+        background: transparent; 
+        border: 1px solid var(--card-border); 
+        color: var(--text-muted); 
+        padding: 10px 25px; 
+        border-radius: 100px; 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-weight: 700; 
+        font-size: 13px; 
+        transition: 0.3s; 
+        text-transform: uppercase; 
+        letter-spacing: 1px;
+    }
+    
+    .tech-tab-btn:hover { 
+        border-color: #0ea5e9; 
+        color: var(--text-main); 
+    }
+    
+    .tech-tab-btn.active { 
+        background: #0ea5e9; 
+        color: #ffffff; 
+        border-color: #0ea5e9; 
+        box-shadow: 0 0 15px rgba(14,165,233,0.35); 
+    }
+    
+    .tech-grid { 
+        display: none; 
+        opacity: 0; 
+        transition: opacity 0.5s ease; 
+        justify-content: center; 
+        align-items: center; 
+        flex-wrap: wrap; 
+        gap: 25px; 
+    }
+    
+    .tech-grid.active { 
+        display: flex; 
+        opacity: 1; 
+    }
+    
+    .tech-logo { 
+        height: 60px; 
+        transition: 0.4s; 
+        filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); 
+    }
+    
+    .tech-logo:hover { 
+        transform: scale(1.15) translateY(-6px); 
+    }
+    
+    body:not(.light-mode) .invert-dark { 
+        filter: invert(1); 
+    }
+
+    /* =========================================
+       END-TO-END SOLUTIONS CARDS (SC2 STYLE)
+       ========================================= */
+    .sc2-card {
+        background: rgba(10, 11, 20, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px; 
+        padding: 45px 35px;
+        position: relative; 
+        overflow: hidden;
+        text-decoration: none !important; 
+        display: flex;
+        flex-direction: column; 
+        justify-content: space-between;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        height: 100%; 
+        min-height: 380px;
+    }
+    
+    body.light-mode .sc2-card {
+        background: linear-gradient(135deg, #ffffff 65%, var(--glow-bg-light) 100%);
+        border: 1px solid rgba(15, 23, 42, 0.05);
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.03);
+    }
+    
+    .sc2-card::after {
+        content: ''; 
+        position: absolute; 
+        top: -50px; 
+        right: -50px;
+        width: 180px; 
+        height: 180px; 
+        border-radius: 50%;
+        background: var(--glow-color); 
+        filter: blur(50px); 
+        opacity: 0.12; 
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        z-index: 1; 
+        pointer-events: none;
+    }
+    
+    body.light-mode .sc2-card::after {
+        opacity: 0.25; 
+        filter: blur(40px);
+    }
+    
+    .sc2-bg-graphic {
+        position: absolute; 
+        bottom: -15px; 
+        right: -15px; 
+        width: 180px; 
+        height: 180px;
+        opacity: 0.15;  /* FIX: Increased opacity so the design is clearly visible */
+        transition: opacity 0.4s, transform 0.4s; 
+        pointer-events: none; 
+        z-index: 1;
+    }
+    
+    .sc2-card:hover .sc2-bg-graphic {
+        opacity: 0.4; /* FIX: Makes background design glow on hover */
+        transform: scale(1.1) rotate(-5deg);
+    }
+    
+    body.light-mode .sc2-bg-graphic {
+        opacity: 0.1; /* Adjusted for light mode */
+    }
+    
+    body.light-mode .sc2-card:hover .sc2-bg-graphic {
+        opacity: 0.25;
+    }
+    
+    .sc2-card:hover { 
+        transform: translateY(-8px); 
+        border-color: var(--glow-color);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    }
+    
+    body.light-mode .sc2-card:hover {
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.06);
+    }
+    
+    .sc2-card:hover::after { 
+        opacity: 0.22; 
+        transform: scale(1.1); 
+    }
+    
+    body.light-mode .sc2-card:hover::after { 
+        opacity: 0.4; 
+    }
+    
+    .sc2-icon-box {
+        width: 58px; 
+        height: 58px; 
+        background: rgba(255, 255, 255, 0.03); 
+        border-radius: 16px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        margin-bottom: 30px; 
+        border: 1.5px solid rgba(255, 255, 255, 0.08);
+        position: relative; 
+        z-index: 2; 
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    
+    body.light-mode .sc2-icon-box { 
+        background: #ffffff; 
+        border: 1.5px solid #e2e8f0;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    }
+    
+    .sc2-icon-box i { 
+        font-size: 22px; 
+        color: var(--text-main); 
+        transition: 0.3s; 
+    }
+    
+    .sc2-card:hover .sc2-icon-box { 
+        border-color: var(--glow-color);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+    }
+    
+    body.light-mode .sc2-card:hover .sc2-icon-box {
+        background: #ffffff;
+        box-shadow: 0 6px 15px rgba(15, 23, 42, 0.04);
+    }
+    
+    .sc2-card:hover .sc2-icon-box i { 
+        color: var(--glow-color); 
+    }
+    
+    .sc2-title { 
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        color: var(--text-main); 
+        margin-bottom: 12px; 
+        position: relative; 
+        z-index: 2; 
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .sc2-desc { 
+        font-size: 14.5px; 
+        color: var(--text-muted); 
+        line-height: 1.6; 
+        margin-bottom: 30px; 
+        position: relative; 
+        z-index: 2; 
+        font-weight: 500;
+    }
+    
+    .sc2-link { 
+        font-size: 14px; 
+        font-weight: 700; 
+        color: var(--glow-color); 
+        position: relative; 
+        z-index: 2; 
+        display: inline-flex; 
+        align-items: center; 
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    
+    .sc2-link i { 
+        margin-left: 6px; 
+        transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        font-size: 12px;
+    }
+    
+    .sc2-card:hover .sc2-link i { 
+        transform: translateX(5px); 
+    }
+
+    /* =========================================
+       SAAS PRODUCT CARDS (IMAGE TOP)
+       ========================================= */
+    .saas-new-card {
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border);
+        border-radius: 20px; 
+        overflow: hidden; 
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        box-shadow: var(--box-shadow); 
+        display: flex; 
+        flex-direction: column;
+        text-decoration: none !important; 
+        color: var(--text-main); 
+        height: 100%; 
+        position: relative;
+    }
+    
+    .saas-new-card:hover { 
+        transform: translateY(-8px); 
+        border-color: #0ea5e9; 
+        box-shadow: 0 20px 40px rgba(14,165,233,0.12); 
+    }
+    
+    .saas-img-wrapper { 
+        width: 100%; 
+        height: 210px; 
+        position: relative; 
+        overflow: hidden; 
+        border-bottom: 1px solid var(--card-border);
+    }
+    
+    .saas-img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        transition: transform 0.6s ease; 
+        filter: brightness(0.85); 
+    }
+    
+    .saas-new-card:hover .saas-img { 
+        transform: scale(1.05); 
+        filter: brightness(1); 
+    }
+    
+    .saas-badge {
+        position: absolute; 
+        top: 15px; 
+        left: 15px; 
+        background: rgba(5,5,10,0.85); 
+        backdrop-filter: blur(5px);
+        color: var(--badge-color); 
+        border: 1px solid var(--badge-color); 
+        padding: 5px 15px; 
+        border-radius: 50px;
+        font-size: 12px; 
+        font-weight: 700; 
+        z-index: 10;
+    }
+    
+    .saas-content { 
+        padding: 25px; 
+        flex-grow: 1; 
+        display: flex; 
+        flex-direction: column; 
+    }
+    
+    .saas-title { 
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        margin-bottom: 12px; 
+        color: var(--badge-color); 
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .saas-desc { 
+        font-size: 14.5px; 
+        color: var(--text-muted); 
+        line-height: 1.6; 
+        margin-bottom: 20px; 
+        font-weight: 500;
+    }
+    
+    .saas-features { 
+        background: rgba(255,255,255,0.04); 
+        border: 1px solid var(--card-border); 
+        padding: 8px 16px; 
+        border-radius: 12px; 
+        display: inline-block; 
+        width: fit-content; 
+        margin-top: auto;
+    }
+    
+    body.light-mode .saas-features { 
+        background: rgba(0,0,0,0.03); 
+    }
+    
+    .saas-features span { 
+        font-size: 13px; 
+        color: var(--text-main); 
+        font-weight: 700;
+    }
+    
+    .saas-features i { 
+        color: var(--badge-color); 
+        margin-right: 5px;
+    }
+
+    /* =========================================
+       THE FRAMEWORK (ZIG ZAG ALIGNMENT)
+       ========================================= */
+    .fw-timeline-wrapper { 
+        position: relative; 
+        margin-top: 50px; 
+        padding-bottom: 25px;
+    }
+    
+    .fw-line { 
+        position: absolute; 
+        top: 50%; 
+        left: 5%; 
+        right: 5%; 
+        height: 2px; 
+        background: rgba(14,165,233,0.15); 
+        z-index: 1;
+    }
+    
+    .fw-line-progress { 
+        position: absolute; 
+        top: -4px; 
+        left: 0; 
+        width: 10px; 
+        height: 10px; 
+        background: #0ea5e9; 
+        border-radius: 50%; 
+        box-shadow: 0 0 15px #0ea5e9; 
+        z-index: 2; 
+        animation: run-line 8s linear infinite;
+    }
+    
+    @keyframes run-line { 
+        0% { left: 0%; opacity:0;} 
+        10% {opacity:1;} 
+        90% {opacity:1;} 
+        100% { left: 100%; opacity:0;} 
+    }
+    
+    .fw-grid { 
+        display: flex; 
+        justify-content: space-between; 
+        position: relative; 
+        z-index: 3;
+    }
+    
+    .fw-item { 
+        width: 22%; 
+        text-align: center; 
+        transition: 0.4s; 
+    }
+    
+    .fw-item:nth-child(odd) { 
+        transform: translateY(-25px); 
+    }
+    
+    .fw-item:nth-child(even) { 
+        transform: translateY(25px); 
+    }
+    
+    .fw-card {
+        background: rgba(10, 10, 15, 0.95); 
+        border: 1px solid rgba(255,255,255,0.06); 
+        border-radius: 20px;
+        padding: 30px 20px; 
+        transition: 0.3s; 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    
+    body.light-mode .fw-card { 
+        background: #ffffff; 
+        border-color: rgba(0,0,0,0.06); 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+    }
+    
+    .fw-card:hover { 
+        border-color: #0ea5e9; 
+        transform: translateY(-5px); 
+        box-shadow: 0 15px 30px rgba(14,165,233,0.15); 
+    }
+    
+    .fw-circle {
+        width: 48px; 
+        height: 48px; 
+        margin: 0 auto 18px auto; 
+        border-radius: 50%;
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 17px; 
+        font-weight: 800; 
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .fw-title { 
+        font-size: 1.1rem; 
+        font-weight: 800; 
+        color: var(--text-main); 
+        margin-bottom: 10px;
+    }
+    
+    .fw-desc { 
+        font-size: 13px; 
+        color: var(--text-muted); 
+        line-height: 1.6; 
+        margin: 0;
+    }
+
+    /* =========================================
+       INDUSTRIES GLASS CARDS
+       ========================================= */
+    .industry-card {
+        background: var(--card-bg); 
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--card-border); 
+        border-radius: 20px; 
+        padding: 35px 20px;
+        text-align: center; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+        transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        box-shadow: var(--box-shadow);
+        text-decoration: none !important;
+    }
+    
+    body.light-mode .industry-card {
+        background: #ffffff; 
+        border: 1px solid rgba(14,165,233,0.08); 
+        box-shadow: 0 10px 30px rgba(0,100,255,0.03);
+    }
+    
+    .industry-card:hover { 
+        transform: translateY(-8px); 
+        border-color: var(--hover-color); 
+        box-shadow: 0 15px 35px rgba(14,165,233,0.12); 
+    }
+    
+    .ind-icon { 
+        font-size: 38px; 
+        color: var(--text-main); 
+        margin-bottom: 15px; 
+        transition: 0.4s; 
+    }
+    
+    body.light-mode .ind-icon { 
+        color: #0f172a; 
+    }
+    
+    .industry-card:hover .ind-icon { 
+        color: var(--hover-color); 
+        transform: scale(1.15); 
+    }
+    
+    .ind-title { 
+        font-weight: 800; 
+        font-size: 15px; 
+        margin: 0; 
+        color: var(--text-main); 
+        transition: 0.3s;
+    }
+    
+    .industry-card:hover .ind-title { 
+        color: var(--hover-color); 
+    }
+
+    /* =========================================
+       CASE STUDIES
+       ========================================= */
+    .case-card { 
+        background-color: var(--card-bg); 
+        background-size: cover !important; 
+        background-position: center !important; 
+        position: relative; 
+        z-index: 1; 
+        border: 1px solid var(--card-border); 
+        border-radius: 24px; 
+        padding: 40px 30px; 
+        height: 100%; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
+        overflow: hidden; 
+        box-shadow: var(--box-shadow); 
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px); 
+        text-decoration: none !important; 
+    }
+    
+    .case-card::after { 
+        content: ''; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: linear-gradient(180deg, rgba(5,5,10,0.35) 0%, rgba(5,5,10,0.9) 100%); 
+        z-index: -1; 
+        transition: 0.4s; 
+    }
+    
+    .case-card:hover { 
+        transform: translateY(-10px); 
+        border-color: #0ea5e9; 
+        box-shadow: 0 20px 40px rgba(14,165,233,0.15); 
+    }
+    
+    .case-card *, body.light-mode .case-card * { 
+        position: relative; 
+        z-index: 2; 
+        color: #ffffff !important; 
+        text-shadow: 0 2px 10px rgba(0,0,0,0.6) !important; 
+    }
+    
+    .case-icon { 
+        font-size: 38px; 
+        margin-bottom: 20px; 
+        transition: 0.3s; 
+    }
+    
+    .case-card:hover .case-icon { 
+        transform: scale(1.1); 
+    }
+    
+    .case-title { 
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        margin-bottom: 12px; 
+        transition: 0.5s; 
+        font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .case-text { 
+        font-size: 14px; 
+        line-height: 1.7; 
+        font-weight: 500; 
+        opacity: 0.9;
+    }
+
+    /* =========================================
+       TESTIMONIALS
+       ========================================= */
+    .testi-card {
+        background: var(--card-bg); 
+        border: 1px solid var(--card-border); 
+        border-radius: 24px;
+        padding: 40px; 
+        position: relative; 
+        overflow: hidden; 
+        box-shadow: var(--box-shadow);
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px); 
+        transition: all 0.4s ease;
+    }
+    
+    .testi-card:hover { 
+        transform: translateY(-8px); 
+        border-color: #0ea5e9; 
+        box-shadow: 0 15px 35px rgba(14,165,233,0.1); 
+    }
+    
+    .testi-icon { 
+        font-size: 35px; 
+        color: #0ea5e9; 
+        opacity: 0.15; 
+        position: absolute; 
+        top: 30px; 
+        right: 30px; 
+    }
+    
+    .testi-text { 
+        font-size: 15px; 
+        line-height: 1.8; 
+        color: var(--text-muted); 
+        margin-bottom: 25px; 
+        font-style: italic; 
+    }
+    
+    .testi-author { 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-size: 17px; 
+        font-weight: 700; 
+        color: var(--text-main); 
+    }
+    
+    .testi-role { 
+        font-size: 12px; 
+        color: #9d4edd; 
+        font-weight: 700; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+        margin-top: 5px; 
+    }
+
+    /* =========================================
+       FAQ
+       ========================================= */
+    .accordion-item { 
+        background: var(--card-bg) !important; 
+        border: 1px solid var(--card-border) !important; 
+        margin-bottom: 15px; 
+        border-radius: 15px !important; 
+        overflow: hidden; 
+        box-shadow: var(--box-shadow); 
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .accordion-button { 
+        background-color: transparent !important; 
+        color: var(--text-main) !important; 
+        box-shadow: none !important; 
+        font-weight: 700; 
+        padding: 25px 20px; 
+        font-size: 16px; 
+        font-family: 'Space Grotesk', sans-serif; 
+        transition: 0.5s;
+    }
+    
+    .accordion-button:not(.collapsed) { 
+        color: #0ea5e9 !important; 
+        background-color: rgba(14,165,233,0.03) !important;
+    }
+    
+    .accordion-button::after { 
+        filter: var(--accordion-invert) !important; 
+    }
+    
+    .accordion-body { 
+        font-size: 15px; 
+        line-height: 1.8; 
+        border-top: 1px solid var(--card-border); 
+        padding: 20px; 
+        font-weight: 500; 
+        color: var(--text-muted);
+    }
+
+    /* =========================================
+       CONTACT FORM
+       ========================================= */
+    .contact-wrapper { 
+        background: var(--card-bg); 
+        border-radius: 40px; 
+        border: 1px solid var(--card-border); 
+        padding: 50px; 
+        position: relative; 
+        box-shadow: var(--box-shadow); 
+        backdrop-filter: blur(15px); 
+        -webkit-backdrop-filter: blur(15px);
+    }
+    
+    .startup-input { 
+        background: var(--input-bg); 
+        border: 1px solid var(--input-border); 
+        color: var(--text-main); 
+        font-size: 15px; 
+        padding: 18px 20px; 
+        width: 100%; 
+        border-radius: 12px; 
+        transition: 0.3s; 
+        font-family: 'Manrope', sans-serif; 
+        font-weight: 600;
+    }
+    
+    .startup-input:focus { 
+        outline: none; 
+        border-color: #0ea5e9; 
+        background: var(--input-bg); 
+        box-shadow: 0 0 15px rgba(14,165,233,0.1);
+    }
+    
+    .startup-input::placeholder { 
+        color: var(--text-muted); 
+    }
+    
+    .btn-submit { 
+        background: linear-gradient(135deg, #0ea5e9, #9d4edd); 
+        color: #fff; 
+        padding: 18px 45px; 
+        border: none; 
+        border-radius: 100px; 
+        font-size: 16px; 
+        font-weight: 800; 
+        font-family: 'Space Grotesk', sans-serif; 
+        margin-top: 10px; 
+        transition: 0.3s; 
+        width: 100%;
+    }
+    
+    .btn-submit:hover { 
+        transform: scale(1.01); 
+        box-shadow: 0 15px 30px rgba(14,165,233,0.35); 
+        color: #fff;
+    }
+
+    /* =========================================
+       RESPONSIVE RULES
+       ========================================= */
+    @media (max-width: 991px) { 
+        .hero-title { font-size: 3.2rem; } 
+        .hero-content-wrapper { text-align: center; margin-top: 0;} 
+        .hero-desc { margin: 0 auto 25px auto; font-size: 16px; }
+        .stat-box { border-right: none; border-bottom: 1px solid var(--card-border); padding: 22px 10px;} 
+        .stat-box:last-child { border-bottom: none; }
+        
+        .mobile-mockup-container { margin-top: 25px; height: 350px; padding: 15px 0; transform: scale(0.7); }
+        .floating-service-card { display: flex !important; padding: 6px 12px; font-size: 10px; z-index: 20; }
+        .fc-1 { left: -5%; top: 5%; }
+        .fc-2 { right: -5%; top: 10%; }
+        .fc-3 { left: -10%; top: 40%; }
+        .fc-4 { right: -10%; top: 45%; }
+        .fc-5 { left: -5%; bottom: 10%; }
+        .fc-6 { right: -5%; bottom: 5%; }
+        
+        .fw-line { display: none; }
+        .fw-grid { flex-direction: column; align-items: center; gap: 25px;}
+        .fw-item { width: 100%; max-width: 350px;}
+        .fw-item:nth-child(odd), .fw-item:nth-child(even) { transform: translateY(0); }
+    }
+    
+    @media (max-width: 576px) { 
+        .hero-section { padding-top: 90px; min-height: auto;}
+        .hero-title { font-size: 2.4rem; letter-spacing: -1px;} 
+        .section-heading { font-size: 2rem; }
+        
+        .mobile-mockup-container { transform: scale(0.6); margin-top: -20px; }
+        .floating-service-card { font-size: 12px; padding: 8px 14px; }
+        .fc-1 { left: 0%; top: 0%; }
+        .fc-2 { right: 0%; top: 5%; }
+        .fc-3 { left: -5%; top: 40%; }
+        .fc-4 { right: -5%; top: 45%; }
+        .fc-5 { left: 0%; bottom: 15%; }
+        .fc-6 { right: 0%; bottom: 10%; }
+
+        .contact-wrapper { padding: 30px 20px; }
+        .tech-tab-btn { padding: 10px 18px; font-size: 12px; margin-bottom: 8px;}
+        .testi-card { padding: 25px; }
+        .sc2-card { padding: 35px 25px; min-height: 350px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- NEW: Extra Background Ambient Glows -->
+    <div class="home-glow-1"></div>
+    <div class="home-glow-2"></div>
+    <div class="home-glow-3"></div>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-lg-start text-center">
+                    <div class="gsap-hero hero-content-wrapper">
+                        <div class="hero-badge">360&deg; Digital Innovation Agency</div>
+                        
+                        <h1 class="hero-title">Engineering Digital <br><span class="text-cyan" style="font-style: italic;">Flagships</span> <span class="text-purple">for Elite Brands.</span></h1>
+                        
+                        <p class="hero-desc">We partner with ambitious startups and enterprises to architect custom software, highly scalable SaaS products, and data-driven marketing engines. No generic templates, just pure performance.</p>
+                        
+                        <div class="mt-4 d-flex gap-4 flex-wrap justify-content-lg-start justify-content-center">
+                            <a href="{% url 'contact' %}" class="magnetic-btn magnetic interactive">Let's Talk <i class="fa-solid fa-arrow-trend-up ms-2"></i></a>
+                            <a href="{% url 'products' %}" class="magnetic-btn magnetic interactive" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-main);" id="view-work-btn">View Our Products</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 d-flex justify-content-center mt-5 mt-lg-0">
+                    <div class="mobile-mockup-container">
+                        <div class="floating-service-card fc-1 interactive"><i class="fa-solid fa-laptop-code"></i> SaaS Products</div>
+                        <div class="floating-service-card fc-2 interactive"><i class="fa-brands fa-meta"></i> Meta Ads Expert</div>
+                        <div class="floating-service-card fc-3 interactive"><i class="fa-brands fa-app-store"></i> App Dev</div>
+                        <div class="floating-service-card fc-4 interactive"><i class="fa-solid fa-cloud"></i> Cloud & Hosting</div>
+                        <div class="floating-service-card fc-5 interactive"><i class="fa-solid fa-palette"></i> UI/UX Design</div>
+                        <div class="floating-service-card fc-6 interactive"><i class="fa-solid fa-video"></i> Video Editing</div>
+
+                        <div class="mobile-frame interactive">
+                            <div class="notch"></div>
+                            
+                            <div class="screen-scanner"></div>
+                            
+                            <div class="phone-screen" style="padding: 25px 15px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; background: #05050a; z-index: 1; border-radius: 28px;">
+                                <div class="d-flex justify-content-between text-muted" style="font-size: 10px; font-weight: 700; z-index: 2;">
+                                    <span>9:41</span>
+                                    <div><i class="fa-solid fa-signal me-1"></i><i class="fa-solid fa-wifi me-1"></i><i class="fa-solid fa-battery-full"></i></div>
+                                </div>
+                                
+                                <div class="text-center mt-3 z-2">
+                                    <div class="mb-3 d-flex justify-content-center">
+                                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0,210,255,0.1); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,210,255,0.3);">
+                                            <i class="fa-solid fa-chart-pie text-cyan" style="font-size: 20px;"></i>
+                                        </div>
+                                    </div>
+                                    <h6 class="fw-bold text-white mb-1" style="font-size: 13px;">Live Analytics</h6>
+                                    <h3 class="text-cyan fw-bold mb-3" style="font-size: 22px;">+312% ROI</h3>
+                                    
+                                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 10px; text-align: left;" class="mb-2">
+                                        <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Total Traffic</div>
+                                        <div style="font-size: 13px; font-weight: 700; color: #fff;">1.2M Users</div>
+                                        <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 5px; overflow: hidden;">
+                                            <div style="height: 100%; width: 75%; background: #00d2ff;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 10px; text-align: left;">
+                                        <div style="font-size: 9px; color: var(--text-muted); text-transform: uppercase;">Conversions</div>
+                                        <div style="font-size: 13px; font-weight: 700; color: #fff;">45.8k Leads</div>
+                                        <div style="height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-top: 5px; overflow: hidden;">
+                                            <div style="height: 100%; width: 60%; background: #9d4edd;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-100 text-center mt-2 z-2">
+                                    <div style="height: 4px; width: 80px; background: rgba(255,255,255,0.2); border-radius: 10px;" class="mx-auto"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-2 my-2">
+        <div class="row rounded-4 border mx-1" style="border-color: var(--card-border) !important; background: var(--card-bg); box-shadow: var(--box-shadow); backdrop-filter: blur(10px);">
+            <div class="col-lg-3 col-6 stat-box gsap-card"><div class="stat-number">25+</div><div class="stat-label">Projects Delivered</div></div>
+            <div class="col-lg-3 col-6 stat-box gsap-card"><div class="stat-number">4+</div><div class="stat-label">Proprietary SaaS</div></div>
+            <div class="col-lg-3 col-6 stat-box gsap-card"><div class="stat-number">99.9%</div><div class="stat-label">Server Uptime</div></div>
+            <div class="col-lg-3 col-6 stat-box gsap-card border-0"><div class="stat-number">100%</div><div class="stat-label">Client Success</div></div>
+        </div>
+    </section>
+
+    <div class="premium-slider-wrapper gsap-fade mt-4">
+        <div class="slider-track interactive">
+            <span class="slider-pill"><i class="fa-solid fa-code"></i> Custom SaaS</span>
+            <span class="slider-pill"><i class="fa-solid fa-laptop-code" style="color: #9d4edd;"></i> Website Development</span>
+            <span class="slider-pill"><i class="fa-solid fa-bullseye"></i> Digital Marketing</span>
+            <span class="slider-pill"><i class="fa-brands fa-app-store" style="color: #9d4edd;"></i> App Development</span>
+            <span class="slider-pill"><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Mastery</span>
+            <span class="slider-pill"><i class="fa-solid fa-video" style="color: #9d4edd;"></i> Video Editing</span>
+            <span class="slider-pill"><i class="fa-solid fa-code"></i> Custom SaaS</span>
+            <span class="slider-pill"><i class="fa-solid fa-laptop-code" style="color: #9d4edd;"></i> Website Development</span>
+            <span class="slider-pill"><i class="fa-solid fa-bullseye"></i> Digital Marketing</span>
+            <span class="slider-pill"><i class="fa-brands fa-app-store" style="color: #9d4edd;"></i> App Development</span>
+            <span class="slider-pill"><i class="fa-solid fa-magnifying-glass-chart"></i> SEO Mastery</span>
+            <span class="slider-pill"><i class="fa-solid fa-video" style="color: #9d4edd;"></i> Video Editing</span>
+        </div>
+    </div>
+
+    <section class="container py-4 my-2 text-center gsap-fade">
+        <h6 class="text-muted fw-bold text-uppercase mb-4" style="font-size: 12px; letter-spacing: 2px;">Certified & Partnered With</h6>
+        <div class="d-flex justify-content-center flex-wrap gap-4 gap-md-5 opacity-75">
+            <div class="d-flex align-items-center gap-2 interactive"><i class="fa-brands fa-aws fs-3 text-orange-500"></i> <span class="fw-bold" style="color: var(--text-main);">AWS Partner</span></div>
+            <div class="d-flex align-items-center gap-2 interactive"><i class="fa-brands fa-meta fs-3 text-blue-500"></i> <span class="fw-bold" style="color: var(--text-main);">Meta Agency</span></div>
+            <div class="d-flex align-items-center gap-2 interactive"><i class="fa-brands fa-google fs-3 text-success"></i> <span class="fw-bold" style="color: var(--text-main);">Google Partner</span></div>
+            <div class="d-flex align-items-center gap-2 interactive"><i class="fa-brands fa-shopify fs-3 text-green-500"></i> <span class="fw-bold" style="color: var(--text-main);">Shopify Expert</span></div>
+        </div>
+    </section>
+
+    <section class="container py-5 my-4">
+        <div class="text-center mb-5">
+            <h2 class="section-heading gsap-fade">Our Interactive <span class="text-cyan">Technology Stack</span></h2>
+            <p class="section-sub gsap-fade">We program with cutting-edge, industry-standard languages and frameworks to deliver fast, highly secure, and exceptionally scalable applications.</p>
+        </div>
+        
+        <div class="tech-tabs-container gsap-fade">
+            <button class="tech-tab-btn interactive active" data-target="frontend">Frontend Tech</button>
+            <button class="tech-tab-btn interactive" data-target="backend">Backend Systems</button>
+            <button class="tech-tab-btn interactive" data-target="database">Databases</button>
+            <button class="tech-tab-btn interactive" data-target="mobile">Mobile SDKs</button>
+            <button class="tech-tab-btn interactive" data-target="cloud">Cloud & Tools</button>
+        </div>
+
+        <div id="frontend" class="tech-grid active interactive">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" class="tech-logo" alt="React">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" class="tech-logo invert-dark" alt="Next">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" class="tech-logo" alt="Vue">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" class="tech-logo" alt="Angular">
+            <!-- FIX: TAILWIND ICON URL UPDATED -->
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" class="tech-logo" alt="Tailwind">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" class="tech-logo" alt="Sass">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="tech-logo" style="border-radius: 10px;" alt="JS">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" class="tech-logo" style="border-radius: 10px;" alt="TS">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="tech-logo" alt="HTML5">
+        </div>
+        <div id="backend" class="tech-grid interactive">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="tech-logo" alt="Python">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg" class="tech-logo invert-dark" alt="Django">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" class="tech-logo" alt="NodeJS">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" class="tech-logo" alt="Java">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" class="tech-logo" alt="PHP">
+        </div>
+        <div id="database" class="tech-grid interactive">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" class="tech-logo" alt="PostgreSQL">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="tech-logo" alt="MySQL">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" class="tech-logo" alt="MongoDB">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" class="tech-logo" alt="Redis">
+        </div>
+        <div id="mobile" class="tech-grid interactive">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" class="tech-logo" alt="Flutter">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" class="tech-logo" alt="Swift">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" class="tech-logo" alt="Android">
+        </div>
+        <div id="cloud" class="tech-grid interactive">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="tech-logo invert-dark" alt="AWS">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="tech-logo" alt="Docker">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" class="tech-logo invert-dark" alt="GitHub">
+        </div>
+    </section>
+
+    <section id="services" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-3">
+            <span style="color: #0ea5e9; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;">Core Capabilities</span>
+            <h2 class="section-heading gsap-fade mt-2">End-to-End <span class="text-cyan">Solutions</span></h2>
+        </div>
+        
+        <div class="row g-4 mt-1 align-items-stretch">
+            <div class="col-lg-3 col-md-6 gsap-card">
+                <a href="{% url 'web_dev' %}" class="sc2-card interactive" style="--glow-color: rgba(14,165,233,1); --glow-bg-light: rgba(14,165,233,0.06);">
+                    <svg class="sc2-bg-graphic" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 30L35 50L15 70" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M85 30L65 50L85 70" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="60" y1="20" x2="40" y2="80" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                        <div class="sc2-icon-box" style="--glow-color: #0ea5e9;">
+                            <i class="fa-solid fa-laptop-code" style="color: #0ea5e9;"></i>
+                        </div>
+                        <h3 class="sc2-title">Website Dev</h3>
+                        <p class="sc2-desc">Building fast, highly scalable web platforms for modern businesses.</p>
+                    </div>
+                    <span class="sc2-link" style="--glow-color: #0ea5e9;">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 gsap-card">
+                <a href="{% url 'app_dev' %}" class="sc2-card interactive" style="--glow-color: rgba(139,92,246,1); --glow-bg-light: rgba(139,92,246,0.06);">
+                    <svg class="sc2-bg-graphic" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="25" y="12" width="50" height="76" rx="8" stroke="#8b5cf6" stroke-width="2"/>
+                        <circle cx="50" cy="76" r="4" fill="#8b5cf6"/>
+                        <line x1="42" y1="20" x2="58" y2="20" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                        <div class="sc2-icon-box" style="--glow-color: #8b5cf6;">
+                            <i class="fa-brands fa-app-store" style="color: #8b5cf6;"></i>
+                        </div>
+                        <h3 class="sc2-title">App Development</h3>
+                        <p class="sc2-desc">High-performance iOS & Android applications optimized for retention.</p>
+                    </div>
+                    <span class="sc2-link" style="--glow-color: #8b5cf6;">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6 gsap-card">
+                <a href="{% url 'digital_marketing' %}" class="sc2-card interactive" style="--glow-color: rgba(14,165,233,1); --glow-bg-light: rgba(14,165,233,0.06);">
+                    <svg class="sc2-bg-graphic" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 80 L38 48 L62 62 L85 22" stroke="#0ea5e9" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="85" cy="22" r="5" fill="#0ea5e9"/>
+                        <line x1="15" y1="80" x2="85" y2="80" stroke="#0ea5e9" stroke-width="2"/>
+                    </svg>
+                    <div>
+                        <div class="sc2-icon-box" style="--glow-color: #0ea5e9;">
+                            <i class="fa-solid fa-bullseye" style="color: #0ea5e9;"></i>
+                        </div>
+                        <h3 class="sc2-title">Digital Marketing</h3>
+                        <p class="sc2-desc">Data-driven performance marketing and paid ad campaigns.</p>
+                    </div>
+                    <span class="sc2-link" style="--glow-color: #0ea5e9;">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6 gsap-card">
+                <a href="{% url 'video_editing' %}" class="sc2-card interactive" style="--glow-color: rgba(168,85,247,1); --glow-bg-light: rgba(168,85,247,0.06);">
+                    <svg class="sc2-bg-graphic" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 25h45v50H15z" stroke="#a855f7" stroke-width="2.5"/>
+                        <path d="M60 40l25-15v50l-25-15V40z" stroke="#a855f7" stroke-width="2.5"/>
+                        <circle cx="37" cy="50" r="7" fill="#a855f7"/>
+                    </svg>
+                    <div>
+                        <div class="sc2-icon-box" style="--glow-color: #a855f7;">
+                            <i class="fa-solid fa-video" style="color: #a855f7;"></i>
+                        </div>
+                        <h3 class="sc2-title">Video Editing</h3>
+                        <p class="sc2-desc">High-retention, engaging video edits for social media reels & ads.</p>
+                    </div>
+                    <span class="sc2-link" style="--glow-color: #a855f7;">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+     INTERACTIVE PROJECT ESTIMATOR (HOMEPAGE)
+     ========================================== -->
+    <section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
+        <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 gs-reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Project Estimator Widget</h2>
+                <p class="text-[var(--text-muted)]">Select the services you need to instantly calculate the estimated timeline and budget tier.</p>
+            </div>
+
+            <div class="glass-card-premium p-8 gs-slide-up" style="background: var(--card-bg); backdrop-filter: blur(24px); border: 1px solid var(--card-border); border-radius: 24px; box-shadow: var(--box-shadow);">
+                <div class="row gy-4 align-items-center">
+                    <!-- Selection Area -->
+                    <div class="col-lg-7 space-y-4">
+                        <h4 class="text-[var(--text-main)] font-bold mb-4" style="font-size: 1.2rem;">Select Required Services:</h4>
+                        
+                        <label class="block interactive w-100 mb-3">
+                            <input type="checkbox" class="custom-checkbox est-cb" data-time="4" data-tier="2">
+                            <div class="checkbox-label">
+                                <span><i class="fa-solid fa-laptop-code me-3"></i> Full-Stack Web Development</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </label>
+                        <label class="block interactive w-100 mb-3">
+                            <input type="checkbox" class="custom-checkbox est-cb" data-time="6" data-tier="3">
+                            <div class="checkbox-label">
+                                <span><i class="fa-brands fa-app-store me-3"></i> Mobile App Development</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </label>
+                        <label class="block interactive w-100 mb-3">
+                            <input type="checkbox" class="custom-checkbox est-cb" data-time="2" data-tier="1">
+                            <div class="checkbox-label">
+                                <span><i class="fa-solid fa-bullseye me-3"></i> Digital Marketing & SEO</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </label>
+                        <label class="block interactive w-100">
+                            <input type="checkbox" class="custom-checkbox est-cb" data-time="2" data-tier="1">
+                            <div class="checkbox-label">
+                                <span><i class="fa-solid fa-palette me-3"></i> UI/UX Design & Branding</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Live Result Area -->
+                    <div class="col-lg-5">
+                        <div class="estimator-box flex flex-col justify-center text-center h-100">
+                            <div class="mb-5">
+                                <p class="text-[10px] text-[var(--text-muted)] text-uppercase tracking-widest font-bold mb-2" style="font-size: 0.75rem; letter-spacing: 2px;">Estimated Timeline</p>
+                                <h3 class="font-black text-[#00F0FF]" id="est-time" style="font-size: 2.5rem; font-weight: 900;">0 Weeks</h3>
+                            </div>
+                            <div class="mb-5">
+                                <p class="text-[10px] text-[var(--text-muted)] text-uppercase tracking-widest font-bold mb-2" style="font-size: 0.75rem; letter-spacing: 2px;">Suggested Budget Tier</p>
+                                <h3 class="font-bold text-[#B026FF]" id="est-tier" style="font-size: 1.5rem;">Select a Service</h3>
+                            </div>
+                            <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="w-100 py-3 text-white rounded-xl font-bold tracking-wider transition-all interactive" style="background: linear-gradient(to right, #B026FF, #00F0FF); border: none;">
+                                PROCEED TO CONTACT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="saas-products" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-3">
+            <h2 class="section-heading gsap-fade">Premium <span class="text-cyan">SaaS Products.</span></h2>
+            <p class="section-sub gsap-fade">Ready-to-deploy enterprise software designed to automate your entire business workflow.</p>
+        </div>
+        
+        <div class="row g-4 align-items-stretch masonry-like">
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="https://fitzone-gym2.netlify.app/" target="_blank" class="saas-new-card interactive" style="--badge-color: #00d2ff;">
+                    <div class="saas-img-wrapper">
+                        <div class="saas-badge"><i class="fa-solid fa-dumbbell me-2"></i> Fitness</div>
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80" alt="FitZone Gym" class="saas-img">
+                    </div>
+                    <div class="saas-content">
+                        <h3 class="saas-title">FitZone Gym</h3>
+                        <p class="saas-desc">Complete gym management software with member tracking, workout schedules, and subscription payments.</p>
+                        <div class="saas-features">
+                            <span><i class="fa-solid fa-check"></i> Membership Management</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="https://tastebite-restaurant0.netlify.app/" target="_blank" class="saas-new-card interactive" style="--badge-color: #9d4edd;">
+                    <div class="saas-img-wrapper">
+                        <div class="saas-badge" style="color: #9d4edd; border-color: rgba(157,78,221,0.4);"><i class="fa-solid fa-utensils me-2"></i> Restaurant</div>
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="TasteBite Restaurant" class="saas-img">
+                    </div>
+                    <div class="saas-content">
+                        <h3 class="saas-title">TasteBite Restaurant</h3>
+                        <p class="saas-desc">Modern restaurant platform featuring online table reservations, digital menus, and order management.</p>
+                        <div class="saas-features">
+                            <span><i class="fa-solid fa-check"></i> Table Reservation</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="https://jobalertmarathi.in/" target="_blank" class="saas-new-card interactive" style="--badge-color: #9d4edd;">
+                    <div class="saas-img-wrapper">
+                        <div class="saas-badge"><i class="fa-solid fa-briefcase me-2"></i> HR</div>
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80" alt="Job Portal" class="saas-img">
+                    </div>
+                    <div class="saas-content">
+                        <h3 class="saas-title">Pro Job Portal</h3>
+                        <p class="saas-desc">Advanced job listing platform with CV uploads, tracking, and employer dashboards.</p>
+                        <div class="saas-features">
+                            <span><i class="fa-solid fa-check"></i> Smart Parsing</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="framework" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-4">
+            <h2 class="section-heading gsap-fade">The TechPixels <span class="text-cyan">Framework</span></h2>
+            <p class="section-sub gsap-fade">Our proven 4-step process from concept to scalable reality.</p>
+        </div>
+        
+        <div class="fw-timeline-wrapper gsap-fade interactive">
+            <div class="fw-line d-none d-lg-block"><div class="fw-line-progress"></div></div>
+            <div class="fw-grid">
+                <div class="fw-item">
+                    <div class="fw-card">
+                        <div class="fw-circle" style="background: rgba(0,210,255,0.1); border: 1px solid #00d2ff; color: #00d2ff;">1</div>
+                        <h4 class="fw-title">Audit & Strategy</h4>
+                        <p class="fw-desc">Deep dive into technical audits and competitor analysis.</p>
+                    </div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-card">
+                        <div class="fw-circle" style="background: rgba(157,78,221,0.1); border: 1px solid #9d4edd; color: #9d4edd;">2</div>
+                        <h4 class="fw-title">Build & Optimize</h4>
+                        <p class="fw-desc">Developing lightning-fast web platforms and SaaS apps.</p>
+                    </div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-card">
+                        <div class="fw-circle" style="background: rgba(0,210,255,0.1); border: 1px solid #00d2ff; color: #00d2ff;">3</div>
+                        <h4 class="fw-title">Scale & Acquire</h4>
+                        <p class="fw-desc">Deploying aggressive SEO and Paid Media campaigns.</p>
+                    </div>
+                </div>
+                <div class="fw-item">
+                    <div class="fw-card">
+                        <div class="fw-circle" style="background: rgba(157,78,221,0.1); border: 1px solid #9d4edd; color: #9d4edd;">4</div>
+                        <h4 class="fw-title">Analyze & Retain</h4>
+                        <p class="fw-desc">Continuous testing and SQL data analysis to retain clients.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="engagement" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-4">
+            <span style="color: #0ea5e9; font-weight: 800; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;">Partnership</span>
+            <h2 class="section-heading gsap-fade mt-2">Engagement <span class="text-purple">Models.</span></h2>
+        </div>
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(14,165,233,0.1); display:flex; align-items:center; justify-content:center; color:#0ea5e9; font-size:24px;"><i class="fa-solid fa-briefcase"></i></div>
+                    <h4 class="fw-bold mb-3" style="color: var(--text-main);">Project Based</h4>
+                    <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">Fixed scope, fixed timeline, and fixed budget. Best for MVP development and clear requirement projects.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(157,78,221,0.1); display:flex; align-items:center; justify-content:center; color:#9d4edd; font-size:24px;"><i class="fa-solid fa-users"></i></div>
+                    <h4 class="fw-bold mb-3" style="color: var(--text-main);">Dedicated Team</h4>
+                    <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">Our elite developers and marketers work directly with your internal team as a seamless extension of your company.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(14,165,233,0.1); display:flex; align-items:center; justify-content:center; color:#0ea5e9; font-size:24px;"><i class="fa-solid fa-rocket"></i></div>
+                    <h4 class="fw-bold mb-3" style="color: var(--text-main);">Growth Partner</h4>
+                    <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">A monthly retainer for continuous SEO, Meta Ads scaling, and server maintenance. We focus purely on your long-term ROI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="industries" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-4">
+            <h2 class="section-heading gsap-fade">Industries We Serve.</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #00d2ff;">
+                    <i class="fa-solid fa-cart-shopping ind-icon"></i>
+                    <h6 class="ind-title">E-Commerce</h6>
+                </div>
+            </a>
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #9d4edd;">
+                    <i class="fa-solid fa-hospital ind-icon"></i>
+                    <h6 class="ind-title">Healthcare</h6>
+                </div>
+            </a>
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #00d2ff;">
+                    <i class="fa-solid fa-building ind-icon"></i>
+                    <h6 class="ind-title">Real Estate</h6>
+                </div>
+            </a>
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #9d4edd;">
+                    <i class="fa-solid fa-graduation-cap ind-icon"></i>
+                    <h6 class="ind-title">EdTech</h6>
+                </div>
+            </a>
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #00d2ff;">
+                    <i class="fa-solid fa-coins ind-icon"></i>
+                    <h6 class="ind-title">Finance</h6>
+                </div>
+            </a>
+            <a href="#" class="col-lg-2 col-md-4 col-6 gsap-card text-decoration-none">
+                <div class="industry-card interactive" style="--hover-color: #9d4edd;">
+                    <i class="fa-solid fa-rocket ind-icon"></i>
+                    <h6 class="ind-title">Startups</h6>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section id="portfolio" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="text-center mb-5 mt-4">
+            <h2 class="section-heading gsap-fade">Case Studies.</h2>
+        </div>
+        <div class="row g-4 mt-2 align-items-stretch">
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="#" class="case-card interactive" style="background-image: url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80');">
+                    <i class="fa-solid fa-cart-shopping case-icon text-cyan"></i>
+                    <h4 class="case-title">E-Commerce Scaling</h4>
+                    <p class="case-text mb-3">Rebuilt backend architecture and scaled Social Media Ads.</p>
+                    <h5 class="text-cyan font-space fw-bold">+312% ROI</h5>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="#" class="case-card interactive" style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80');">
+                    <i class="fa-solid fa-briefcase case-icon text-purple"></i>
+                    <h4 class="case-title">Job Alert Portal</h4>
+                    <p class="case-text mb-3">Developed highly scalable architecture and executed technical SEO.</p>
+                    <h5 class="text-purple font-space fw-bold">1M+ Traffic</h5>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="#" class="case-card interactive" style="background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80');">
+                    <i class="fa-solid fa-hospital case-icon text-cyan"></i>
+                    <h4 class="case-title">HealthTech App</h4>
+                    <p class="case-text mb-3">Custom UI/UX, product branding and secure cloud hosting.</p>
+                    <h5 class="text-cyan font-space fw-bold">10k+ Installs</h5>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <h2 class="section-heading gsap-fade text-start mb-5 mt-4">Client Stories.</h2>
+        <div class="row g-4 mt-2">
+            <div class="col-lg-6 gsap-card">
+                <div class="testi-card interactive">
+                    <i class="fa-solid fa-quote-right testi-icon"></i>
+                    <p class="testi-text">"TechPixels completely transformed our digital presence. The backend architecture is robust and the targeted ad campaigns generated incredible ROI."</p>
+                    <div class="testi-author">Sarah Jenkins</div>
+                    <div class="testi-role">CEO, StartupInc</div>
+                </div>
+            </div>
+            <div class="col-lg-6 gsap-card">
+                <div class="testi-card interactive">
+                    <i class="fa-solid fa-quote-right testi-icon"></i>
+                    <p class="testi-text">"The level of professionalism and technical expertise is unmatched. They delivered our complex web application weeks ahead of the deadline."</p>
+                    <div class="testi-author">David Chen</div>
+                    <div class="testi-role">Product Manager, TechFlow</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog-preview" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5 mt-4 gsap-fade">
+            <div class="text-center text-md-start mb-4 mb-md-0">
+                <h2 class="section-heading mb-0 text-start">Latest <span class="text-cyan">Insights.</span></h2>
+                <p style="color: var(--text-muted); font-size: 15px; margin-top: 10px;">Stay updated with our technical architectures and growth strategies.</p>
+            </div>
+            <a href="{% url 'blog' %}" class="magnetic-btn magnetic interactive" style="background: transparent; border: 1px solid var(--card-border); color: var(--text-main);">View All Articles <i class="fa-solid fa-arrow-right ms-2"></i></a>
+        </div>
+        <div class="row g-4 align-items-stretch">
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
+                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="AI in SaaS">
+                        <div class="mt-4 px-2">
+                            <span class="badge mb-2" style="background: rgba(14,165,233,0.1); color: #0ea5e9; border: 1px solid rgba(14,165,233,0.3);">Tech & AI</span>
+                            <h4 class="fw-bold mb-2" style="color: var(--text-main); font-family: 'Space Grotesk', sans-serif;">How AI is Transforming SaaS Architectures in 2026</h4>
+                            <p class="small mb-0" style="color: var(--text-muted); line-height: 1.6;">Read how embedding custom LLMs directly into SaaS products can 10x workflow efficiency and automate operations.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
+                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="Meta Ads Strategy">
+                        <div class="mt-4 px-2">
+                            <span class="badge mb-2" style="background: rgba(157,78,221,0.1); color: #9d4edd; border: 1px solid rgba(157,78,221,0.3);">Marketing</span>
+                            <h4 class="fw-bold mb-2" style="color: var(--text-main); font-family: 'Space Grotesk', sans-serif;">The Ultimate Meta Ads Strategy for E-Commerce</h4>
+                            <p class="small mb-0" style="color: var(--text-muted); line-height: 1.6;">Stop burning ad spend. Discover the exact CAPI setup and retargeting funnels we use to generate a 350% average ROAS.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-4 col-md-6 gsap-card">
+                <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
+                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="AWS Cloud Hosting">
+                        <div class="mt-4 px-2">
+                            <span class="badge mb-2" style="background: rgba(14,165,233,0.1); color: #0ea5e9; border: 1px solid rgba(14,165,233,0.3);">Cloud Infra</span>
+                            <h4 class="fw-bold mb-2" style="color: var(--text-main); font-family: 'Space Grotesk', sans-serif;">Scaling to 1M Users: An AWS Architecture Blueprint</h4>
+                            <p class="small mb-0" style="color: var(--text-muted); line-height: 1.6;">A deep dive into load balancers, EC2 instances, and PostgreSQL optimizations required to handle massive traffic spikes.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <h2 class="section-heading gsap-fade text-center mb-5 mt-4">Frequently Asked Questions.</h2>
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-9 gsap-fade">
+                <div class="accordion" id="faqAccordion">
+                    
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <i class="fa-solid fa-code text-cyan me-3"></i> How long does custom website/app development take?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                The timeline depends on complexity. A standard business website takes 2-3 weeks. However, custom SaaS platforms built on Django or functional mobile apps take between 4-8 weeks based on architecture.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                <i class="fa-solid fa-database text-purple me-3"></i> Do you provide backend logic and database setup?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely. We specialize in robust backend architecture using Python (Django) and dynamic SQL databases (PostgreSQL/MySQL). We also handle end-to-end cloud hosting on platforms like AWS.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                <i class="fa-solid fa-bullseye text-cyan me-3"></i> Do you manage budgets for Social Media Ads?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes. We manage end-to-end performance marketing, setting up and optimizing ads on platforms like Meta (Facebook/Insta) and Google to generate high-quality leads and maximize your ROI.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                <i class="fa-solid fa-cloud text-purple me-3"></i> Do you provide domain registration and cloud hosting?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we provide end-to-end deployment. From purchasing domains to setting up secure SSL certificates and hosting your project on scalable cloud servers like AWS, Render, or DigitalOcean.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                <i class="fa-solid fa-mobile-screen text-cyan me-3"></i> Will my website or platform be mobile-responsive?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                100%. We follow a mobile-first design approach. Whether it's a simple landing page or a complex SaaS dashboard, it will render flawlessly on smartphones, tablets, and large desktop screens.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                <i class="fa-solid fa-palette text-purple me-3"></i> What does your UI/UX design process look like?
+                            </button>
+                        </h2>
+                        <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Before writing a single line of code, we create wireframes and high-fidelity mockups in Figma. We share these designs with you for approval, ensuring the final product matches your exact vision and brand identity.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item interactive">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                <i class="fa-solid fa-headset text-cyan me-3"></i> Do you offer maintenance and support after launch?
+                            </button>
+                        </h2>
+                        <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we offer 24/7 dedicated support and monthly maintenance packages. We monitor server uptime, fix bugs instantly, and provide regular security updates so your business never stops running.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FIX: Lead Magnet / Newsletter Input visibility -->
+    <section class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="rounded-5 p-4 p-md-5 position-relative overflow-hidden gsap-fade interactive" style="background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(157,78,221,0.08)); border: 1px solid rgba(14,165,233,0.2);">
+            <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:#00d2ff; filter:blur(60px); opacity:0.2;"></div>
+            
+            <div class="row align-items-center text-center text-lg-start position-relative z-1">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <span class="badge mb-3 px-3 py-2" style="background: rgba(157,78,221,0.1); color: #9d4edd; border: 1px solid rgba(157,78,221,0.3); font-weight: bold; letter-spacing: 1px;">THE TECHPIXELS NEWSLETTER</span>
+                    <h2 class="fw-bold mb-3" style="font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; color: var(--text-main);">Join 5,000+ Tech Founders.</h2>
+                    <p class="mb-0" style="color: var(--text-muted); font-size: 15px; line-height: 1.6; max-width: 500px; margin: 0 auto;">Get weekly exclusive insights on scalable cloud architectures, SEO ranking strategies, and Meta Ads mastery delivered straight to your inbox.</p>
+                </div>
+                <div class="col-lg-6">
+                    <!-- FIX: Updated form and input class for clear visibility -->
+                    <form id="newsletter-form" class="d-flex flex-column flex-sm-row gap-3 mt-4">
+                        {% csrf_token %}
+                        <input type="email" id="newsletter-email" name="email" class="startup-input interactive m-0" style="border-radius: 100px; padding: 15px 25px; flex-grow: 1;" placeholder="Enter your email address..." required>
+                        <button type="submit" id="newsletter-btn" class="magnetic-btn magnetic interactive m-0" style="white-space: nowrap; padding: 15px 35px;">Subscribe <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                    </form>
+                    <p class="mt-3 mb-0 text-center" style="font-size: 11px; color: var(--text-muted);"><i class="fa-solid fa-lock me-1"></i> No spam. Unsubscribe anytime.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="contact-wrapper gsap-fade position-relative overflow-hidden">
+                    <div style="position:absolute; top:-50px; left:-50px; width:200px; height:200px; background:#00d2ff; filter:blur(100px); opacity:0.15;"></div>
+                    <div class="text-center mb-5 position-relative z-1">
+                        <h2 class="section-heading mb-2">Let's Build Something <span class="text-cyan">Amazing.</span></h2>
+                        <p class="text-secondary" style="font-size: 16px;">Drop us a text message below. This form directly alerts our admin panel and notifies us via email instantly.</p>
+                    </div>
+                    <form method="POST" action="{% url 'blog' %}" class="position-relative z-1">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Your Name</label>
+                                <input type="text" class="startup-input interactive" name="name" placeholder="Mohan Nikam" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Mobile Number</label>
+                                <input type="tel" class="startup-input interactive" name="phone" placeholder="+91 98765 43210" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Email ID</label>
+                                <input type="email" class="startup-input interactive" name="email" placeholder="techpixels@gmail.com" required>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Text Message / Project Details</label>
+                                <textarea class="startup-input interactive" name="message" rows="4" placeholder="Tell us what you need..." required></textarea>
+                            </div>
+                            <div class="col-12 text-center mt-4">
+                                <button type="submit" class="btn-submit interactive">Send Direct Message <i class="fa-solid fa-paper-plane ms-2"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Tech Stack Tabs Logic
+        const tabs = document.querySelectorAll('.tech-tab-btn');
+        const contents = document.querySelectorAll('.tech-grid');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                contents.forEach(c => {
+                    c.classList.remove('active');
+                });
+
+                const targetId = tab.getAttribute('data-target');
+                const targetContent = document.getElementById(targetId);
+                targetContent.classList.add('active');
+            });
+        });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.from(".hero-title", { x: -50, opacity: 0, duration: 0.9, ease: "power3.out" });
+        gsap.utils.toArray('.gsap-card').forEach(card => { 
+            gsap.from(card, { 
+                scrollTrigger: { 
+                    trigger: card, 
+                    start: "top 90%"
+                }, 
+                y: 30, 
+                opacity: 0, 
+                duration: 0.7, 
+                ease: "power3.out" 
+            }); 
+        });
+        gsap.utils.toArray('.gsap-fade').forEach(elem => { 
+            gsap.from(elem, { 
+                scrollTrigger: { 
+                    trigger: elem, 
+                    start: "top 92%"
+                }, 
+                opacity: 0, 
+                y: 20, 
+                duration: 0.7 
+            }); 
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // ... (Keep your GSAP and Tech Stack JS here) ...
+
+        // NEW: AJAX Newsletter Submission Logic
+        document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevents page reload
+            
+            const emailInput = document.getElementById('newsletter-email');
+            const email = emailInput.value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const btn = document.getElementById('newsletter-btn');
+            
+            // Show loading animation on button
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = 'Subscribing... <i class="fa-solid fa-spinner fa-spin ms-2"></i>';
+            btn.style.pointerEvents = 'none'; // Disable click
+            
+            // Send data to Django Backend
+            fetch("{% url 'subscribe' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrfToken
+                },
+                body: new URLSearchParams({"email": email})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    // Show Premium Glassmorphism Pop-up
+                    Swal.fire({
+                        title: 'Subscribed! 🎉',
+                        text: data.message,
+                        icon: 'success',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-main)',
+                        confirmButtonColor: '#00F0FF',
+                        customClass: { popup: 'glass-card-premium' }
+                    });
+                    emailInput.value = ''; // Clear input
+                } else {
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: data.message,
+                        icon: 'error',
+                        background: 'var(--card-bg)',
+                        color: 'var(--text-main)'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            })
+            .finally(() => {
+                // Restore button
+                btn.innerHTML = originalBtnText;
+                btn.style.pointerEvents = 'auto';
+            });
+        });
+    </script>
+{% endblock %}
