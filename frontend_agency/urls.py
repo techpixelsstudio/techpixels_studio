@@ -28,6 +28,10 @@ urlpatterns = [
 
     # Subscribe logic
     path('subscribe/', views.subscribe_newsletter, name='subscribe'),
+
+    # Legal Pages
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-conditions/', views.terms_conditions, name='terms_conditions'),
 ]
 
 if settings.DEBUG:

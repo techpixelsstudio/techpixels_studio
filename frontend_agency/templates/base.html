@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TechPixels Studio | 360° Digital & Tech Agency{% endblock %}</title>
     
-    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favcon.svg' %}">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -240,8 +240,10 @@
 
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand interactive" href="{% url 'home' %}" style="background: var(--card-bg); padding: 5px 15px; border-radius: 12px; border: 1px solid var(--card-border); backdrop-filter: blur(10px);">
-                <img src="{% static 'images/logo.jpg' %}" alt="TechPixels Studio" class="brand-logo" style="height: 40px; border-radius: 5px; object-fit: contain;">
+            <a href="{% url 'home' %}" class="flex items-center gap-3 interactive group">
+                <div class="bg-[#050505] px-3 py-1.5 rounded-xl shadow-lg border border-gray-800/50 transition-transform duration-300 group-hover:scale-105">
+                    <img src="{% static 'images/logo.svg' %}" class="h-8 md:h-10 w-auto" alt="TechPixels Studio">
+                </div>
             </a>
 
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -291,15 +293,17 @@
 
     <footer class="mega-footer container-fluid px-4 px-md-5 py-5">
         <div class="row text-center text-md-start mb-4 justify-content-between">
+            
             <div class="col-lg-4 col-md-12 mb-5 mb-lg-0">
                 <h3 class="fw-bold mb-3" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--text-main);">TechPixels.</h3>
                 <p style="color: var(--text-muted); font-size: 14px; line-height: 1.8;">
                     A premier 360-degree digital agency. Bridging the gap between complex engineering and ROI-driven marketing.
                 </p>
                 <div class="d-flex gap-3 justify-content-center justify-content-md-start mt-4">
-                    <a href="#" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="#" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com/company/techpixelsstudio" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/techpixels.studio/" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://github.com/techpixels-studio" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61590549358703" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-facebook-f"></i></a>
                 </div>
             </div>
             
@@ -323,8 +327,15 @@
                 </ul>
             </div>
         </div>
-        <div class="text-center mt-4 border-top pt-4" style="border-color: var(--card-border) !important; color: var(--text-muted); font-size: 13px; font-weight: 600;">
-            &copy; 2026 TechPixels Studio. Engineered by Mohan Nikam.
+        
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 border-top pt-4" style="border-color: var(--card-border) !important; color: var(--text-muted); font-size: 13px; font-weight: 600;">
+            <div class="mb-3 mb-md-0">
+                &copy; 2026 TechPixels Studio. All rights reserved.
+            </div>
+            <div class="d-flex gap-4">
+                <a href="{% url 'privacy_policy' %}" class="text-decoration-none" style="color: var(--text-muted); transition: color 0.3s;" onmouseover="this.style.color='#00F0FF'" onmouseout="this.style.color='var(--text-muted)'">Privacy Policy</a>
+                <a href="{% url 'terms_conditions' %}" class="text-decoration-none" style="color: var(--text-muted); transition: color 0.3s;" onmouseover="this.style.color='#00F0FF'" onmouseout="this.style.color='var(--text-muted)'">Terms & Conditions</a>
+            </div>
         </div>
     </footer>
 
@@ -395,25 +406,73 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {% if messages %}
+    {% if swal_trigger %}
         <script>
-            {% for message in messages %}
+            document.addEventListener("DOMContentLoaded", function() {
                 Swal.fire({
                     title: 'Success! 🎉',
-                    text: '{{ message|escapejs }}',  /* <--- I added escapejs here for safety */
+                    text: '{{ swal_msg|escapejs }}',
                     icon: 'success',
-                    background: '#0f172a', /* Dark glassmorphism background */
+                    background: '#0f172a',
                     color: '#ffffff',
                     confirmButtonColor: '#0ea5e9',
                     confirmButtonText: 'Okay, Thanks!',
                     customClass: {
                         popup: 'border border-cyan-500 rounded-3xl shadow-[0_0_20px_rgba(14,165,233,0.2)]'
                     }
+                }).then((result) => {
+                    // Pop-up close kelyavarach redirect hoil
+                    window.location.href = "{{ redirect_url }}";
                 });
-            {% endfor %}
+            });
         </script>
     {% endif %}
 
+    <!-- ==========================================
+         COOKIE CONSENT BANNER (Added Here!)
+         ========================================== -->
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out">
+        <div class="max-w-6xl mx-auto m-4 p-6 bg-[#0a0a0a]/90 backdrop-blur-2xl rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#00F0FF]/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+            <div class="text-sm text-[var(--text-muted)]">
+                <strong class="text-white text-lg block mb-1"><i class="fa-solid fa-cookie-bite text-[#B026FF] mr-2"></i> Your Privacy Matters</strong>
+                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our backend storing these cookies. Read our <a href="{% url 'privacy_policy' %}" class="text-[#00F0FF] hover:underline font-bold">Privacy Policy</a>.
+            </div>
+            <div class="flex gap-3 shrink-0 w-full md:w-auto justify-end">
+                <button id="decline-cookies" class="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors text-sm font-bold w-full md:w-auto">Decline</button>
+                <button id="accept-cookies" class="px-6 py-3 rounded-xl bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold text-sm shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-105 transition-transform w-full md:w-auto">Accept All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const banner = document.getElementById('cookie-consent-banner');
+            const acceptBtn = document.getElementById('accept-cookies');
+            const declineBtn = document.getElementById('decline-cookies');
+
+            // Check if cookie already exists
+            if (!document.cookie.split('; ').find(row => row.startsWith('techpixels_cookie_consent='))) {
+                // Show banner after 1.5 seconds
+                setTimeout(() => {
+                    banner.classList.remove('translate-y-full');
+                }, 1500);
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                // Set cookie valid for 365 days
+                document.cookie = "techpixels_cookie_consent=accepted; max-age=" + (60*60*24*365) + "; path=/; SameSite=Lax";
+                banner.classList.add('translate-y-full');
+            });
+
+            declineBtn.addEventListener('click', () => {
+                // Set cookie valid for 30 days
+                document.cookie = "techpixels_cookie_consent=declined; max-age=" + (60*60*24*30) + "; path=/; SameSite=Lax";
+                banner.classList.add('translate-y-full');
+            });
+        });
+    </script>
+
     {% block extra_js %}{% endblock %}
+    
 </body>
 </html>

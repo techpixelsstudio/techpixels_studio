@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
-from django.http import JsonResponse # <--- Yellow line fix (Import added)
+from django.http import JsonResponse
 from .models import ContactLead, JobApplication, JobOpening, BlogPost, InstagramReel
 
 # --- MAIN PAGES ---
@@ -26,45 +26,44 @@ def about(request):
         
         subject = f"🚀 New Lead from ABOUT PAGE: {name} | TechPixels"
         email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nService Type: {service_type}\nMessage: {message}"
+        
         try:
-            send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['mohannikam988@gmail.com'], fail_silently=False)
+            send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
         except Exception as e:
             print("Email sending failed:", e)
-            
-        messages.success(request, "Tumacha msg amhala milala. Amhi lavkarch tumchyashi contact karu!")
-        return redirect('home')
+        
+        # CHANGED: Custom Pop-up Trigger (Redirects to /blog/)
+        context = {
+            'swal_trigger': True,
+            'swal_msg': "Tumacha msg amhala milala. Amhi lavkarch tumchyashi contact karu!",
+            'redirect_url': '/blog/'
+        }
+        return render(request, 'about.html', context)
+        
     return render(request, 'about.html')
 
 def products(request):
     return render(request, 'products.html')
 
-# --- BLOG LOGIC (With AUTO-FIX for Empty Slugs) ---
+# --- BLOG LOGIC ---
 def blog(request):
-    # 🔥 AUTO-FIX: Jar kuthlya junya post madhe slug nsel, tar he code automatic slug banvel
-    posts_without_slugs = BlogPost.objects.filter(slug='')
-    for p in posts_without_slugs:
-        p.save() # He automatic slug generate karel
-
-    # Fakt latest 6 posts gheto
-    posts = BlogPost.objects.all().order_by('-date_posted')[:6]
-    
-    # Fakt latest 3 active reels gheto
-    reels = InstagramReel.objects.filter(is_active=True).order_by('-created_at')[:3]
-    
-    return render(request, 'blog.html', {'posts': posts, 'reels': reels})
-
-def all_blogs(request):
-    # 🔥 AUTO-FIX here too
     posts_without_slugs = BlogPost.objects.filter(slug='')
     for p in posts_without_slugs:
         p.save()
 
-    # Sagle posts gheto (View All Articles sathi)
+    posts = BlogPost.objects.all().order_by('-date_posted')[:6]
+    reels = InstagramReel.objects.filter(is_active=True).order_by('-created_at')[:3]
+    return render(request, 'blog.html', {'posts': posts, 'reels': reels})
+
+def all_blogs(request):
+    posts_without_slugs = BlogPost.objects.filter(slug='')
+    for p in posts_without_slugs:
+        p.save()
+
     posts = BlogPost.objects.all().order_by('-date_posted')
     return render(request, 'all_blogs.html', {'posts': posts})
 
 def blog_detail(request, slug):
-    # Article vachnyasathi detail page
     post = get_object_or_404(BlogPost, slug=slug)
     return render(request, 'blog_detail.html', {'post': post})
 
@@ -93,6 +92,13 @@ def custom_tech(request):
 def digital_marketing(request):
     return render(request, 'digital_marketing.html')
 
+# --- LEGAL PAGES ---
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def terms_conditions(request):
+    return render(request, 'terms_conditions.html')
+
 # --- CONTACT & CAREER ---
 def contact(request):
     if request.method == 'POST':
@@ -111,18 +117,25 @@ def contact(request):
         
         subject = f"🚀 New Project Lead: {name} | TechPixels"
         email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nService Type: {service_type}\nMessage: {message}"
+        
         try:
             send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
         except Exception as e:
-            print("Email failed:", e) 
-            
-        messages.success(request, "Your inquiry has been submitted! Our senior architect will contact you shortly.")
-        return redirect('blog')
+            print("Email sending failed:", e) 
+        
+        # CHANGED: Custom Pop-up Trigger (Redirects to /about/)
+        context = {
+            'swal_trigger': True,
+            'swal_msg': "Your inquiry has been submitted! Our senior architect will contact you shortly.",
+            'redirect_url': '/about/'
+        }
+        return render(request, 'contact.html', context)
+        
     return render(request, 'contact.html')
 
 def career(request):
     jobs = JobOpening.objects.filter(is_active=True).order_by('-created_at')
-    
+
     if request.method == 'POST':
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
@@ -140,25 +153,29 @@ def career(request):
         email_body = f"Name: {full_name}\nEmail: {email}\nRole Applied For: {role}\nPortfolio: {portfolio}\n\nWhy TechPixels?\n{short_note}"
 
         try:
-            msg = EmailMessage(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['mohannikam988@gmail.com'])
+            msg = EmailMessage(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'])
             if resume:
                 msg.attach(resume.name, resume.read(), resume.content_type)
             msg.send(fail_silently=False)
         except Exception as e:
-            print("Email failed:", e)
+            print("Email sending failed:", e)
 
-        messages.success(request, "Tumcha application submit jhala ahe! Aamhi lavkarach tumhala sampark karu.")
-        return redirect('career')
+        # CHANGED: Custom Pop-up Trigger (Redirects to /career/)
+        context = {
+            'jobs': jobs,
+            'swal_trigger': True,
+            'swal_msg': "Message Sent Successfully! We will review your application and get back to you soon.",
+            'redirect_url': '/career/'
+        }
+        return render(request, 'career.html', context)
 
     return render(request, 'career.html', {'jobs': jobs})
 
-# --- NEWSLETTER ---
+# --- NEWSLETTER AJAX ---
 def subscribe_newsletter(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         if email:
-            # Pop-up message set karto
-            messages.success(request, 'Welcome to the Inner Circle! You will receive our next insights soon.')
-            # Aani direct Home page la pathavto
-            return redirect('home')
-    return redirect('blog')
+            return JsonResponse({'status': 'success', 'message': 'Welcome to the club! You will receive our next insights soon.'})
+        return JsonResponse({'status': 'error', 'message': 'Please provide a valid email.'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'}, status=400)

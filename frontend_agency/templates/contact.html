@@ -179,8 +179,8 @@
                     <p class="text-[var(--text-muted)] text-sm italic mb-4">"We don't just build websites or run ads. We engineer scalable systems that act as an unstoppable growth engine for your business."</p>
                     <div class="flex items-center gap-3 mt-4">
                         <div class="flex -space-x-3">
-                            <img class="w-8 h-8 rounded-full border-2 border-[var(--card-bg)]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Mohan">
-                            <img class="w-8 h-8 rounded-full border-2 border-[var(--card-bg)]" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&q=80" alt="Nikhil">
+                            <img class="w-8 h-8 rounded-full border-2 border-[var(--bg-main)]" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Mohan">
+                            <img class="w-8 h-8 rounded-full border-2 border-[var(--bg-main)]" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&q=80" alt="Nikhil">
                         </div>
                         <div>
                             <p class="text-[var(--text-main)] text-xs font-bold">Mohan & Nikhil</p>
@@ -196,46 +196,46 @@
                     
                     <h3 class="text-2xl font-bold text-[var(--text-main)] mb-6">Send us a message</h3>
                     
-                    <form id="contactForm" onsubmit="submitForm(event)">
+                    <form id="contactForm" method="POST" action="{% url 'contact' %}">
                         {% csrf_token %}
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
-                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">First Name *</label>
-                                <input type="text" id="fname" required class="glass-input interactive" placeholder="Mohan">
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Your Name *</label>
+                                <input type="text" id="fname" name="name" required class="glass-input interactive" placeholder="Mohan Nikam">
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Last Name</label>
-                                <input type="text" id="lname" class="glass-input interactive" placeholder="Nikam">
+                                <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Company Name</label>
+                                <input type="text" id="company" name="company" class="glass-input interactive" placeholder="TechPixels Studio">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
                                 <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Email Address *</label>
-                                <input type="email" id="email" required class="glass-input interactive" placeholder="techixels@gmail.com">
+                                <input type="email" id="email" name="email" required class="glass-input interactive" placeholder="mohannikam988@gmail.com">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Phone Number</label>
-                                <input type="tel" id="phone" class="glass-input interactive" placeholder="+91 98765 43210">
+                                <input type="tel" id="phone" name="phone" class="glass-input interactive" placeholder="+91 98765 43210">
                             </div>
                         </div>
 
                         <div class="mb-6">
                             <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">What service do you need? *</label>
-                            <select id="service" required class="glass-input appearance-none interactive" style="cursor: pointer;">
+                            <select id="service" name="service_type" required class="glass-input appearance-none interactive" style="cursor: pointer;">
                                 <option value="" disabled selected>Select an option...</option>
-                                <option value="web">Enterprise Web Development</option>
-                                <option value="saas">SaaS Product / Custom ERP</option>
-                                <option value="seo">SEO & Digital Marketing</option>
-                                <option value="video">Video Editing & Ad Films</option>
-                                <option value="other">Other / Spontaneous Query</option>
+                                <option value="Enterprise Web Development">Enterprise Web Development</option>
+                                <option value="SaaS Product / Custom ERP">SaaS Product / Custom ERP</option>
+                                <option value="SEO & Digital Marketing">SEO & Digital Marketing</option>
+                                <option value="Video Editing & Ad Films">Video Editing & Ad Films</option>
+                                <option value="Other / Spontaneous Query">Other / Spontaneous Query</option>
                             </select>
                         </div>
 
                         <div class="mb-8">
                             <label class="block text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">Tell us about your project *</label>
-                            <textarea id="message" rows="5" required class="glass-input resize-none interactive" placeholder="Briefly describe your goals, timeline, and current bottlenecks..."></textarea>
+                            <textarea id="message" name="message" rows="5" required class="glass-input resize-none interactive" placeholder="Briefly describe your goals, timeline, and current bottlenecks..."></textarea>
                         </div>
 
                         <button type="submit" class="w-full bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all transform hover:-translate-y-1 interactive text-sm tracking-widest uppercase">
@@ -244,12 +244,6 @@
 
                         <p class="text-[10px] text-center text-[var(--text-muted)] mt-4"><i class="fa-solid fa-lock mr-1 text-[#00F0FF]"></i> Your data is secure and will never be shared.</p>
                     </form>
-
-                    <div id="successMessage" class="hidden mt-6 bg-green-500/10 border border-green-500/30 text-green-500 p-4 rounded-xl text-center">
-                        <i class="fa-solid fa-circle-check text-3xl mb-2"></i>
-                        <h4 class="font-bold">Message Sent Successfully!</h4>
-                        <p class="text-xs mt-1">Our team will get back to you within 24 hours.</p>
-                    </div>
                 </div>
             </div>
 
@@ -289,21 +283,6 @@
         const isActive = card.classList.contains('active');
         document.querySelectorAll('.faq-card').forEach(c => c.classList.remove('active'));
         if (!isActive) card.classList.add('active');
-    }
-
-    // 3. Form Submission Simulation (For Demo)
-    function submitForm(event) {
-        event.preventDefault(); // Prevent page reload
-        
-        // Hide form, show success message with animation
-        const form = document.getElementById('contactForm');
-        const successMsg = document.getElementById('successMessage');
-        
-        gsap.to(form, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
-            form.style.display = 'none';
-            successMsg.classList.remove('hidden');
-            gsap.fromTo(successMsg, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" });
-        }});
     }
 </script>
 {% endblock %}

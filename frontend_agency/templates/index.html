@@ -1368,63 +1368,43 @@
      INTERACTIVE PROJECT ESTIMATOR (HOMEPAGE)
      ========================================== -->
     <section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
-        <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 gs-reveal">
-                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Project Estimator Widget</h2>
-                <p class="text-[var(--text-muted)]">Select the services you need to instantly calculate the estimated timeline and budget tier.</p>
-            </div>
-
-            <div class="glass-card-premium p-8 gs-slide-up" style="background: var(--card-bg); backdrop-filter: blur(24px); border: 1px solid var(--card-border); border-radius: 24px; box-shadow: var(--box-shadow);">
-                <div class="row gy-4 align-items-center">
-                    <!-- Selection Area -->
-                    <div class="col-lg-7 space-y-4">
-                        <h4 class="text-[var(--text-main)] font-bold mb-4" style="font-size: 1.2rem;">Select Required Services:</h4>
-                        
-                        <label class="block interactive w-100 mb-3">
-                            <input type="checkbox" class="custom-checkbox est-cb" data-time="4" data-tier="2">
-                            <div class="checkbox-label">
-                                <span><i class="fa-solid fa-laptop-code me-3"></i> Full-Stack Web Development</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                        </label>
-                        <label class="block interactive w-100 mb-3">
-                            <input type="checkbox" class="custom-checkbox est-cb" data-time="6" data-tier="3">
-                            <div class="checkbox-label">
-                                <span><i class="fa-brands fa-app-store me-3"></i> Mobile App Development</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                        </label>
-                        <label class="block interactive w-100 mb-3">
-                            <input type="checkbox" class="custom-checkbox est-cb" data-time="2" data-tier="1">
-                            <div class="checkbox-label">
-                                <span><i class="fa-solid fa-bullseye me-3"></i> Digital Marketing & SEO</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                        </label>
-                        <label class="block interactive w-100">
-                            <input type="checkbox" class="custom-checkbox est-cb" data-time="2" data-tier="1">
-                            <div class="checkbox-label">
-                                <span><i class="fa-solid fa-palette me-3"></i> UI/UX Design & Branding</span>
-                                <i class="fa-solid fa-plus"></i>
-                            </div>
-                        </label>
+        <div class="max-w-5xl mx-auto bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[40px] p-8 md:p-12 shadow-2xl relative z-10 gs-slide-up">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="estimator-widget">
+                
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-6">Select Required Services:</h3>
+                    
+                    <div class="service-option interactive flex items-center justify-between p-4 bg-[var(--bg-main)] border border-[var(--card-border)] rounded-xl cursor-pointer transition-all duration-300" data-weeks="4" data-price="2">
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-code text-[var(--text-muted)]"></i> <span class="font-bold text-[var(--text-main)]">Full-Stack Web Development</span></div>
+                        <i class="fa-solid fa-plus text-[var(--text-muted)] toggle-icon"></i>
+                    </div>
+                    
+                    <div class="service-option interactive flex items-center justify-between p-4 bg-[var(--bg-main)] border border-[var(--card-border)] rounded-xl cursor-pointer transition-all duration-300" data-weeks="4-5" data-price="3">
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-mobile-screen text-[var(--text-muted)]"></i> <span class="font-bold text-[var(--text-main)]">Mobile App Development</span></div>
+                        <i class="fa-solid fa-plus text-[var(--text-muted)] toggle-icon"></i>
                     </div>
 
-                    <!-- Live Result Area -->
-                    <div class="col-lg-5">
-                        <div class="estimator-box flex flex-col justify-center text-center h-100">
-                            <div class="mb-5">
-                                <p class="text-[10px] text-[var(--text-muted)] text-uppercase tracking-widest font-bold mb-2" style="font-size: 0.75rem; letter-spacing: 2px;">Estimated Timeline</p>
-                                <h3 class="font-black text-[#00F0FF]" id="est-time" style="font-size: 2.5rem; font-weight: 900;">0 Weeks</h3>
-                            </div>
-                            <div class="mb-5">
-                                <p class="text-[10px] text-[var(--text-muted)] text-uppercase tracking-widest font-bold mb-2" style="font-size: 0.75rem; letter-spacing: 2px;">Suggested Budget Tier</p>
-                                <h3 class="font-bold text-[#B026FF]" id="est-tier" style="font-size: 1.5rem;">Select a Service</h3>
-                            </div>
-                            <button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="w-100 py-3 text-white rounded-xl font-bold tracking-wider transition-all interactive" style="background: linear-gradient(to right, #B026FF, #00F0FF); border: none;">
-                                PROCEED TO CONTACT
-                            </button>
-                        </div>
+                    <div class="service-option interactive flex items-center justify-between p-4 bg-[var(--bg-main)] border border-[var(--card-border)] rounded-xl cursor-pointer transition-all duration-300" data-weeks="1" data-price="1">
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-bullseye text-[var(--text-muted)]"></i> <span class="font-bold text-[var(--text-main)]">Digital Marketing & SEO</span></div>
+                        <i class="fa-solid fa-plus text-[var(--text-muted)] toggle-icon"></i>
+                    </div>
+
+                    <div class="service-option interactive flex items-center justify-between p-4 bg-[var(--bg-main)] border border-[var(--card-border)] rounded-xl cursor-pointer transition-all duration-300" data-weeks="2" data-price="1">
+                        <div class="flex items-center gap-4"><i class="fa-solid fa-pen-nib text-[var(--text-muted)]"></i> <span class="font-bold text-[var(--text-main)]">UI/UX Design & Branding</span></div>
+                        <i class="fa-solid fa-plus text-[var(--text-muted)] toggle-icon"></i>
+                    </div>
+                </div>
+
+                <div class="p-8 border border-[var(--card-border)] rounded-3xl flex flex-col justify-center items-center text-center bg-[var(--bg-main)] shadow-inner relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#00F0FF]/5 to-[#B026FF]/5 z-0"></div>
+                    <div class="relative z-10 w-full">
+                        <p class="text-xs font-bold text-[var(--text-muted)] tracking-widest uppercase mb-2">Estimated Timeline</p>
+                        <h3 class="text-5xl font-black text-[#00F0FF] mb-8 transition-all" id="est-timeline">0 Weeks</h3>
+                        
+                        <p class="text-xs font-bold text-[var(--text-muted)] tracking-widest uppercase mb-2">Suggested Budget Tier</p>
+                        <h4 class="text-2xl font-bold text-[#B026FF] mb-10 transition-all" id="est-budget">Select a Service</h4>
+                        
+                        <a href="{% url 'contact' %}" class="block w-full py-4 rounded-xl bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold text-lg hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all transform hover:-translate-y-1">PROCEED TO CONTACT</a>
                     </div>
                 </div>
             </div>
@@ -1977,6 +1957,47 @@
                 // Restore button
                 btn.innerHTML = originalBtnText;
                 btn.style.pointerEvents = 'auto';
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const options = document.querySelectorAll('.service-option');
+            const timelineEl = document.getElementById('est-timeline');
+            const budgetEl = document.getElementById('est-budget');
+
+            let totalWeeks = 0;
+            let totalScore = 0;
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    const weeks = parseInt(option.getAttribute('data-weeks'));
+                    const price = parseInt(option.getAttribute('data-price'));
+                    const icon = option.querySelector('.toggle-icon');
+
+                    // Toggle Logic
+                    if (option.classList.contains('border-[#00F0FF]')) {
+                        option.classList.remove('border-[#00F0FF]', 'shadow-[0_0_15px_rgba(0,240,255,0.2)]');
+                        icon.classList.remove('fa-minus', 'text-[#00F0FF]');
+                        icon.classList.add('fa-plus', 'text-[var(--text-muted)]');
+                        totalWeeks -= weeks;
+                        totalScore -= price;
+                    } else {
+                        option.classList.add('border-[#00F0FF]', 'shadow-[0_0_15px_rgba(0,240,255,0.2)]');
+                        icon.classList.remove('fa-plus', 'text-[var(--text-muted)]');
+                        icon.classList.add('fa-minus', 'text-[#00F0FF]');
+                        totalWeeks += weeks;
+                        totalScore += price;
+                    }
+
+                    // Update UI visually
+                    timelineEl.innerText = totalWeeks > 0 ? totalWeeks + " Weeks" : "0 Weeks";
+                    
+                    if (totalScore === 0) budgetEl.innerText = "Select a Service";
+                    else if (totalScore <= 2) budgetEl.innerText = "Starter ($)";
+                    else if (totalScore <= 4) budgetEl.innerText = "Professional ($$)";
+                    else budgetEl.innerText = "Enterprise ($$$)";
+                });
             });
         });
     </script>
