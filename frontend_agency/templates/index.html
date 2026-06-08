@@ -48,9 +48,9 @@
     /* =========================================
        EXTRA MOVABLE MOTION GLOWS (NEW)
        ========================================= */
-    .home-glow-1 { position: absolute; width: 500px; height: 500px; background: #00F0FF; filter: blur(180px); opacity: 0.25; border-radius: 50%; top: 15%; right: -150px; z-index: 0; animation: floatGlow1 12s ease-in-out infinite alternate; pointer-events: none; }
-    .home-glow-2 { position: absolute; width: 450px; height: 450px; background: #ff5f56; filter: blur(180px); opacity: 0.2; border-radius: 50%; top: 45%; left: -100px; z-index: 0; animation: floatGlow2 15s ease-in-out infinite alternate; pointer-events: none; }
-    .home-glow-3 { position: absolute; width: 600px; height: 600px; background: #B026FF; filter: blur(200px); opacity: 0.2; border-radius: 50%; bottom: 10%; right: 10%; z-index: 0; animation: floatGlow1 10s ease-in-out infinite alternate-reverse; pointer-events: none; }
+    .home-glow-1 { position: absolute; width: 500px; height: 500px; background: #00F0FF; filter: blur(180px); opacity: 0.25; border-radius: 50%; top: 15%; right: -150px; z-index: 0; animation: floatGlow1 12s ease-in-out infinite alternate; pointer-events: none; transform: translateZ(0); will-change: transform; }
+    .home-glow-2 { position: absolute; width: 450px; height: 450px; background: #ff5f56; filter: blur(180px); opacity: 0.2; border-radius: 50%; top: 45%; left: -100px; z-index: 0; animation: floatGlow2 15s ease-in-out infinite alternate; pointer-events: none; transform: translateZ(0); will-change: transform;}
+    .home-glow-3 { position: absolute; width: 600px; height: 600px; background: #B026FF; filter: blur(200px); opacity: 0.2; border-radius: 50%; bottom: 10%; right: 10%; z-index: 0; animation: floatGlow1 10s ease-in-out infinite alternate-reverse; pointer-events: none; transform: translateZ(0); will-change: transform;}
     
     @keyframes floatGlow1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-50px, 50px) scale(1.1); } }
     @keyframes floatGlow2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, -50px) scale(1.2); } }
@@ -129,6 +129,8 @@
         overflow: hidden; 
         z-index: 5; 
         animation: levitate 6s ease-in-out infinite;
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .mobile-frame .notch {
@@ -163,6 +165,8 @@
         box-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
         z-index: 8;
         animation: scan-mobile 3s ease-in-out infinite;
+        transform: translateZ(0); 
+        will-change: transform, opacity;
     }
 
     @keyframes scan-mobile {
@@ -199,6 +203,8 @@
         z-index: 6; 
         animation: float-cards 5s ease-in-out infinite; 
         white-space: nowrap;
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .fc-1 { top: 12%; left: -5%; color: #0ea5e9 !important; border-color: rgba(14,165,233,0.2);}
@@ -262,6 +268,8 @@
         display: flex; 
         white-space: nowrap; 
         animation: marquee 35s linear infinite; 
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .slider-pill { 
@@ -377,6 +385,8 @@
         height: 60px; 
         transition: 0.4s; 
         filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15)); 
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .tech-logo:hover { 
@@ -405,6 +415,8 @@
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         height: 100%; 
         min-height: 380px;
+        transform: translateZ(0); 
+        will-change: transform, box-shadow;
     }
     
     body.light-mode .sc2-card {
@@ -440,19 +452,19 @@
         right: -15px; 
         width: 180px; 
         height: 180px;
-        opacity: 0.15;  /* FIX: Increased opacity so the design is clearly visible */
+        opacity: 0.15;  
         transition: opacity 0.4s, transform 0.4s; 
         pointer-events: none; 
         z-index: 1;
     }
     
     .sc2-card:hover .sc2-bg-graphic {
-        opacity: 0.4; /* FIX: Makes background design glow on hover */
+        opacity: 0.4; 
         transform: scale(1.1) rotate(-5deg);
     }
     
     body.light-mode .sc2-bg-graphic {
-        opacity: 0.1; /* Adjusted for light mode */
+        opacity: 0.1; 
     }
     
     body.light-mode .sc2-card:hover .sc2-bg-graphic {
@@ -580,6 +592,8 @@
         color: var(--text-main); 
         height: 100%; 
         position: relative;
+        transform: translateZ(0); 
+        will-change: transform, box-shadow;
     }
     
     .saas-new-card:hover { 
@@ -739,6 +753,8 @@
         padding: 30px 20px; 
         transition: 0.3s; 
         box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     body.light-mode .fw-card { 
@@ -797,6 +813,8 @@
         transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
         box-shadow: var(--box-shadow);
         text-decoration: none !important;
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     body.light-mode .industry-card {
@@ -861,6 +879,8 @@
         backdrop-filter: blur(15px); 
         -webkit-backdrop-filter: blur(15px); 
         text-decoration: none !important; 
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .case-card::after { 
@@ -927,6 +947,8 @@
         backdrop-filter: blur(15px); 
         -webkit-backdrop-filter: blur(15px); 
         transition: all 0.4s ease;
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .testi-card:hover { 
@@ -1023,6 +1045,8 @@
         box-shadow: var(--box-shadow); 
         backdrop-filter: blur(15px); 
         -webkit-backdrop-filter: blur(15px);
+        transform: translateZ(0); 
+        will-change: transform;
     }
     
     .startup-input { 
@@ -1117,7 +1141,6 @@
 {% endblock %}
 
 {% block content %}
-    <!-- NEW: Extra Background Ambient Glows -->
     <div class="home-glow-1"></div>
     <div class="home-glow-2"></div>
     <div class="home-glow-3"></div>
@@ -1251,7 +1274,6 @@
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" class="tech-logo invert-dark" alt="Next">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" class="tech-logo" alt="Vue">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" class="tech-logo" alt="Angular">
-            <!-- FIX: TAILWIND ICON URL UPDATED -->
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" class="tech-logo" alt="Tailwind">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" class="tech-logo" alt="Sass">
             <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="tech-logo" style="border-radius: 10px;" alt="JS">
@@ -1364,9 +1386,6 @@
         </div>
     </section>
 
-    <!-- ==========================================
-     INTERACTIVE PROJECT ESTIMATOR (HOMEPAGE)
-     ========================================== -->
     <section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
         <div class="max-w-5xl mx-auto bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[40px] p-8 md:p-12 shadow-2xl relative z-10 gs-slide-up">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="estimator-widget">
@@ -1516,21 +1535,21 @@
         </div>
         <div class="row g-4 align-items-stretch">
             <div class="col-lg-4 col-md-6 gsap-card">
-                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                <div class="p-5 text-center h-100 rounded-4 interactive gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                     <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(14,165,233,0.1); display:flex; align-items:center; justify-content:center; color:#0ea5e9; font-size:24px;"><i class="fa-solid fa-briefcase"></i></div>
                     <h4 class="fw-bold mb-3" style="color: var(--text-main);">Project Based</h4>
                     <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">Fixed scope, fixed timeline, and fixed budget. Best for MVP development and clear requirement projects.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 gsap-card">
-                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                <div class="p-5 text-center h-100 rounded-4 interactive gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                     <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(157,78,221,0.1); display:flex; align-items:center; justify-content:center; color:#9d4edd; font-size:24px;"><i class="fa-solid fa-users"></i></div>
                     <h4 class="fw-bold mb-3" style="color: var(--text-main);">Dedicated Team</h4>
                     <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">Our elite developers and marketers work directly with your internal team as a seamless extension of your company.</p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 gsap-card">
-                <div class="p-5 text-center h-100 rounded-4 interactive" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                <div class="p-5 text-center h-100 rounded-4 interactive gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(10px); box-shadow: var(--box-shadow); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                     <div class="mx-auto mb-4" style="width:60px; height:60px; border-radius:15px; background:rgba(14,165,233,0.1); display:flex; align-items:center; justify-content:center; color:#0ea5e9; font-size:24px;"><i class="fa-solid fa-rocket"></i></div>
                     <h4 class="fw-bold mb-3" style="color: var(--text-main);">Growth Partner</h4>
                     <p class="small mb-0" style="color: var(--text-muted); line-height: 1.7;">A monthly retainer for continuous SEO, Meta Ads scaling, and server maintenance. We focus purely on your long-term ROI.</p>
@@ -1648,7 +1667,7 @@
         <div class="row g-4 align-items-stretch">
             <div class="col-lg-4 col-md-6 gsap-card">
                 <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
-                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="p-3 rounded-4 interactive h-100 gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="AI in SaaS">
                         <div class="mt-4 px-2">
                             <span class="badge mb-2" style="background: rgba(14,165,233,0.1); color: #0ea5e9; border: 1px solid rgba(14,165,233,0.3);">Tech & AI</span>
@@ -1660,7 +1679,7 @@
             </div>
             <div class="col-lg-4 col-md-6 gsap-card">
                 <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
-                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="p-3 rounded-4 interactive h-100 gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#9d4edd'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="Meta Ads Strategy">
                         <div class="mt-4 px-2">
                             <span class="badge mb-2" style="background: rgba(157,78,221,0.1); color: #9d4edd; border: 1px solid rgba(157,78,221,0.3);">Marketing</span>
@@ -1672,7 +1691,7 @@
             </div>
             <div class="col-lg-4 col-md-6 gsap-card">
                 <a href="{% url 'blog' %}" class="text-decoration-none d-block h-100">
-                    <div class="p-3 rounded-4 interactive h-100" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
+                    <div class="p-3 rounded-4 interactive h-100 gpu-accel" style="background: var(--card-bg); border: 1px solid var(--card-border); transition: 0.3s;" onmouseover="this.style.borderColor='#0ea5e9'; this.style.transform='translateY(-5px)';" onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateY(0)';">
                         <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80" class="w-100 rounded-3 object-fit-cover" style="height: 200px;" alt="AWS Cloud Hosting">
                         <div class="mt-4 px-2">
                             <span class="badge mb-2" style="background: rgba(14,165,233,0.1); color: #0ea5e9; border: 1px solid rgba(14,165,233,0.3);">Cloud Infra</span>
@@ -1787,10 +1806,9 @@
         </div>
     </section>
 
-    <!-- FIX: Lead Magnet / Newsletter Input visibility -->
     <section class="container py-5 my-4 border-top" style="border-color: var(--card-border) !important;">
         <div class="rounded-5 p-4 p-md-5 position-relative overflow-hidden gsap-fade interactive" style="background: linear-gradient(135deg, rgba(14,165,233,0.08), rgba(157,78,221,0.08)); border: 1px solid rgba(14,165,233,0.2);">
-            <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:#00d2ff; filter:blur(60px); opacity:0.2;"></div>
+            <div style="position:absolute; top:-50px; right:-50px; width:150px; height:150px; background:#00d2ff; filter:blur(60px); opacity:0.2; transform: translateZ(0); will-change: transform;"></div>
             
             <div class="row align-items-center text-center text-lg-start position-relative z-1">
                 <div class="col-lg-6 mb-4 mb-lg-0">
@@ -1799,7 +1817,6 @@
                     <p class="mb-0" style="color: var(--text-muted); font-size: 15px; line-height: 1.6; max-width: 500px; margin: 0 auto;">Get weekly exclusive insights on scalable cloud architectures, SEO ranking strategies, and Meta Ads mastery delivered straight to your inbox.</p>
                 </div>
                 <div class="col-lg-6">
-                    <!-- FIX: Updated form and input class for clear visibility -->
                     <form id="newsletter-form" class="d-flex flex-column flex-sm-row gap-3 mt-4">
                         {% csrf_token %}
                         <input type="email" id="newsletter-email" name="email" class="startup-input interactive m-0" style="border-radius: 100px; padding: 15px 25px; flex-grow: 1;" placeholder="Enter your email address..." required>
@@ -1815,7 +1832,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="contact-wrapper gsap-fade position-relative overflow-hidden">
-                    <div style="position:absolute; top:-50px; left:-50px; width:200px; height:200px; background:#00d2ff; filter:blur(100px); opacity:0.15;"></div>
+                    <div style="position:absolute; top:-50px; left:-50px; width:200px; height:200px; background:#00d2ff; filter:blur(100px); opacity:0.15; transform: translateZ(0); will-change: transform;"></div>
                     <div class="text-center mb-5 position-relative z-1">
                         <h2 class="section-heading mb-2">Let's Build Something <span class="text-cyan">Amazing.</span></h2>
                         <p class="text-secondary" style="font-size: 16px;">Drop us a text message below. This form directly alerts our admin panel and notifies us via email instantly.</p>
@@ -1871,9 +1888,9 @@
             });
         });
 
-        // GSAP Scroll Animations
+        // GSAP Scroll Animations with GPU Force3D
         gsap.registerPlugin(ScrollTrigger);
-        gsap.from(".hero-title", { x: -50, opacity: 0, duration: 0.9, ease: "power3.out" });
+        gsap.from(".hero-title", { x: -50, opacity: 0, duration: 0.9, ease: "power3.out", force3D: true });
         gsap.utils.toArray('.gsap-card').forEach(card => { 
             gsap.from(card, { 
                 scrollTrigger: { 
@@ -1883,7 +1900,8 @@
                 y: 30, 
                 opacity: 0, 
                 duration: 0.7, 
-                ease: "power3.out" 
+                ease: "power3.out",
+                force3D: true
             }); 
         });
         gsap.utils.toArray('.gsap-fade').forEach(elem => { 
@@ -1894,7 +1912,8 @@
                 }, 
                 opacity: 0, 
                 y: 20, 
-                duration: 0.7 
+                duration: 0.7,
+                force3D: true
             }); 
         });
     </script>

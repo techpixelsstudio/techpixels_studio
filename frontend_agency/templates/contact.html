@@ -19,6 +19,8 @@
         overflow: hidden;
         transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         z-index: 1;
+        transform: translateZ(0); 
+        will-change: transform, opacity;
     }
     .glass-card-premium:hover {
         transform: translateY(-8px);
@@ -31,6 +33,8 @@
         background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
         border-radius: 50%; top: -50px; right: -50px; opacity: 0;
         z-index: -1; transition: all 0.6s ease; filter: blur(20px);
+        transform: translateZ(0); 
+        will-change: transform, opacity;
     }
     .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
 
@@ -76,8 +80,8 @@
 
 <section class="relative pt-32 pb-16 overflow-hidden">
     <div class="absolute inset-0 z-0">
-        <div class="absolute top-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-10 right-1/4 w-[300px] h-[300px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+        <div class="absolute top-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse transform translateZ(0)"></div>
+        <div class="absolute bottom-10 right-1/4 w-[300px] h-[300px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-20 transform translateZ(0)"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
@@ -266,15 +270,15 @@
 
 {% block extra_js %}
 <script>
-    // 1. GSAP Animations
+    // 1. GSAP Animations with GPU Acceleration
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out" });
+    gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out", force3D: true });
 
     gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
         gsap.from(elem, {
             scrollTrigger: { trigger: elem, start: "top 85%" },
-            y: 40, opacity: 0, duration: 0.8, ease: "power2.out"
+            y: 40, opacity: 0, duration: 0.8, ease: "power2.out", force3D: true
         });
     });
 
