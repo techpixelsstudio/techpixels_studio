@@ -40,7 +40,7 @@
 
     <style>
         /* =========================================
-           🚀 GPU HARDWARE ACCELERATION (NO LAG ON MOBILE)
+           🚀 ZERO-LAG OPTIMIZATION (NO CSS BLUR OVERLOAD)
            ========================================= */
         * {
             -webkit-font-smoothing: antialiased;
@@ -50,14 +50,6 @@
             overflow-x: hidden !important; 
             width: 100%; 
             position: relative; 
-        }
-        .gpu-accel, .ambient-glow-1, .ambient-glow-2, .navbar, .dropdown-menu, .mega-footer {
-            transform: translateZ(0);
-            -webkit-transform: translate3d(0,0,0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            perspective: 1000px;
-            will-change: transform;
         }
 
         /* =========================================
@@ -71,7 +63,6 @@
             }
         }
 
-        /* Prevent logo from disappearing on mobile */
         .navbar-brand {
             display: block !important;
             z-index: 1060 !important;
@@ -79,9 +70,8 @@
         }
 
         /* =========================================
-           TAILWIND VS BOOTSTRAP FAQ COLLAPSE FIX (SCOPED)
+           TAILWIND VS BOOTSTRAP FAQ COLLAPSE FIX
            ========================================= */
-        /* HE FAKT FAQ SATHI AHE - NAVBAR LA DHAKKA LAGNAR NAHI */
         .accordion-collapse:not(.show) { display: none !important; }
         .accordion-collapse.show { display: block !important; visibility: visible !important; }
         
@@ -91,7 +81,6 @@
             background: var(--card-bg) !important;
         }
 
-        /* Fix SVG & Image explosions */
         svg, img, video { max-width: 100%; height: auto; }
 
         *, ::before, ::after { border-width: 0; border-style: solid; border-color: currentColor; }
@@ -155,7 +144,6 @@
             background-size: 30px 30px;
             color: var(--text-main); 
             font-family: 'Manrope', sans-serif; 
-            overflow-x: hidden;
             transition: background-color 0.5s ease, color 0.5s ease;
             margin: 0; padding: 0;
         }
@@ -165,11 +153,18 @@
             .cursor-dot, .cursor-outline { display: block !important; }
         }
 
+        /* 🔥 RADIAL GRADIENT MAGIC: Looks same as Blur, but 0% Lag */
         .ambient-glow-1, .ambient-glow-2 { 
-            position: absolute; border-radius: 50%; filter: blur(150px); z-index: -1; opacity: var(--glow-opacity); transition: opacity 0.5s ease; pointer-events: none;
+            position: absolute; border-radius: 50%; z-index: -1; opacity: var(--glow-opacity); transition: opacity 0.5s ease; pointer-events: none;
         }
-        .ambient-glow-1 { background: #00d2ff; width: 400px; height: 400px; top: 2%; left: -100px; animation: float-glow 8s ease-in-out infinite; }
-        .ambient-glow-2 { background: #9d4edd; width: 500px; height: 500px; bottom: 8%; right: -150px; animation: float-glow 10s ease-in-out infinite reverse; }
+        .ambient-glow-1 { 
+            background: radial-gradient(circle, rgba(0,210,255,0.7) 0%, transparent 70%); 
+            width: 700px; height: 700px; top: -10%; left: -200px; animation: float-glow 8s ease-in-out infinite; 
+        }
+        .ambient-glow-2 { 
+            background: radial-gradient(circle, rgba(157,78,221,0.7) 0%, transparent 70%); 
+            width: 800px; height: 800px; bottom: 0%; right: -250px; animation: float-glow 10s ease-in-out infinite reverse; 
+        }
         @keyframes float-glow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(25px, 25px); } }
 
         h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text-main); transition: color 0.5s ease;}
@@ -182,11 +177,11 @@
         .cursor-outline { width: 38px; height: 38px; border: 1.5px solid rgba(14, 165, 233, 0.5); background-color: rgba(14, 165, 233, 0.08); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.15s ease, height 0.15s ease, background-color 0.15s ease; display: none; }
         .cursor-outline.hovering { width: 60px; height: 60px; background-color: rgba(14, 165, 233, 0.14); border-color: transparent; backdrop-filter: blur(1px); }
 
-        .navbar { background: var(--nav-bg) !important; backdrop-filter: blur(25px); border-bottom: 1px solid var(--card-border) !important; padding: 12px 0; z-index: 1000; transition: background 0.5s, border 0.5s; }
+        .navbar { background: var(--nav-bg) !important; backdrop-filter: blur(15px); border-bottom: 1px solid var(--card-border) !important; padding: 12px 0; z-index: 1000; transition: background 0.5s, border 0.5s; }
         .nav-link { color: var(--text-muted) !important; font-size: 13px; margin: 0 15px; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .nav-link:hover { color: #0ea5e9 !important; }
 
-        .dropdown-menu { background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--card-border) !important; border-radius: 12px; padding: 15px 0; box-shadow: var(--box-shadow); }
+        .dropdown-menu { background: var(--card-bg); backdrop-filter: blur(15px); border: 1px solid var(--card-border) !important; border-radius: 12px; padding: 15px 0; box-shadow: var(--box-shadow); }
         .dropdown-item { color: var(--text-main); font-size: 13px; padding: 10px 25px; transition: 0.3s; font-weight: 600; }
         .dropdown-item:hover { background: rgba(14,165,233,0.1); color: #0ea5e9; padding-left: 30px; }
         
@@ -215,7 +210,7 @@
             #navbarNav { 
                 position: fixed !important;
                 top: 0 !important;
-                left: -100% !important; /* Start hidden on the left */
+                left: -100% !important; 
                 width: 280px !important;
                 height: 100vh !important;
                 max-height: 100vh !important;
@@ -226,8 +221,8 @@
                 border: 1px solid var(--card-border) !important; 
                 border-left: none !important;
                 text-align: left !important; 
-                backdrop-filter: blur(25px) !important;
-                -webkit-backdrop-filter: blur(25px) !important;
+                backdrop-filter: blur(15px) !important;
+                -webkit-backdrop-filter: blur(15px) !important;
                 transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
                 display: block !important; 
                 visibility: visible !important;
@@ -236,7 +231,7 @@
             }
             
             #navbarNav.show {
-                left: 0 !important; /* Slide in smoothly */
+                left: 0 !important;
             }
             
             .dropdown-menu { background: transparent; border: none !important; box-shadow: none; padding-left: 15px; margin-top: 10px; }
@@ -442,14 +437,13 @@
                         popup: 'border border-cyan-500 rounded-3xl shadow-[0_0_20px_rgba(14,165,233,0.2)]'
                     }
                 }).then((result) => {
-                    // Pop-up close kelyavarach redirect hoil
                     window.location.href = "{{ redirect_url }}";
                 });
             });
         </script>
     {% endif %}
 
-    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out gpu-accel">
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out">
         <div class="max-w-6xl mx-auto m-4 p-6 bg-[#0a0a0a]/90 backdrop-blur-2xl rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#00F0FF]/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
             <div class="text-sm text-[var(--text-muted)]">
                 <strong class="text-white text-lg block mb-1"><i class="fa-solid fa-cookie-bite text-[#B026FF] mr-2"></i> Your Privacy Matters</strong>
@@ -468,22 +462,18 @@
             const acceptBtn = document.getElementById('accept-cookies');
             const declineBtn = document.getElementById('decline-cookies');
 
-            // Check if cookie already exists
             if (!document.cookie.split('; ').find(row => row.startsWith('techpixels_cookie_consent='))) {
-                // Show banner after 1.5 seconds
                 setTimeout(() => {
                     banner.classList.remove('translate-y-full');
                 }, 1500);
             }
 
             acceptBtn.addEventListener('click', () => {
-                // Set cookie valid for 365 days
                 document.cookie = "techpixels_cookie_consent=accepted; max-age=" + (60*60*24*365) + "; path=/; SameSite=Lax";
                 banner.classList.add('translate-y-full');
             });
 
             declineBtn.addEventListener('click', () => {
-                // Set cookie valid for 30 days
                 document.cookie = "techpixels_cookie_consent=declined; max-age=" + (60*60*24*30) + "; path=/; SameSite=Lax";
                 banner.classList.add('translate-y-full');
             });
