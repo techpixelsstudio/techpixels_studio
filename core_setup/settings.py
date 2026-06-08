@@ -1,15 +1,19 @@
 from pathlib import Path
 import os
-from pathlib import Path
+from dotenv import load_dotenv
+
+# .env फाईल लोड करण्यासाठी
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dummy-key-for-dev-change-it-later'
+# (इथे .env मधून की घेतली जाईल)
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -85,26 +89,15 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (User & Admin Uploads like Portfolio images)
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# STATIC FILES CONFIGURATION (For CSS, JS, Logos, Images)
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Make sure you have a folder named 'static' in your root directory
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# MEDIA FILES CONFIGURATION (Very Important for Resume Uploads!)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ==========================================
 # EMAIL SMTP SETTINGS (For Contact Leads)
@@ -117,10 +110,6 @@ EMAIL_USE_TLS = True
 # Ithe tujha sender email tak
 EMAIL_HOST_USER = 'techpixelsstudio@gmail.com' 
 
-# IMPORTANT: Ithe normal password nahi, 'Google App Password' takava lagto (16 letters cha)
-EMAIL_HOST_PASSWORD = 'ggibqjuhkfaorahh' 
+# IMPORTANT: Ithe .env madhun password ghetla jail
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') 
 DEFAULT_FROM_EMAIL = 'techpixelsstudio@gmail.com'
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
