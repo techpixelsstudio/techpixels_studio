@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up, .animate-float {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED CONTACT PAGE STYLES
        ========================================= */
@@ -69,15 +74,28 @@
     /* Floating Animations */
     @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
     .animate-float { animation: float 4s ease-in-out infinite; }
+
+    /* =========================================
+       🚀 5X ZERO-LAG OPTIMIZATION (NO BACKDROP FILTER ON MOBILE)
+       ========================================= */
+    @media (max-width: 991px) {
+        .glass-card-premium {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background-color: #0f0f13 !important; /* Solid fallback */
+        }
+        body.light-mode .glass-card-premium { background-color: #ffffff !important; }
+        .card-glow-orb { display: none !important; animation: none !important; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 
 <section class="relative pt-32 pb-16 overflow-hidden">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-10 left-1/4 w-[400px] h-[400px] rounded-full mix-blend-screen opacity-30 animate-pulse" style="background: radial-gradient(circle, #B026FF 0%, transparent 70%);"></div>
-        <div class="absolute bottom-10 right-1/4 w-[300px] h-[300px] rounded-full mix-blend-screen opacity-30" style="background: radial-gradient(circle, #00F0FF 0%, transparent 70%);"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-10 left-1/4 w-[400px] h-[400px] rounded-full mix-blend-screen opacity-30 animate-pulse hidden md:block" style="background: radial-gradient(circle, #B026FF 0%, transparent 70%);"></div>
+        <div class="absolute bottom-10 right-1/4 w-[300px] h-[300px] rounded-full mix-blend-screen opacity-30 hidden md:block" style="background: radial-gradient(circle, #00F0FF 0%, transparent 70%);"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
@@ -266,8 +284,9 @@
 
 {% block extra_js %}
 <script>
-    // 1. GSAP Animations
+    // 1. 🚀 GSAP Force 3D Hardware Acceleration
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
 
     gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out" });
 

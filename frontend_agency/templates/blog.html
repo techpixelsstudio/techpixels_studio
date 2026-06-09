@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED BLOG STYLES (Light/Dark Safe)
        ========================================= */
@@ -111,7 +116,7 @@
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-gray-300 text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
             <i class="fa-solid fa-fire mr-2 text-orange-500"></i> INSIGHTS & ARTICLES
         </div>
         <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-12 gs-reveal transition-colors">
@@ -386,8 +391,9 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // 1. Initial Animations
+    // 🚀 1. GSAP Force 3D Hardware Acceleration
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
 
     gsap.from(".gs-reveal", { y: 30, opacity: 0, duration: 1, stagger: 0.1, ease: "power3.out" });
 
@@ -441,7 +447,7 @@
         });
     });
 
-    // 3. Newsletter Submission Logic (Pop-up -> Redirect)
+    // 3. AJAX Newsletter Submission Logic
     document.getElementById('newsletter-form').addEventListener('submit', function(e) {
         e.preventDefault(); 
         const formData = new FormData(this);
