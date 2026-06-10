@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up, .glass-card-premium, .job-card {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED CAREER STYLES (Light/Dark Safe)
        ========================================= */
@@ -97,35 +102,42 @@
         box-shadow: 0 0 20px rgba(0,240,255,0.5);
     }
 
+    /* =========================================
+       🚀 ZERO-LAG MOBILE OPTIMIZATION
+       ========================================= */
     @media (max-width: 991px) {
         .process-line { left: 30px; }
         .process-dot { left: 30px; }
         .job-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         .job-header > div:last-child { align-self: flex-end; }
+        .glass-card-premium, .job-card, .job-content {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background-color: #0f0f13 !important;
+        }
+        body.light-mode .glass-card-premium, body.light-mode .job-card, body.light-mode .job-content { background-color: #ffffff !important; }
+        .bg-glow-effect { display: none !important; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ==========================================
-     1. HERO SECTION
-     ========================================== -->
 <section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-15"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-10 left-1/4 w-[500px] h-[500px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-20 animate-pulse hidden md:block"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[120px] opacity-15 hidden md:block"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[#00F0FF] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
+        <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 gs-reveal shadow-lg interactive">
             <i class="fa-solid fa-code-branch mr-2"></i> JOIN THE ELITE
         </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 gs-reveal">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 gs-reveal transition-colors">
             Build The Future <br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">With TechPixels.</span>
         </h1>
-        <p class="text-[var(--text-muted)] text-lg max-w-2xl mx-auto mb-10 gs-reveal">
+        <p class="text-[var(--text-muted)] text-lg max-w-2xl mx-auto mb-10 gs-reveal transition-colors">
             We are looking for crazy engineers, data-driven marketers, and creative designers who want to build highly scalable enterprise SaaS products and marketing engines.
         </p>
         <a href="#open-roles" class="magnetic-btn magnetic interactive gs-reveal">
@@ -134,14 +146,11 @@
     </div>
 </section>
 
-<!-- ==========================================
-     2. CULTURE VIBE (Bento Box Images)
-     ========================================== -->
 <section class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
-            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Our Culture Vibe</h2>
-            <p class="text-[var(--text-muted)]">Work hard, build epic stuff, and enjoy the journey.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Our Culture Vibe</h2>
+            <p class="text-[var(--text-muted)] transition-colors">Work hard, build epic stuff, and enjoy the journey.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[600px] gs-slide-up interactive">
@@ -165,14 +174,11 @@
     </div>
 </section>
 
-<!-- ==========================================
-     3. PREMIUM PERKS & BENEFITS
-     ========================================== -->
 <section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-[var(--bg-main)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
             <h4 class="text-[#B026FF] font-bold tracking-widest text-sm uppercase mb-3">Why Join Us</h4>
-            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)]">Premium Team Benefits</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] transition-colors">Premium Team Benefits</h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
@@ -180,74 +186,70 @@
                 <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mx-auto mb-6 border border-[#00F0FF]/30">
                     <i class="fa-brands fa-apple"></i>
                 </div>
-                <h4 class="text-[var(--text-main)] font-bold mb-3">Top-Tier Gear</h4>
-                <p class="text-[var(--text-muted)] text-sm">We provide the latest M-Series MacBooks and high-res monitors for peak productivity.</p>
+                <h4 class="text-[var(--text-main)] font-bold mb-3 transition-colors">Top-Tier Gear</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">We provide the latest M-Series MacBooks and high-res monitors for peak productivity.</p>
             </div>
 
             <div class="glass-card-premium p-8 interactive text-center">
                 <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mx-auto mb-6 border border-[#B026FF]/30">
                     <i class="fa-solid fa-globe"></i>
                 </div>
-                <h4 class="text-[var(--text-main)] font-bold mb-3">Work From Anywhere</h4>
-                <p class="text-[var(--text-muted)] text-sm">Pune HQ or Bali beach? We offer 100% remote flexibility and flexible working hours.</p>
+                <h4 class="text-[var(--text-main)] font-bold mb-3 transition-colors">Work From Anywhere</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Pune HQ or Bali beach? We offer 100% remote flexibility and flexible working hours.</p>
             </div>
 
             <div class="glass-card-premium p-8 interactive text-center">
                 <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl mx-auto mb-6 border border-orange-500/30">
                     <i class="fa-solid fa-graduation-cap"></i>
                 </div>
-                <h4 class="text-[var(--text-main)] font-bold mb-3">Learning Budget</h4>
-                <p class="text-[var(--text-muted)] text-sm">Annual allowance for premium courses, tech conferences, and certifications to upskill.</p>
+                <h4 class="text-[var(--text-main)] font-bold mb-3 transition-colors">Learning Budget</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Annual allowance for premium courses, tech conferences, and certifications to upskill.</p>
             </div>
 
             <div class="glass-card-premium p-8 interactive text-center">
                 <div class="w-16 h-16 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center text-3xl mx-auto mb-6 border border-green-500/30">
                     <i class="fa-solid fa-heart-pulse"></i>
                 </div>
-                <h4 class="text-[var(--text-main)] font-bold mb-3">Health & Wellness</h4>
-                <p class="text-[var(--text-muted)] text-sm">Comprehensive medical insurance for you and your family, plus gym memberships.</p>
+                <h4 class="text-[var(--text-main)] font-bold mb-3 transition-colors">Health & Wellness</h4>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Comprehensive medical insurance for you and your family, plus gym memberships.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ==========================================
-     4. ELITE JOB BOARD (Interactive Accordion)
-     ========================================== -->
 <section id="open-roles" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
-            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Current Openings</h2>
-            <p class="text-[var(--text-muted)]">Find your role and let's build something epic together.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Current Openings</h2>
+            <p class="text-[var(--text-muted)] transition-colors">Find your role and let's build something epic together.</p>
         </div>
 
         <div class="gs-slide-up">
             
-            <!-- DATABASE MADHUN JOBS YETIL -->
             {% for job in jobs %}
             <div class="job-card interactive">
                 <div class="job-header" onclick="toggleJob(this)">
                     <div>
-                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-2">{{ job.title }}</h3>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] mb-2 transition-colors">{{ job.title }}</h3>
                         <div class="flex flex-wrap gap-2">
                             <span class="px-3 py-1 bg-[#00F0FF]/10 text-[#00F0FF] text-[10px] font-bold uppercase rounded-full border border-[#00F0FF]/20">{{ job.tag1 }}</span>
                             <span class="px-3 py-1 bg-[var(--bg-main)] text-[var(--text-muted)] text-[10px] font-bold uppercase rounded-full border border-[var(--card-border)]">{{ job.tag2 }}</span>
                             <span class="px-3 py-1 bg-[var(--bg-main)] text-[var(--text-muted)] text-[10px] font-bold uppercase rounded-full border border-[var(--card-border)]">{{ job.tag3 }}</span>
                         </div>
                     </div>
-                    <div class="flex items-center text-[var(--text-muted)] font-bold text-sm">
+                    <div class="flex items-center text-[var(--text-muted)] font-bold text-sm transition-colors">
                         View Details <i class="fa-solid fa-chevron-down ml-3 chevron"></i>
                     </div>
                 </div>
                 <div class="job-content">
-                    <p class="text-[var(--text-muted)] text-sm mb-4 leading-relaxed mt-2">{{ job.description|linebreaksbr }}</p>
+                    <p class="text-[var(--text-muted)] text-sm mb-4 leading-relaxed mt-2 transition-colors">{{ job.description|linebreaksbr }}</p>
                     <a href="#apply-now" class="inline-block bg-[#00F0FF] text-black font-bold px-6 py-2 rounded-xl text-sm hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] transition-all mb-4">Apply for this role</a>
                 </div>
             </div>
             {% empty %}
             <div class="text-center py-10 glass-card-premium">
-                <p class="text-[var(--text-muted)] text-lg font-bold">No current openings, but we are always looking for talent!</p>
-                <p class="text-[var(--text-muted)] text-sm mt-2">Feel free to drop your resume in the open application form below.</p>
+                <p class="text-[var(--text-muted)] text-lg font-bold transition-colors">No current openings, but we are always looking for talent!</p>
+                <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Feel free to drop your resume in the open application form below.</p>
             </div>
             {% endfor %}
 
@@ -255,14 +257,11 @@
     </div>
 </section>
 
-<!-- ==========================================
-     5. HIRING TIMELINE
-     ========================================== -->
 <section class="py-24 relative z-10 border-t border-[var(--card-border)]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
-            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4">Our Hiring Process</h2>
-            <p class="text-[var(--text-muted)]">No drawn-out interviews. Fast, transparent, and respectful of your time.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-4 transition-colors">Our Hiring Process</h2>
+            <p class="text-[var(--text-muted)] transition-colors">No drawn-out interviews. Fast, transparent, and respectful of your time.</p>
         </div>
 
         <div class="relative pb-10">
@@ -272,8 +271,8 @@
                 <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
                     <div class="process-dot md:top-1/2 md:-translate-y-1/2"></div>
                     <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
-                        <h3 class="text-xl font-bold text-[var(--text-main)]">01. Application Review</h3>
-                        <p class="text-[var(--text-muted)] text-sm mt-2">We review your GitHub, Portfolio, and past projects. Show us your best code or campaigns.</p>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] transition-colors">01. Application Review</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">We review your GitHub, Portfolio, and past projects. Show us your best code or campaigns.</p>
                     </div>
                     <div class="md:w-1/2 md:pl-16 pl-12 md:pl-16 w-full hidden md:block">
                         <div class="glass-card-premium p-4 inline-block border-[#00F0FF]/30"><i class="fa-solid fa-file-code text-2xl text-[#00F0FF]"></i></div>
@@ -286,16 +285,16 @@
                         <div class="glass-card-premium p-4 inline-block border-[#B026FF]/30 float-right"><i class="fa-solid fa-laptop-code text-2xl text-[#B026FF]"></i></div>
                     </div>
                     <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
-                        <h3 class="text-xl font-bold text-[var(--text-main)]">02. Technical Assignment</h3>
-                        <p class="text-[var(--text-muted)] text-sm mt-2">A short, real-world task to evaluate your problem-solving skills. No leetcode puzzles, just practical work.</p>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] transition-colors">02. Technical Assignment</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">A short, real-world task to evaluate your problem-solving skills. No leetcode puzzles, just practical work.</p>
                     </div>
                 </div>
 
                 <div class="relative flex flex-col md:flex-row items-center gs-slide-up interactive">
                     <div class="process-dot md:top-1/2 md:-translate-y-1/2" style="border-color: orange; box-shadow: 0 0 20px rgba(255,165,0,0.5);"></div>
                     <div class="md:w-1/2 md:pr-16 text-left md:text-right pl-12 md:pl-0 w-full mb-4 md:mb-0">
-                        <h3 class="text-xl font-bold text-[var(--text-main)]">03. Culture Fit Interview</h3>
-                        <p class="text-[var(--text-muted)] text-sm mt-2">A 30-minute chat with the founders to see if our values and goals align perfectly.</p>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] transition-colors">03. Culture Fit Interview</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">A 30-minute chat with the founders to see if our values and goals align perfectly.</p>
                     </div>
                     <div class="md:w-1/2 md:pl-16 pl-12 w-full hidden md:block">
                         <div class="glass-card-premium p-4 inline-block border-orange-500/30"><i class="fa-solid fa-users text-2xl text-orange-500"></i></div>
@@ -308,8 +307,8 @@
                         <div class="glass-card-premium p-4 inline-block border-[#00F0FF]/30 float-right"><i class="fa-solid fa-handshake text-2xl text-[#00F0FF]"></i></div>
                     </div>
                     <div class="md:w-1/2 md:pl-16 pl-12 w-full order-2">
-                        <h3 class="text-xl font-bold text-[var(--text-main)]">04. The Offer</h3>
-                        <p class="text-[var(--text-muted)] text-sm mt-2">Welcome to TechPixels! We send over the paperwork and gear up for your onboarding.</p>
+                        <h3 class="text-xl font-bold text-[var(--text-main)] transition-colors">04. The Offer</h3>
+                        <p class="text-[var(--text-muted)] text-sm mt-2 transition-colors">Welcome to TechPixels! We send over the paperwork and gear up for your onboarding.</p>
                     </div>
                 </div>
             </div>
@@ -317,19 +316,15 @@
     </div>
 </section>
 
-<!-- ==========================================
-     6. APPLICATION FORM (Glassmorphism CTA)
-     ========================================== -->
 <section id="apply-now" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="glass-card-premium p-8 md:p-12 gs-reveal text-center">
             <div class="bg-glow-effect"></div>
             <div class="mb-10">
-                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-2">Ready to Apply?</h2>
-                <p class="text-[var(--text-muted)] text-sm">Drop your details below. We review every single application manually.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-[var(--text-main)] mb-2 transition-colors">Ready to Apply?</h2>
+                <p class="text-[var(--text-muted)] text-sm transition-colors">Drop your details below. We review every single application manually.</p>
             </div>
             
-            <!-- BACKEND LOGIC: Added enctype for file uploads and dynamic action URL -->
             <form method="POST" action="{% url 'career' %}" enctype="multipart/form-data" class="text-left">
                 {% csrf_token %}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -360,7 +355,6 @@
                     </div>
                 </div>
 
-                <!-- ADDED: RESUME UPLOAD FIELD -->
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-[var(--text-muted)] uppercase tracking-wide mb-2">Upload Resume (PDF/DOCX)</label>
                     <input type="file" name="resume" accept=".pdf,.doc,.docx" required class="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-[var(--text-main)] focus:border-[#B026FF] focus:ring-1 focus:ring-[#B026FF] outline-none transition-all cursor-pointer interactive file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#B026FF]/10 file:text-[#B026FF] hover:file:bg-[#B026FF]/20">
@@ -383,8 +377,9 @@
 
 {% block extra_js %}
 <script>
-    // 1. GSAP Animations
+    // 1. 🚀 GSAP Force 3D Acceleration
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
 
     gsap.utils.toArray('.gs-reveal').forEach((elem) => {
         gsap.from(elem, {
@@ -405,7 +400,6 @@
         const card = headerElement.parentElement;
         const content = card.querySelector('.job-content');
         
-        // Close other open cards
         document.querySelectorAll('.job-card').forEach(otherCard => {
             if (otherCard !== card && otherCard.classList.contains('active')) {
                 otherCard.classList.remove('active');
@@ -413,7 +407,6 @@
             }
         });
 
-        // Toggle current card
         card.classList.toggle('active');
         content.classList.toggle('active');
     }

@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up, .tilt-3d, .animate-float {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED CLOUD PAGE STYLES
        ========================================= */
@@ -36,35 +41,23 @@
 
     /* Interactive Server Mockup */
     .server-mockup {
-        background: #0f172a; 
-        border: 1px solid rgba(255,255,255,0.1); 
-        border-radius: 20px;
+        background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
         box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
-        overflow: hidden; 
-        width: 100%; position: relative; 
+        overflow: hidden; width: 100%; position: relative; 
     }
     .server-header { 
-        background: rgba(0,0,0,0.4); padding: 15px 20px; 
-        display: flex; justify-content: space-between; align-items: center;
+        background: rgba(0,0,0,0.4); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
         border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #cbd5e1; font-weight: 700;
     }
     .status-badge { 
-        background: rgba(39,201,63,0.15); color: #27c93f; 
-        padding: 5px 12px; border-radius: 50px; border: 1px solid rgba(39,201,63,0.3); 
-        display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px;
+        background: rgba(39,201,63,0.15); color: #27c93f; padding: 5px 12px; border-radius: 50px; 
+        border: 1px solid rgba(39,201,63,0.3); display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px;
     }
-    .pulse-dot { 
-        width: 8px; height: 8px; background: #27c93f; border-radius: 50%; 
-        box-shadow: 0 0 10px #27c93f; animation: blink 1.5s infinite;
-    }
+    .pulse-dot { width: 8px; height: 8px; background: #27c93f; border-radius: 50%; box-shadow: 0 0 10px #27c93f; animation: blink 1.5s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
     
     .server-body { padding: 25px 20px; }
-    .node-item { 
-        background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); 
-        padding: 18px 20px; border-radius: 12px; margin-bottom: 15px; 
-        display: flex; justify-content: space-between; align-items: center; 
-    }
+    .node-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
     .node-title { font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 12px;}
     .node-metrics { font-size: 12px; font-family: 'Courier New', Courier, monospace; font-weight: bold;}
     
@@ -73,13 +66,7 @@
     .bar-fill.purple { background: #B026FF; }
 
     /* Process Timeline Big Numbers */
-    .process-num { 
-        font-family: 'Space Grotesk', sans-serif; 
-        font-size: 5rem; font-weight: 900; 
-        background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); 
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-        position: absolute; top: 10px; right: 20px; z-index: -1;
-    }
+    .process-num { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 900; background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: absolute; top: 10px; right: 20px; z-index: -1; }
 
     /* 3D Tilt Effect */
     .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
@@ -88,23 +75,29 @@
     /* Floating Animations */
     @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
     .animate-float { animation: float 5s ease-in-out infinite; }
+
+    /* =========================================
+       🚀 ZERO-LAG MOBILE OPTIMIZATION
+       ========================================= */
+    @media (max-width: 991px) {
+        .glass-card-premium { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: #0f0f13 !important; }
+        body.light-mode .glass-card-premium { background-color: #ffffff !important; }
+        .card-glow-orb { display: none !important; }
+        .server-mockup { transform: scale(0.9); }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ==========================================
-     1. HERO SECTION (Server Mockup & Tilt)
-     ========================================== -->
 <section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse hidden md:block"></div>
+        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15 hidden md:block"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-16">
-            <!-- Left Content -->
             <div class="lg:w-1/2 gs-reveal text-center lg:text-left">
                 <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg interactive">
                     Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#00F0FF]">Cloud Hosting</span>
@@ -123,7 +116,6 @@
                 </div>
             </div>
 
-            <!-- Right 3D Server Mockup -->
             <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
                 <div class="tilt-content animate-float">
                     <div class="server-mockup">
@@ -162,9 +154,6 @@
     </div>
 </section>
 
-<!-- ==========================================
-     2. UPTIME & STATS GRID
-     ========================================== -->
 <section class="py-12 relative z-10 border-b border-[var(--card-border)] bg-black/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
@@ -188,9 +177,6 @@
     </div>
 </section>
 
-<!-- ==========================================
-     3. CORE DEVOPS CAPABILITIES (Bento Box)
-     ========================================== -->
 <section class="py-24 relative z-10 bg-black/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
@@ -199,7 +185,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
-            <!-- Cloud Architecture -->
             <div class="glass-card-premium p-10 interactive group">
                 <div class="card-glow-orb"></div>
                 <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
@@ -209,7 +194,6 @@
                 <p class="text-[var(--text-muted)] leading-relaxed">Building robust Virtual Private Clouds (VPC) on AWS/GCP, utilizing EC2 instances, S3 buckets, and managed RDS for ultimate reliability and auto-scaling.</p>
             </div>
             
-            <!-- Containerization -->
             <div class="glass-card-premium p-10 interactive group">
                 <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
                 <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
@@ -219,7 +203,6 @@
                 <p class="text-[var(--text-muted)] leading-relaxed">Using Docker and Kubernetes to containerize environments, ensuring code behaves identically across staging and production without configuration conflicts.</p>
             </div>
 
-            <!-- CI/CD Pipelines -->
             <div class="glass-card-premium p-10 interactive group">
                 <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, transparent 70%);"></div>
                 <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
@@ -229,7 +212,6 @@
                 <p class="text-[var(--text-muted)] leading-relaxed">Automating deployment processes via GitHub Actions or Jenkins. Code is tested, built, and pushed to servers seamlessly with zero downtime.</p>
             </div>
 
-            <!-- Server Security -->
             <div class="glass-card-premium p-10 interactive group">
                 <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%);"></div>
                 <div class="w-16 h-16 rounded-2xl bg-pink-500/10 text-pink-500 flex items-center justify-center text-3xl mb-6 border border-pink-500/30 group-hover:scale-110 transition-transform">
@@ -242,9 +224,6 @@
     </div>
 </section>
 
-<!-- ==========================================
-     4. DEVOPS TECH STACK
-     ========================================== -->
 <section class="py-20 relative z-10 border-y border-[var(--card-border)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h3 class="text-xl font-bold text-[var(--text-main)] mb-10 gs-reveal">Our Server Stack</h3>
@@ -258,9 +237,6 @@
     </div>
 </section>
 
-<!-- ==========================================
-     5. INFRASTRUCTURE SETUP TIMELINE
-     ========================================== -->
 <section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 gs-reveal">
@@ -269,25 +245,21 @@
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
-            <!-- Step 1 -->
             <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
                 <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">01</div>
                 <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Assess & Architect</h4>
                 <p class="text-[var(--text-muted)] text-sm">Evaluating computational requirements, database sizes, and mapping out a cost-effective cloud topology.</p>
             </div>
-            <!-- Step 2 -->
             <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
                 <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">02</div>
                 <h4 class="text-xl font-bold text-[#B026FF] mb-3">Provisioning</h4>
                 <p class="text-[var(--text-muted)] text-sm">Configuring Linux environments, Nginx reverse proxies, SSL certifications, and strict firewall rules.</p>
             </div>
-            <!-- Step 3 -->
             <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
                 <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">03</div>
                 <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Deploy & CI/CD</h4>
                 <p class="text-[var(--text-muted)] text-sm">Moving existing data securely, establishing Docker containers, and launching the application live via automated pipelines.</p>
             </div>
-            <!-- Step 4 -->
             <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
                 <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">04</div>
                 <h4 class="text-xl font-bold text-[#B026FF] mb-3">24/7 Monitoring</h4>
@@ -297,9 +269,6 @@
     </div>
 </section>
 
-<!-- ==========================================
-     6. CTA: FREE INFRASTRUCTURE AUDIT
-     ========================================== -->
 <section id="audit" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
@@ -323,43 +292,53 @@
 <script>
     // Server Load Simulator Logic
     setInterval(() => {
-        let load1 = Math.floor(Math.random() * 25) + 10; // Random between 10-35
-        let load2 = Math.floor(Math.random() * 20) + 5;  // Random between 5-25
+        let load1 = Math.floor(Math.random() * 25) + 10;
+        let load2 = Math.floor(Math.random() * 20) + 5;
         document.getElementById('load-1').innerText = load1 + '%';
         document.getElementById('bar-1').style.width = load1 + '%';
         document.getElementById('load-2').innerText = load2 + '%';
         document.getElementById('bar-2').style.width = load2 + '%';
     }, 2500);
 
-    // 3D Tilt Effect for Server Mockup
-    const tiltCards = document.querySelectorAll('.tilt-3d');
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    // 1. Optimized 3D Tilt Effect for Server Mockup (Zero Lag)
+    if (window.innerWidth > 991) {
+        const tiltCards = document.querySelectorAll('.tilt-3d');
+        tiltCards.forEach(card => {
+            let ticking = false;
+            card.addEventListener('mousemove', e => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = ((y - centerY) / centerY) * -5; 
+                        const rotateY = ((x - centerX) / centerX) * 5;
+                        
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
             
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                card.style.transition = 'transform 0.5s ease';
+            });
             
-            const rotateX = ((y - centerY) / centerY) * -5; 
-            const rotateY = ((x - centerX) / centerX) * 5;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
         });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            card.style.transition = 'transform 0.5s ease';
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
-    });
+    }
 
-    // GSAP Scroll Animations
+    // 2. Hardware Accelerated GSAP
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
 
     gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
 

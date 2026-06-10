@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up, .tilt-3d, .animate-float {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED PRODUCT DETAILS STYLES (Light/Dark Safe)
        ========================================= */
@@ -27,46 +32,27 @@
     }
 
     .card-glow-orb {
-        position: absolute;
-        width: 150px;
-        height: 150px;
+        position: absolute; width: 150px; height: 150px;
         background: radial-gradient(circle, rgba(0,240,255,0.2) 0%, transparent 70%);
-        border-radius: 50%;
-        top: -50px;
-        right: -50px;
-        opacity: 0;
-        z-index: -1;
-        transition: all 0.6s ease;
-        filter: blur(20px);
+        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
+        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
     }
     .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
 
     /* 3D Dashboard Mockup */
     .dashboard-mockup {
-        background: #0f172a;
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
+        background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+        overflow: hidden; position: relative; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
     }
-    .dashboard-mockup img {
-        width: 100%; height: auto; display: block;
-        opacity: 0.8; transition: opacity 0.4s, transform 0.8s;
-    }
+    .dashboard-mockup img { width: 100%; height: auto; display: block; opacity: 0.8; transition: opacity 0.4s, transform 0.8s; }
     .dashboard-mockup:hover img { opacity: 1; transform: scale(1.02); }
     
     .live-preview-badge {
-        position: absolute; top: 20px; left: 20px;
-        background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 6px 15px; border-radius: 50px;
-        font-size: 11px; font-weight: 800; color: #00F0FF;
-        display: flex; align-items: center; gap: 8px; z-index: 2;
+        position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1); padding: 6px 15px; border-radius: 50px;
+        font-size: 11px; font-weight: 800; color: #00F0FF; display: flex; align-items: center; gap: 8px; z-index: 2;
     }
-    .live-preview-badge .dot {
-        width: 8px; height: 8px; background: #00F0FF; border-radius: 50%; animation: pulse 2s infinite;
-    }
+    .live-preview-badge .dot { width: 8px; height: 8px; background: #00F0FF; border-radius: 50%; animation: pulse 2s infinite; }
 
     /* 3D Tilt Effect applied via JS */
     .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
@@ -75,15 +61,24 @@
     /* Floating Animations */
     @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
     .animate-float { animation: float 5s ease-in-out infinite; }
+
+    @media (max-width: 991px) {
+        .glass-card-premium, .dashboard-mockup {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background-color: #0f0f13 !important;
+        }
+        body.light-mode .glass-card-premium, body.light-mode .dashboard-mockup { background-color: #ffffff !important; }
+        .card-glow-orb { display: none !important; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-
 <section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse hidden md:block"></div>
+        <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15 hidden md:block"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -281,60 +276,51 @@
         </div>
     </div>
 </section>
-
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // GSAP Scroll Animations
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true }); // Enable Hardware Acceleration
 
-    gsap.from(".gs-reveal", {
-        y: 40,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: "power3.out"
-    });
+    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
 
     gsap.utils.toArray('.gs-slide-up').forEach((elem, i) => {
         gsap.from(elem, {
-            scrollTrigger: {
-                trigger: elem,
-                start: "top 85%",
-            },
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out"
+            scrollTrigger: { trigger: elem, start: "top 85%" },
+            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
         });
     });
 
-    // 3D Tilt Effect for Hero Dashboard
-    const cards = document.querySelectorAll('.tilt-3d');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -10; 
-            const rotateY = ((x - centerX) / centerX) * 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    // Optimized 3D Tilt Effect
+    if (window.innerWidth > 991) {
+        const cards = document.querySelectorAll('.tilt-3d');
+        cards.forEach(card => {
+            let ticking = false;
+            card.addEventListener('mousemove', e => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -5; 
+                        const rotateY = ((x - centerX) / centerX) * 5;
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                card.style.transition = 'transform 0.5s ease';
+            });
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
         });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            card.style.transition = 'transform 0.5s ease';
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
-    });
+    }
 </script>
 {% endblock %}

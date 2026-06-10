@@ -6,12 +6,21 @@
     .glass-article-box {
         background: var(--card-bg); backdrop-filter: blur(24px);
         border: 1px solid var(--card-border); box-shadow: var(--box-shadow); border-radius: 24px;
+        will-change: transform, opacity;
     }
-    /* Typography inside the article */
     .blog-content p { margin-bottom: 1.5rem; font-size: 1.125rem; line-height: 1.8; color: var(--text-muted); }
     .blog-content h2, .blog-content h3 { color: var(--text-main); font-weight: 800; margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.8rem;}
     .blog-content ul, .blog-content ol { margin-bottom: 1.5rem; padding-left: 1.5rem; color: var(--text-muted); }
     .blog-content li { margin-bottom: 0.5rem; list-style-type: disc; }
+
+    @media (max-width: 991px) {
+        .glass-article-box {
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            background-color: #0f0f13 !important;
+        }
+        body.light-mode .glass-article-box { background-color: #ffffff !important; }
+    }
 </style>
 {% endblock %}
 
@@ -19,28 +28,23 @@
 <section class="pt-32 pb-20 relative z-10">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <!-- Back Button -->
         <a href="{% url 'blog' %}" class="inline-flex items-center text-[var(--text-muted)] hover:text-[#00F0FF] font-bold text-sm mb-10 transition-colors">
             <i class="fa-solid fa-arrow-left mr-2"></i> Back to Blogs
         </a>
         
-        <!-- Category & Date -->
         <div class="flex items-center gap-4 mb-6">
             <span class="bg-[#00F0FF]/10 text-[#00F0FF] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border border-[#00F0FF]/30">{{ post.category }}</span>
             <span class="text-[var(--text-muted)] text-sm font-medium"><i class="fa-regular fa-calendar mr-2"></i>{{ post.date_posted|date:"F d, Y" }}</span>
         </div>
 
-        <!-- Title -->
         <h1 class="text-4xl md:text-6xl font-black text-[var(--text-main)] mb-10 leading-tight">{{ post.title }}</h1>
 
-        <!-- Cover Image -->
         {% if post.cover_image %}
         <div class="w-full h-[300px] md:h-[500px] rounded-[30px] overflow-hidden mb-12 shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[var(--card-border)] relative">
             <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover">
         </div>
         {% endif %}
 
-        <!-- Content Area -->
         <div class="glass-article-box p-8 md:p-14">
             <article class="blog-content">
                 {{ post.content|linebreaks }}

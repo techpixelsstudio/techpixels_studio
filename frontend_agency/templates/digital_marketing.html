@@ -5,6 +5,11 @@
 
 {% block extra_css %}
 <style>
+    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
+    .gs-reveal, .gs-slide-up, .tilt-3d, .animate-float {
+        will-change: transform, opacity;
+    }
+
     /* =========================================
        ADVANCED DIGITAL MARKETING STYLES
        ========================================= */
@@ -81,15 +86,23 @@
     
     .chart-line-svg { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawLine 3s ease forwards infinite; }
     @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+    /* =========================================
+       🚀 ZERO-LAG MOBILE OPTIMIZATION
+       ========================================= */
+    @media (max-width: 991px) {
+        .glass-card-premium, .dashboard-mockup { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: #0f0f13 !important; }
+        body.light-mode .glass-card-premium, body.light-mode .dashboard-mockup { background-color: #ffffff !important; }
+        .card-glow-orb { display: none !important; }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-
 <section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
-    <div class="absolute inset-0 z-0">
-        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#ff5f56] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse"></div>
-        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15"></div>
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#ff5f56] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse hidden md:block"></div>
+        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15 hidden md:block"></div>
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -309,35 +322,40 @@
 
 {% block extra_js %}
 <script>
-    // 3D Tilt Effect for Dashboard Mockup
-    const tiltCards = document.querySelectorAll('.tilt-3d');
-    tiltCards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -5; 
-            const rotateY = ((x - centerX) / centerX) * 5;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            card.style.transition = 'transform 0.5s ease';
-        });
-        
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'none';
-        });
-    });
-
-    // GSAP Scroll Animations
+    // Hardware Accelerated GSAP
     gsap.registerPlugin(ScrollTrigger);
+    gsap.config({ force3D: true });
+
+    // 3D Tilt Effect for Dashboard Mockup (Optimized)
+    if (window.innerWidth > 991) {
+        const tiltCards = document.querySelectorAll('.tilt-3d');
+        tiltCards.forEach(card => {
+            let ticking = false;
+            card.addEventListener('mousemove', e => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -5; 
+                        const rotateY = ((x - centerX) / centerX) * 5;
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                card.style.transition = 'transform 0.5s ease';
+            });
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
+        });
+    }
 
     gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
 
