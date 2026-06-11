@@ -130,7 +130,7 @@
     .sc2-link i { margin-left: 6px; transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); font-size: 12px; }
 
     /* =========================================
-       SAAS PRODUCT CARDS (IMAGE TOP)
+       SAAS PRODUCT CARDS
        ========================================= */
     .saas-new-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: var(--box-shadow); display: flex; flex-direction: column; text-decoration: none !important; color: var(--text-main); height: 100%; position: relative; }
     .saas-new-card:hover { transform: translateY(-8px); border-color: #0ea5e9; box-shadow: 0 20px 40px rgba(14,165,233,0.12); }
@@ -147,7 +147,7 @@
     .saas-features i { color: var(--badge-color); margin-right: 5px; }
 
     /* =========================================
-       THE FRAMEWORK (ZIG ZAG ALIGNMENT)
+       THE FRAMEWORK
        ========================================= */
     .fw-timeline-wrapper { position: relative; margin-top: 50px; padding-bottom: 25px; }
     .fw-line { position: absolute; top: 50%; left: 5%; right: 5%; height: 2px; background: rgba(14,165,233,0.15); z-index: 1; }
@@ -212,7 +212,7 @@
     .btn-submit:hover { transform: scale(1.01); box-shadow: 0 15px 30px rgba(14,165,233,0.35); color: #fff; }
 
     /* =========================================
-       🚀 5X EXTREME MOBILE OPTIMIZATION
+       🚀 EXTREME MOBILE OPTIMIZATION
        ========================================= */
     @media (max-width: 991px) { 
         .saas-new-card, .industry-card, .case-card, .testi-card, 
@@ -964,8 +964,7 @@
                         <h2 class="section-heading mb-2">Let's Build Something <span class="text-cyan">Amazing.</span></h2>
                         <p class="text-secondary" style="font-size: 16px;">Drop us a text message below. This form directly alerts our admin panel and notifies us via email instantly.</p>
                     </div>
-                    <form method="POST" action="{% url 'blog' %}" class="position-relative z-1">
-                        {% csrf_token %}
+                    <form method="POST" action="{% url 'home' %}" class="position-relative z-1"> {% csrf_token %}
                         <div class="row g-4">
                             <div class="col-md-4">
                                 <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Your Name</label>
@@ -973,11 +972,11 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Mobile Number</label>
-                                <input type="tel" class="startup-input interactive" name="phone" placeholder="+91 98765 43210" required>
+                                <input type="tel" class="startup-input interactive" name="phone" placeholder="+91 9307271695" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Email ID</label>
-                                <input type="email" class="startup-input interactive" name="email" placeholder="techpixels@gmail.com" required>
+                                <input type="email" class="startup-input interactive" name="email" placeholder="techpixelsstudio@gmail.com" required>
                             </div>
                             <div class="col-12 mt-3">
                                 <label class="fs-6 mb-2 ms-2 fw-bold" style="color: var(--text-muted);">Text Message / Project Details</label>
@@ -1035,58 +1034,22 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {% if swal_trigger %}
     <script>
-        // AJAX Newsletter Submission Logic
-        document.getElementById('newsletter-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const emailInput = document.getElementById('newsletter-email');
-            const email = emailInput.value;
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            const btn = document.getElementById('newsletter-btn');
-            
-            const originalBtnText = btn.innerHTML;
-            btn.innerHTML = 'Subscribing... <i class="fa-solid fa-spinner fa-spin ms-2"></i>';
-            btn.style.pointerEvents = 'none';
-            
-            fetch("{% url 'subscribe' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": csrfToken
-                },
-                body: new URLSearchParams({"email": email})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    Swal.fire({
-                        title: 'Subscribed! 🎉',
-                        text: data.message,
-                        icon: 'success',
-                        background: 'var(--card-bg)',
-                        color: 'var(--text-main)',
-                        confirmButtonColor: '#00F0FF',
-                        customClass: { popup: 'glass-card-premium' }
-                    });
-                    emailInput.value = '';
-                } else {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: data.message,
-                        icon: 'error',
-                        background: 'var(--card-bg)',
-                        color: 'var(--text-main)'
-                    });
-                }
-            })
-            .catch(error => console.error("Error:", error))
-            .finally(() => {
-                btn.innerHTML = originalBtnText;
-                btn.style.pointerEvents = 'auto';
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ swal_msg }}',
+                icon: 'success',
+                confirmButtonColor: '#00F0FF',
+                background: 'var(--card-bg)',
+                color: 'var(--text-main)'
+            }).then(() => {
+                window.location.href = '{{ redirect_url }}';
             });
         });
     </script>
+    {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const options = document.querySelectorAll('.service-option');

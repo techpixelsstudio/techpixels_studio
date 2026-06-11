@@ -7,40 +7,35 @@ from .models import ContactLead, JobApplication, JobOpening, BlogPost, Instagram
 
 # --- MAIN PAGES ---
 def home(request):
-    return render(request, 'index.html')
-
-def about(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
-        company = request.POST.get('company', 'Not Provided')
-        service_type = request.POST.get('service_type', 'Not Provided')
-        budget = request.POST.get('budget', 'Not Provided')
         message = request.POST.get('message', '')
         
+        # डेटाबेसमध्ये डेटा सेव्ह करणे
         ContactLead.objects.create(
-            name=name, phone=phone, email=email, company=company,
-            service_type=service_type, budget=budget, message=message
+            name=name, phone=phone, email=email, message=message
         )
         
-        subject = f"🚀 New Lead from ABOUT PAGE: {name} | TechPixels"
-        email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nService Type: {service_type}\nMessage: {message}"
+        # ईमेल पाठवण्याचे लॉजिक
+        subject = f"🚀 New Lead from HOMEPAGE: {name} | TechPixels"
+        email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nMessage: {message}"
         
         try:
             send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
         except Exception as e:
-            print("Email sending failed:", e)
+            print("Email sending failed:", e) 
         
-        # CHANGED: Custom Pop-up Trigger (Redirects to /blog/)
+        # पॉप-अप आणि रिडायरेक्ट
         context = {
             'swal_trigger': True,
-            'swal_msg': "Tumacha msg amhala milala. Amhi lavkarch tumchyashi contact karu!",
-            'redirect_url': '/blog/'
+            'swal_msg': "Your inquiry has been submitted! Our senior architect will contact you shortly.",
+            'redirect_url': '/'
         }
-        return render(request, 'about.html', context)
+        return render(request, 'index.html', context)
         
-    return render(request, 'about.html')
+    return render(request, 'index.html')
 
 def products(request):
     return render(request, 'products.html')
@@ -123,11 +118,11 @@ def contact(request):
         except Exception as e:
             print("Email sending failed:", e) 
         
-        # CHANGED: Custom Pop-up Trigger (Redirects to /about/)
+        # FIXED: Custom Pop-up Trigger (Redirects back to /contact/)
         context = {
             'swal_trigger': True,
             'swal_msg': "Your inquiry has been submitted! Our senior architect will contact you shortly.",
-            'redirect_url': '/about/'
+            'redirect_url': '/contact/'
         }
         return render(request, 'contact.html', context)
         
@@ -160,7 +155,7 @@ def career(request):
         except Exception as e:
             print("Email sending failed:", e)
 
-        # CHANGED: Custom Pop-up Trigger (Redirects to /career/)
+        # Custom Pop-up Trigger (Redirects to /career/)
         context = {
             'jobs': jobs,
             'swal_trigger': True,
