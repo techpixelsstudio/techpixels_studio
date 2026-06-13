@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TechPixels Studio | 360° Digital & Tech Agency{% endblock %}</title>
-    
+
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favcon.svg' %}">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,30 +36,25 @@
 
     <style>
         /* =========================================
-           🚀 GPU HARDWARE ACCELERATION (NO LAG)
+           🚀 GPU HARDWARE ACCELERATION & RESET
            ========================================= */
+        html, body { 
+            overflow-x: hidden !important; 
+            width: 100%; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
         * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        body, html { overflow-x: hidden !important; width: 100%; position: relative; }
+        
         .gpu-accel, .ambient-glow-1, .ambient-glow-2, .navbar, .dropdown-menu, .mega-footer {
             transform: translateZ(0); -webkit-transform: translate3d(0,0,0);
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
             perspective: 1000px; will-change: transform;
         }
 
-        @media (min-width: 992px) {
-            .navbar-expand-lg .navbar-collapse { display: flex !important; visibility: visible !important; flex-basis: auto; }
-        }
-        .navbar-brand { display: block !important; z-index: 1060 !important; position: relative; }
-        .accordion-collapse:not(.show) { display: none !important; }
-        .accordion-collapse.show { display: block !important; visibility: visible !important; }
-        .accordion-body { visibility: visible !important; color: var(--text-main) !important; background: var(--card-bg) !important; }
-
-        svg, img, video { max-width: 100%; height: auto; }
-        *, ::before, ::after { border-width: 0; border-style: solid; border-color: currentColor; }
-        .border, .border-t, .border-b, .border-l, .border-r { border-style: solid !important; }
-
         /* =========================================
-           GLOBAL THEME VARIABLES
+           GLOBAL THEME VARIABLES (DEFAULT DARK MODE)
            ========================================= */
         :root {
             --bg-main: #05050a; --grid-color: rgba(255, 255, 255, 0.02);
@@ -81,26 +76,14 @@
             --footer-bg: #f1f5f9;
         }
 
-        /* =========================================
-           CORE RESET & BODY STYLES
-           ========================================= */
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 10px; }
-
         body {
             background-color: var(--bg-main);
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 30px 30px; color: var(--text-main); font-family: 'Manrope', sans-serif; 
-            transition: background-color 0.5s ease, color 0.5s ease; margin: 0; padding: 0;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        @media (min-width: 992px) and (pointer: fine) {
-            body, a, button, input, textarea, select, .interactive { cursor: none !important; }
-            .cursor-dot, .cursor-outline { display: block !important; }
-        }
-
+        /* Ambient Glows */
         .ambient-glow-1, .ambient-glow-2 { position: absolute; border-radius: 50%; z-index: -1; opacity: var(--glow-opacity); transition: opacity 0.5s ease; pointer-events: none; }
         .ambient-glow-1 { background: radial-gradient(circle, rgba(0,210,255,0.7) 0%, transparent 70%); width: 700px; height: 700px; top: -10%; left: -200px; animation: float-glow 8s ease-in-out infinite; }
         .ambient-glow-2 { background: radial-gradient(circle, rgba(157,78,221,0.7) 0%, transparent 70%); width: 800px; height: 800px; bottom: 0%; right: -250px; animation: float-glow 10s ease-in-out infinite reverse; }
@@ -110,10 +93,6 @@
         .text-cyan { color: #00d2ff !important; text-shadow: 0 0 15px rgba(0,210,255,0.2); }
         .text-purple { color: #9d4edd !important; text-shadow: 0 0 15px rgba(157,78,221,0.2); }
         body.light-mode .text-cyan, body.light-mode .text-purple { text-shadow: none !important; }
-
-        .cursor-dot { width: 7px; height: 7px; background-color: #ff3b30; border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); display: none; }
-        .cursor-outline { width: 38px; height: 38px; border: 1.5px solid rgba(14, 165, 233, 0.5); background-color: rgba(14, 165, 233, 0.08); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: width 0.15s ease, height 0.15s ease, background-color 0.15s ease; display: none; }
-        .cursor-outline.hovering { width: 60px; height: 60px; background-color: rgba(14, 165, 233, 0.14); border-color: transparent; backdrop-filter: blur(1px); }
 
         .navbar { background: var(--nav-bg) !important; backdrop-filter: blur(15px); border-bottom: 1px solid var(--card-border) !important; padding: 12px 0; z-index: 1000; transition: background 0.5s, border 0.5s; }
         .nav-link { color: var(--text-muted) !important; font-size: 13px; margin: 0 15px; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
@@ -129,7 +108,7 @@
         .magnetic-btn:hover { background: #0ea5e9; color: #ffffff; transform: scale(1.03); box-shadow: 0 10px 30px rgba(14,165,233,0.35); }
         #view-work-btn { border: 1px solid var(--card-border) !important; }
 
-        .theme-btn { position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #ffffff; color: #000000; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; }
+        .theme-btn { position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #0ea5e9; color: #030303; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .theme-btn:hover { transform: scale(1.1) rotate(15deg); }
 
         .mega-footer { border-top: 1px solid var(--card-border) !important; padding-top: 80px; padding-bottom: 30px; background: var(--footer-bg); transition: 0.5s; }
@@ -169,29 +148,23 @@
             body.light-mode .glass-card-premium, body.light-mode .premium-glass-card { background-color: #ffffff !important; }
             .color-blend-blob, .bg-glow-effect, .card-glow-orb { display: none !important; animation: none !important; }
             * { will-change: auto !important; }
-            
-            h1 { font-size: 2.2rem !important; line-height: 1.2 !important; }
-            h2 { font-size: 1.8rem !important; }
         }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body class="light-mode"> 
+<body> 
 
-    <button id="theme-toggle" class="theme-btn interactive" title="Toggle Bright/Dark Theme">
-        <i class="fa-solid fa-moon"></i>
+    <button id="theme-toggle" class="theme-btn" title="Toggle Bright/Dark Theme">
+        <i class="fa-solid fa-sun" id="theme-icon"></i>
     </button>
 
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
 
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
-
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a href="{% url 'home' %}" class="flex items-center gap-3 interactive group">
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group">
                 <div class="bg-[#050505] px-3 py-1.5 rounded-xl shadow-lg border border-gray-800/50 transition-transform duration-300 group-hover:scale-105">
                     <img src="{% static 'images/logo.svg' %}" class="h-8 md:h-10 w-auto" alt="TechPixels Studio">
                 </div>
@@ -203,35 +176,35 @@
             
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link interactive" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link interactive" href="{% url 'about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link interactive" href="{% url 'products' %}">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'products' %}">Products</a></li>
                     
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle interactive" href="{% url 'services' %}" id="servicesDropdown" data-bs-toggle="dropdown">Services</a>
+                        <a class="nav-link dropdown-toggle" href="{% url 'services' %}" id="servicesDropdown" data-bs-toggle="dropdown">Services</a>
                         <ul class="dropdown-menu" style="width: 260px;">
-                            <li><a class="dropdown-item interactive fw-bold" href="{% url 'services' %}" style="color: #0ea5e9;">View All Services ➔</a></li>
+                            <li><a class="dropdown-item fw-bold" href="{% url 'services' %}" style="color: #0ea5e9;">View All Services ➔</a></li>
                             <li><hr class="dropdown-divider" style="border-color: var(--card-border);"></li>
                             <li><h6 class="dropdown-header text-cyan">Engineering & Tech</h6></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'web_dev' %}">Website Development</a></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'app_dev' %}">App Development</a></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'custom_tech' %}">Custom Tech Solutions</a></li>
+                            <li><a class="dropdown-item" href="{% url 'web_dev' %}">Website Development</a></li>
+                            <li><a class="dropdown-item" href="{% url 'app_dev' %}">App Development</a></li>
+                            <li><a class="dropdown-item" href="{% url 'custom_tech' %}">Custom Tech Solutions</a></li>
                             <li><hr class="dropdown-divider" style="border-color: var(--card-border);"></li>
                             <li><h6 class="dropdown-header text-purple">Creative & Marketing</h6></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'digital_marketing' %}">Product Branding</a></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'seo' %}">SEO Optimization</a></li>
-                            <li><a class="dropdown-item interactive" href="{% url 'video_editing' %}">Video Editing & VFX</a></li>
+                            <li><a class="dropdown-item" href="{% url 'digital_marketing' %}">Product Branding</a></li>
+                            <li><a class="dropdown-item" href="{% url 'seo' %}">SEO Optimization</a></li>
+                            <li><a class="dropdown-item" href="{% url 'video_editing' %}">Video Editing & VFX</a></li>
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link interactive" href="{% url 'blog' %}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link interactive" href="{% url 'career' %}">Career</a></li>
-                    <li class="nav-item d-lg-none"><a class="nav-link interactive" href="{% url 'contact' %}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'career' %}">Career</a></li>
+                    <li class="nav-item d-lg-none"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
                 </ul>
             </div>
             
             <div class="d-none d-lg-block">
-                <a href="{% url 'contact' %}" class="magnetic-btn magnetic interactive">Start a Project</a>
+                <a href="{% url 'contact' %}" class="magnetic-btn magnetic">Start a Project</a>
             </div>
         </div>
     </nav>
@@ -245,27 +218,27 @@
                 <h3 class="fw-bold mb-3" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--text-main);">TechPixels.</h3>
                 <p style="color: var(--text-muted); font-size: 14px; line-height: 1.8;">A premier 360-degree digital agency. Bridging the gap between complex engineering and ROI-driven marketing.</p>
                 <div class="d-flex gap-3 justify-content-center justify-content-md-start mt-4">
-                    <a href="https://linkedin.com/company/techpixelsstudio" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="https://www.instagram.com/techpixels.studio/" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://github.com/techpixels-studio" class="btn rounded-circle interactive" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://linkedin.com/company/techpixelsstudio" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/techpixels.studio/" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://github.com/techpixels-studio" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
             
             <div class="col-lg-3 col-md-6 mb-5 mb-lg-0 text-center text-md-start">
                 <h6 class="footer-title" style="color: #0ea5e9;">QUICK LINKS</h6>
                 <ul class="list-unstyled" style="line-height: 2.8;">
-                    <li><a href="{% url 'home' %}" class="footer-link interactive">Home</a></li>
-                    <li><a href="{% url 'products' %}" class="footer-link interactive">SaaS Products</a></li>
-                    <li><a href="{% url 'services' %}" class="footer-link interactive">Our Services</a></li>
+                    <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+                    <li><a href="{% url 'products' %}" class="footer-link">SaaS Products</a></li>
+                    <li><a href="{% url 'services' %}" class="footer-link">Our Services</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-4 col-md-6 text-center text-md-start">
                 <h6 class="footer-title" style="color: #9d4edd;">CONTACT US</h6>
                 <ul class="list-unstyled" style="font-size: 14px; line-height: 2.8; color: var(--text-muted);">
-                    <li class="interactive"><i class="fa-solid fa-envelope me-3 text-cyan"></i> techpixelsstudio@gmail.com</li>
-                    <li class="interactive"><i class="fa-solid fa-phone me-3 text-purple"></i> +91 9307271695</li>
-                    <li class="interactive"><i class="fa-solid fa-location-dot me-3 text-cyan"></i> Pune, Maharashtra, India</li>
+                    <li><i class="fa-solid fa-envelope me-3 text-cyan"></i> techpixelsstudio@gmail.com</li>
+                    <li><i class="fa-solid fa-phone me-3 text-purple"></i> +91 98765 43210</li>
+                    <li><i class="fa-solid fa-location-dot me-3 text-cyan"></i> Pune, Maharashtra, India</li>
                 </ul>
             </div>
         </div>
@@ -282,58 +255,38 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // === THEME TOGGLE LOGIC ===
+        // === OPTIMIZED THEME TOGGLE LOGIC (Default Dark) ===
         const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-        const viewWorkBtn = document.getElementById('view-work-btn');
+        const themeIcon = document.getElementById('theme-icon');
+        const currentTheme = localStorage.getItem('theme');
         
-        body.classList.add('light-mode');
-        themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
-        themeToggle.style.background = '#111115';
-        themeToggle.style.color = '#fff';
-        if(viewWorkBtn) { viewWorkBtn.style.color = '#111115'; viewWorkBtn.style.borderColor = '#111115'; }
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeToggle.style.background = '#111115';
+            themeToggle.style.color = '#fff';
+        }
 
         themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            if(body.classList.contains('light-mode')) {
-                themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
-                themeToggle.style.background = '#111115'; themeToggle.style.color = '#fff';
-                themeToggle.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
-                if(viewWorkBtn) { viewWorkBtn.style.color = '#111115'; viewWorkBtn.style.borderColor = '#111115'; }
-            } else {
-                themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
-                themeToggle.style.background = '#0ea5e9'; themeToggle.style.color = '#030303';
-                themeToggle.style.boxShadow = '0 0 25px rgba(14,165,233,0.4)';
-                if(viewWorkBtn) { viewWorkBtn.style.color = '#fff'; viewWorkBtn.style.borderColor = '#0ea5e9'; }
-            }
-        });
-
-        // === OPTIMIZED CURSOR LOGIC (No Lag) ===
-        const cursorDot = document.getElementById("cursor-dot");
-        const cursorOutline = document.getElementById("cursor-outline");
-        let cursorTicking = false;
-        
-        if (window.matchMedia("(pointer: fine)").matches) {
-            window.addEventListener("mousemove", (e) => { 
-                if(!cursorTicking) {
-                    window.requestAnimationFrame(() => {
-                        cursorDot.style.left = `${e.clientX}px`; 
-                        cursorDot.style.top = `${e.clientY}px`; 
-                        cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 250, fill: "forwards" }); 
-                        cursorTicking = false;
-                    });
-                    cursorTicking = true;
+            window.requestAnimationFrame(() => {
+                document.body.classList.toggle('light-mode');
+                if(document.body.classList.contains('light-mode')) {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    themeToggle.style.background = '#111115'; 
+                    themeToggle.style.color = '#fff';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    themeToggle.style.background = '#0ea5e9'; 
+                    themeToggle.style.color = '#030303';
+                    localStorage.setItem('theme', 'dark');
                 }
             });
-            
-            document.querySelectorAll('.interactive').forEach(el => {
-                el.addEventListener("mouseenter", () => cursorOutline.classList.add("hovering"));
-                el.addEventListener("mouseleave", () => cursorOutline.classList.remove("hovering"));
-            });
-        }
-        
+        });
+
         // === OPTIMIZED MAGNETIC BUTTON EFFECT ===
         const magnets = document.querySelectorAll('.magnetic');
         if (window.innerWidth > 991) {
@@ -355,31 +308,6 @@
             });
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out">
-        <div class="max-w-6xl mx-auto m-4 p-6 bg-[#0a0a0a]/90 backdrop-blur-2xl rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#00F0FF]/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
-            <div class="text-sm text-[var(--text-muted)]">
-                <strong class="text-white text-lg block mb-1"><i class="fa-solid fa-cookie-bite text-[#B026FF] mr-2"></i> Your Privacy Matters</strong>
-                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our backend storing these cookies.
-            </div>
-            <div class="flex gap-3 shrink-0 w-full md:w-auto justify-end">
-                <button id="decline-cookies" class="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors text-sm font-bold w-full md:w-auto">Decline</button>
-                <button id="accept-cookies" class="px-6 py-3 rounded-xl bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold text-sm shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-105 transition-transform w-full md:w-auto">Accept All</button>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const banner = document.getElementById('cookie-consent-banner');
-            if (!document.cookie.split('; ').find(row => row.startsWith('techpixels_cookie_consent='))) {
-                setTimeout(() => { banner.classList.remove('translate-y-full'); }, 1500);
-            }
-            document.getElementById('accept-cookies').addEventListener('click', () => { document.cookie = "techpixels_cookie_consent=accepted; max-age=31536000; path=/; SameSite=Lax"; banner.classList.add('translate-y-full'); });
-            document.getElementById('decline-cookies').addEventListener('click', () => { document.cookie = "techpixels_cookie_consent=declined; max-age=2592000; path=/; SameSite=Lax"; banner.classList.add('translate-y-full'); });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {% if swal_trigger %}
     <script>
@@ -395,12 +323,12 @@
                     popup: 'glass-card-premium'
                 }
             }).then((result) => {
-                // User ne 'OK' dablyavar backend ne pathavlelya url var redirect hoil
                 window.location.href = '{{ redirect_url }}'; 
             });
         });
     </script>
     {% endif %}
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

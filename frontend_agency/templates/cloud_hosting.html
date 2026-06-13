@@ -1,352 +1,369 @@
-{% extends 'base.html' %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechPixels Studio | 360° Digital & Tech Agency{% endblock %}</title>
 
-{% block title %}Cloud & Hosting Infrastructure | TechPixels Studio{% endblock %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/favcon.svg' %}">
 
-{% block extra_css %}
-<style>
-    /* 🚀 GPU ACCELERATION FOR SMOOTH SCROLLING */
-    .gs-reveal, .gs-slide-up, .tilt-3d, .animate-float {
-        will-change: transform, opacity;
-    }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    /* =========================================
-       ADVANCED CLOUD PAGE STYLES
-       ========================================= */
-    .glass-card-premium {
-        background: var(--card-bg);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid var(--card-border);
-        box-shadow: var(--box-shadow);
-        border-radius: 24px;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        z-index: 1;
-    }
-    .glass-card-premium:hover {
-        transform: translateY(-8px);
-        border-color: #00F0FF;
-        box-shadow: 0 20px 40px rgba(0, 240, 255, 0.15);
-    }
-
-    .card-glow-orb {
-        position: absolute; width: 150px; height: 150px;
-        background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%);
-        border-radius: 50%; top: -50px; right: -50px; opacity: 0;
-        z-index: -1; transition: all 0.6s ease; filter: blur(20px);
-    }
-    .glass-card-premium:hover .card-glow-orb { opacity: 1; transform: scale(1.5); }
-
-    /* Interactive Server Mockup */
-    .server-mockup {
-        background: #0f172a; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
-        overflow: hidden; width: 100%; position: relative; 
-    }
-    .server-header { 
-        background: rgba(0,0,0,0.4); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-        border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #cbd5e1; font-weight: 700;
-    }
-    .status-badge { 
-        background: rgba(39,201,63,0.15); color: #27c93f; padding: 5px 12px; border-radius: 50px; 
-        border: 1px solid rgba(39,201,63,0.3); display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 11px;
-    }
-    .pulse-dot { width: 8px; height: 8px; background: #27c93f; border-radius: 50%; box-shadow: 0 0 10px #27c93f; animation: blink 1.5s infinite; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    .server-body { padding: 25px 20px; }
-    .node-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 20px; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    .node-title { font-weight: 800; font-size: 14px; color: #fff; display: flex; align-items: center; gap: 12px;}
-    .node-metrics { font-size: 12px; font-family: 'Courier New', Courier, monospace; font-weight: bold;}
-    
-    .bar-bg { height: 6px; width: 80px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; display: inline-block; margin-left: 10px;}
-    .bar-fill { height: 100%; background: #00F0FF; width: 40%; transition: width 0.5s ease-in-out; }
-    .bar-fill.purple { background: #B026FF; }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    /* Process Timeline Big Numbers */
-    .process-num { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 900; background: linear-gradient(to bottom, rgba(0,240,255,0.15), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: absolute; top: 10px; right: 20px; z-index: -1; }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: { preflight: true },
+            theme: {
+                extend: {
+                    colors: {
+                        'pitch-black': '#050505',
+                        'dark-surface': '#0F0F13',
+                        'neon-purple': '#B026FF',
+                        'neon-cyan': '#00F0FF',
+                        'glass-bg': 'rgba(15, 15, 19, 0.7)',
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
 
-    /* 3D Tilt Effect */
-    .tilt-3d { transform-style: preserve-3d; transform: perspective(1000px); }
-    .tilt-content { transform: translateZ(40px); }
+    <style>
+        /* =========================================
+           🚀 GLOBAL RESET & BLUE LINE FIX
+           ========================================= */
+        html, body { 
+            overflow-x: hidden !important; 
+            width: 100% !important; 
+            max-width: 100% !important;
+            margin: 0 !important; 
+            padding: 0 !important; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale; 
+        }
+        
+        * { box-sizing: border-box; }
 
-    /* Floating Animations */
-    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-    .animate-float { animation: float 5s ease-in-out infinite; }
+        /* Custom Scrollbar (Now looks clean, no blue artifact) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 10px; }
 
-    /* =========================================
-       🚀 ZERO-LAG MOBILE OPTIMIZATION
-       ========================================= */
-    @media (max-width: 991px) {
-        .glass-card-premium { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background-color: #0f0f13 !important; }
-        body.light-mode .glass-card-premium { background-color: #ffffff !important; }
-        .card-glow-orb { display: none !important; }
-        .server-mockup { transform: scale(0.9); }
-    }
-</style>
-{% endblock %}
+        .gpu-accel, .ambient-glow-1, .ambient-glow-2, .navbar, .dropdown-menu, .mega-footer {
+            transform: translateZ(0); -webkit-transform: translate3d(0,0,0);
+            backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            perspective: 1000px; will-change: transform;
+        }
 
-{% block content %}
+        /* =========================================
+           GLOBAL THEME VARIABLES (DEFAULT DARK MODE)
+           ========================================= */
+        :root {
+            --bg-main: #05050a; --grid-color: rgba(255, 255, 255, 0.02);
+            --text-main: #f8fafc; --text-muted: #94a3b8;
+            --card-bg: rgba(13, 13, 23, 0.7); --card-border: rgba(255, 255, 255, 0.06);
+            --nav-bg: rgba(5, 5, 10, 0.85); --btn-bg: #ffffff; --btn-text: #05050a;
+            --box-shadow: 0 15px 35px rgba(0, 210, 255, 0.06); --glow-opacity: 0.35;
+            --input-bg: rgba(255, 255, 255, 0.02); --input-border: rgba(255, 255, 255, 0.08);
+            --footer-bg: #05050a;
+        }
 
-<section class="relative pt-32 pb-20 overflow-hidden border-b border-[var(--card-border)]">
-    <div class="absolute inset-0 z-0 pointer-events-none">
-        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#00F0FF] rounded-full mix-blend-screen filter blur-[200px] opacity-20 animate-pulse hidden md:block"></div>
-        <div class="absolute bottom-10 left-1/4 w-[400px] h-[400px] bg-[#B026FF] rounded-full mix-blend-screen filter blur-[150px] opacity-15 hidden md:block"></div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="flex flex-col lg:flex-row items-center gap-16">
-            <div class="lg:w-1/2 gs-reveal text-center lg:text-left">
-                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--text-muted)] text-xs font-bold tracking-wide uppercase mb-6 shadow-lg interactive">
-                    Home <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> Services <i class="fa-solid fa-chevron-right text-[8px] mx-2"></i> <span class="text-[#00F0FF]">Cloud Hosting</span>
+        body.light-mode {
+            --bg-main: #f8fafc; --grid-color: rgba(15, 23, 42, 0.03);
+            --text-main: #0f172a; --text-muted: #475569;
+            --card-bg: rgba(255, 255, 255, 0.85); --card-border: rgba(15, 23, 42, 0.06);
+            --nav-bg: rgba(255, 255, 255, 0.9); --btn-bg: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            --btn-text: #ffffff; --box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            --glow-opacity: 0.15; --input-bg: #ffffff; --input-border: #cbd5e1;
+            --footer-bg: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px; color: var(--text-main); font-family: 'Manrope', sans-serif; 
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Ambient Glows */
+        .ambient-glow-1, .ambient-glow-2 { position: absolute; border-radius: 50%; z-index: -1; opacity: var(--glow-opacity); transition: opacity 0.5s ease; pointer-events: none; }
+        .ambient-glow-1 { background: radial-gradient(circle, rgba(0,210,255,0.7) 0%, transparent 70%); width: 700px; height: 700px; top: -10%; left: -200px; animation: float-glow 8s ease-in-out infinite; }
+        .ambient-glow-2 { background: radial-gradient(circle, rgba(157,78,221,0.7) 0%, transparent 70%); width: 800px; height: 800px; bottom: 0%; right: -250px; animation: float-glow 10s ease-in-out infinite reverse; }
+        @keyframes float-glow { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(25px, 25px); } }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text-main); transition: color 0.5s ease;}
+        .text-cyan { color: #00d2ff !important; text-shadow: 0 0 15px rgba(0,210,255,0.2); }
+        .text-purple { color: #9d4edd !important; text-shadow: 0 0 15px rgba(157,78,221,0.2); }
+        body.light-mode .text-cyan, body.light-mode .text-purple { text-shadow: none !important; }
+
+        .navbar { background: var(--nav-bg) !important; backdrop-filter: blur(15px); border-bottom: 1px solid var(--card-border) !important; padding: 12px 0; z-index: 1000; transition: background 0.5s, border 0.5s; }
+        .nav-link { color: var(--text-muted) !important; font-size: 13px; margin: 0 15px; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-link:hover { color: #0ea5e9 !important; }
+
+        .dropdown-menu { background: var(--card-bg); backdrop-filter: blur(15px); border: 1px solid var(--card-border) !important; border-radius: 12px; padding: 15px 0; box-shadow: var(--box-shadow); }
+        .dropdown-item { color: var(--text-main); font-size: 13px; padding: 10px 25px; transition: 0.3s; font-weight: 600; }
+        .dropdown-item:hover { background: rgba(14,165,233,0.1); color: #0ea5e9; padding-left: 30px; }
+        body.light-mode .dropdown-menu { background: rgba(255, 255, 255, 0.95); }
+        body.light-mode .dropdown-item { color: var(--text-main); }
+
+        .magnetic-btn { background: var(--btn-bg); color: var(--btn-text); padding: 11px 28px; border-radius: 100px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; text-decoration: none; border: none; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: var(--box-shadow); }
+        .magnetic-btn:hover { background: #0ea5e9; color: #ffffff; transform: scale(1.03); box-shadow: 0 10px 30px rgba(14,165,233,0.35); }
+        #view-work-btn { border: 1px solid var(--card-border) !important; }
+
+        .theme-btn { position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: #0ea5e9; color: #030303; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .theme-btn:hover { transform: scale(1.1) rotate(15deg); }
+
+        .mega-footer { border-top: 1px solid var(--card-border) !important; padding-top: 80px; padding-bottom: 30px; background: var(--footer-bg); transition: 0.5s; }
+        .footer-link { color: var(--text-muted); text-decoration: none; transition: 0.3s; font-size: 14px; line-height: 2.5; font-weight: 600; }
+        .footer-link:hover { color: #0ea5e9; padding-left: 8px; }
+        .footer-title { font-size: 12px; color: var(--text-main); letter-spacing: 2px; font-weight: 800; text-transform: uppercase; margin-bottom: 25px; }
+
+        /* =========================================
+           🚀 5X EXTREME MOBILE OPTIMIZATION (LAG FIX)
+           ========================================= */
+        @media (max-width: 991px) {
+            .navbar-toggler { position: relative; z-index: 1070; }
+            #navbarNav { 
+                position: fixed !important; top: 0 !important; left: -100% !important; 
+                width: 280px !important; height: 100vh !important; max-height: 100vh !important;
+                padding: 80px 25px 25px !important; border-radius: 0 20px 20px 0 !important; 
+                margin-top: 0 !important; border: 1px solid var(--card-border) !important; 
+                text-align: left !important; display: block !important; overflow-y: auto !important; z-index: 1040;
+                background: #0f0f13 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+                transition: left 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+            }
+            body.light-mode #navbarNav { background: #ffffff !important; }
+            #navbarNav.show { left: 0 !important; }
+            .dropdown-menu { background: transparent; border: none !important; box-shadow: none; padding-left: 15px; margin-top: 10px; }
+            .nav-item { margin-bottom: 15px; }
+
+            .navbar { background-color: #0f0f13 !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+            body.light-mode .navbar { background-color: #ffffff !important; }
+            .ambient-glow-1, .ambient-glow-2 { display: none !important; animation: none !important; }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body> 
+
+    <button id="theme-toggle" class="theme-btn" title="Toggle Bright/Dark Theme">
+        <i class="fa-solid fa-sun" id="theme-icon"></i>
+    </button>
+
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                <div class="bg-[#050505] px-3 py-1.5 rounded-xl shadow-lg border border-gray-800/50 transition-transform duration-300 group-hover:scale-105">
+                    <img src="{% static 'images/logo.svg' %}" class="h-8 md:h-10 w-auto" alt="TechPixels Studio">
                 </div>
-                <h1 class="text-4xl md:text-6xl font-extrabold text-[var(--text-main)] leading-tight mb-6 transition-colors">
-                    Enterprise Cloud <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#B026FF]">Infrastructure.</span>
-                </h1>
-                <p class="text-[var(--text-muted)] text-lg mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 transition-colors">
-                    Deploying fault-tolerant, auto-scaling cloud architectures on AWS and GCP. We ensure 99.99% uptime, robust CI/CD pipelines, and bank-grade data security.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-                    <a href="#audit" class="inline-block text-center py-4 px-8 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider transition-transform transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] interactive">
-                        CONSULT OUR DEVOPS <i class="fa-solid fa-server ml-2"></i>
-                    </a>
-                </div>
-            </div>
+            </a>
 
-            <div class="lg:w-1/2 w-full gs-reveal tilt-3d interactive">
-                <div class="tilt-content animate-float">
-                    <div class="server-mockup">
-                        <div class="server-header">
-                            <div><i class="fa-brands fa-aws text-[#ff9900] text-lg mr-2"></i> AWS_Production_Cluster</div>
-                            <div class="status-badge"><div class="pulse-dot"></div> Systems Optimal</div>
-                        </div>
-                        <div class="server-body">
-                            <div class="node-item">
-                                <div class="node-title"><i class="fa-solid fa-network-wired text-[#B026FF]"></i> API Load Balancer</div>
-                                <div class="node-metrics text-[#B026FF]">Traffic: Routing</div>
-                            </div>
-                            <div class="node-item">
-                                <div class="node-title"><i class="fa-brands fa-linux text-gray-400"></i> Worker Node Alpha (US-East)</div>
-                                <div class="node-metrics text-[#00F0FF] flex items-center">
-                                    Load: <span id="load-1" class="ml-2 w-8 text-right">24%</span>
-                                    <div class="bar-bg"><div class="bar-fill" id="bar-1" style="width: 24%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="node-item">
-                                <div class="node-title"><i class="fa-brands fa-linux text-gray-400"></i> Worker Node Beta (EU-West)</div>
-                                <div class="node-metrics text-[#B026FF] flex items-center">
-                                    Load: <span id="load-2" class="ml-2 w-8 text-right">18%</span>
-                                    <div class="bar-bg"><div class="bar-fill purple" id="bar-2" style="width: 18%;"></div></div>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-4 border-t border-[rgba(255,255,255,0.05)] flex justify-between w-full text-[var(--text-muted)] text-[11px] uppercase tracking-wider font-bold">
-                                <span><i class="fa-solid fa-database mr-2 text-[#00F0FF]"></i> PostgreSQL: Active</span>
-                                <span>Uptime: <strong class="text-green-500">99.999%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars" style="color: var(--text-main); font-size: 24px;"></i>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'products' %}">Products</a></li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="{% url 'services' %}" id="servicesDropdown" data-bs-toggle="dropdown">Services</a>
+                        <ul class="dropdown-menu" style="width: 260px;">
+                            <li><a class="dropdown-item fw-bold" href="{% url 'services' %}" style="color: #0ea5e9;">View All Services ➔</a></li>
+                            <li><hr class="dropdown-divider" style="border-color: var(--card-border);"></li>
+                            <li><h6 class="dropdown-header text-cyan">Engineering & Tech</h6></li>
+                            <li><a class="dropdown-item" href="{% url 'web_dev' %}">Website Development</a></li>
+                            <li><a class="dropdown-item" href="{% url 'app_dev' %}">App Development</a></li>
+                            <li><a class="dropdown-item" href="{% url 'custom_tech' %}">Custom Tech Solutions</a></li>
+                            <li><hr class="dropdown-divider" style="border-color: var(--card-border);"></li>
+                            <li><h6 class="dropdown-header text-purple">Creative & Marketing</h6></li>
+                            <li><a class="dropdown-item" href="{% url 'digital_marketing' %}">Product Branding</a></li>
+                            <li><a class="dropdown-item" href="{% url 'seo' %}">SEO Optimization</a></li>
+                            <li><a class="dropdown-item" href="{% url 'video_editing' %}">Video Editing & VFX</a></li>
+                        </ul>
+                    </li>
 
-<section class="py-12 relative z-10 border-b border-[var(--card-border)] bg-black/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 gs-slide-up">
-            <div class="text-center group interactive">
-                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">99.99%</h3>
-                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Guaranteed Uptime</p>
-            </div>
-            <div class="text-center group interactive">
-                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors"><50ms</h3>
-                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Global Latency</p>
-            </div>
-            <div class="text-center group interactive">
-                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#00F0FF] transition-colors">100%</h3>
-                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">Data Security</p>
-            </div>
-            <div class="text-center group interactive">
-                <h3 class="text-4xl md:text-5xl font-extrabold text-[var(--text-main)] mb-2 group-hover:text-[#B026FF] transition-colors">24/7</h3>
-                <p class="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-wider transition-colors">DevOps Support</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="py-24 relative z-10 bg-black/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 gs-reveal">
-            <h4 class="text-[var(--text-muted)] font-bold tracking-widest text-xs uppercase mb-3">SYSTEM RELIABILITY</h4>
-            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] transition-colors">The <span class="text-[#00F0FF]">Infrastructure</span> Suite</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 gs-slide-up">
-            <div class="glass-card-premium p-10 interactive group">
-                <div class="card-glow-orb"></div>
-                <div class="w-16 h-16 rounded-2xl bg-[#00F0FF]/10 text-[#00F0FF] flex items-center justify-center text-3xl mb-6 border border-[#00F0FF]/30 group-hover:scale-110 transition-transform">
-                    <i class="fa-brands fa-aws"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Cloud Architecture</h3>
-                <p class="text-[var(--text-muted)] leading-relaxed">Building robust Virtual Private Clouds (VPC) on AWS/GCP, utilizing EC2 instances, S3 buckets, and managed RDS for ultimate reliability and auto-scaling.</p>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'career' %}">Career</a></li>
+                    <li class="nav-item d-lg-none"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                </ul>
             </div>
             
-            <div class="glass-card-premium p-10 interactive group">
-                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(176,38,255,0.2) 0%, transparent 70%);"></div>
-                <div class="w-16 h-16 rounded-2xl bg-[#B026FF]/10 text-[#B026FF] flex items-center justify-center text-3xl mb-6 border border-[#B026FF]/30 group-hover:scale-110 transition-transform">
-                    <i class="fa-brands fa-docker"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Containerization & K8s</h3>
-                <p class="text-[var(--text-muted)] leading-relaxed">Using Docker and Kubernetes to containerize environments, ensuring code behaves identically across staging and production without configuration conflicts.</p>
-            </div>
-
-            <div class="glass-card-premium p-10 interactive group">
-                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, transparent 70%);"></div>
-                <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center text-3xl mb-6 border border-orange-500/30 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-code-branch"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">CI/CD Pipelines</h3>
-                <p class="text-[var(--text-muted)] leading-relaxed">Automating deployment processes via GitHub Actions or Jenkins. Code is tested, built, and pushed to servers seamlessly with zero downtime.</p>
-            </div>
-
-            <div class="glass-card-premium p-10 interactive group">
-                <div class="card-glow-orb" style="background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%);"></div>
-                <div class="w-16 h-16 rounded-2xl bg-pink-500/10 text-pink-500 flex items-center justify-center text-3xl mb-6 border border-pink-500/30 group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-[var(--text-main)] mb-4">Server Security</h3>
-                <p class="text-[var(--text-muted)] leading-relaxed">Implementing strict UFW firewalls, Nginx reverse proxies, SSL certifications, and automated daily backups to protect against DDoS and data loss.</p>
+            <div class="d-none d-lg-block">
+                <a href="{% url 'contact' %}" class="magnetic-btn magnetic">Start a Project</a>
             </div>
         </div>
-    </div>
-</section>
+    </nav>
 
-<section class="py-20 relative z-10 border-y border-[var(--card-border)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h3 class="text-xl font-bold text-[var(--text-main)] mb-10 gs-reveal">Our Server Stack</h3>
-        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 gs-reveal opacity-70">
-            <h2 class="text-3xl font-black text-orange-500 tracking-tighter">AWS</h2>
-            <h2 class="text-3xl font-black text-blue-500 tracking-tighter">Docker</h2>
-            <h2 class="text-3xl font-black text-green-500 tracking-tighter">NGINX</h2>
-            <h2 class="text-3xl font-black text-[var(--text-main)] tracking-tighter">Linux <span class="text-gray-400 font-medium">Ubuntu</span></h2>
-            <h2 class="text-3xl font-black text-[#B026FF] tracking-tighter">GitHub Actions</h2>
-        </div>
-    </div>
-</section>
+    {% block content %}
+    {% endblock %}
 
-<section class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16 gs-reveal">
-            <h2 class="text-4xl md:text-5xl font-bold text-[var(--text-main)] mb-4">Infrastructure Setup.</h2>
-            <p class="text-[var(--text-muted)]">How we scale your software from local machines to global servers.</p>
+    <footer class="mega-footer container-fluid px-4 px-md-5 py-5">
+        <div class="row text-center text-md-start mb-4 justify-content-between">
+            <div class="col-lg-4 col-md-12 mb-5 mb-lg-0">
+                <h3 class="fw-bold mb-3" style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--text-main);">TechPixels.</h3>
+                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.8;">A premier 360-degree digital agency. Bridging the gap between complex engineering and ROI-driven marketing.</p>
+                <div class="d-flex gap-3 justify-content-center justify-content-md-start mt-4">
+                    <a href="https://linkedin.com/company/techpixelsstudio" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/techpixels.studio/" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://github.com/techpixels-studio" class="btn rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--card-border); color: var(--text-main);"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-5 mb-lg-0 text-center text-md-start">
+                <h6 class="footer-title" style="color: #0ea5e9;">QUICK LINKS</h6>
+                <ul class="list-unstyled" style="line-height: 2.8;">
+                    <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+                    <li><a href="{% url 'products' %}" class="footer-link">SaaS Products</a></li>
+                    <li><a href="{% url 'services' %}" class="footer-link">Our Services</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-6 text-center text-md-start">
+                <h6 class="footer-title" style="color: #9d4edd;">CONTACT US</h6>
+                <ul class="list-unstyled" style="font-size: 14px; line-height: 2.8; color: var(--text-muted);">
+                    <li><i class="fa-solid fa-envelope me-3 text-cyan"></i> techpixelsstudio@gmail.com</li>
+                    <li><i class="fa-solid fa-phone me-3 text-purple"></i> +91 98765 43210</li>
+                    <li><i class="fa-solid fa-location-dot me-3 text-cyan"></i> Pune, Maharashtra, India</li>
+                </ul>
+            </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 gs-slide-up">
-            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
-                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">01</div>
-                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Assess & Architect</h4>
-                <p class="text-[var(--text-muted)] text-sm">Evaluating computational requirements, database sizes, and mapping out a cost-effective cloud topology.</p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4 border-top pt-4" style="border-color: var(--card-border) !important; color: var(--text-muted); font-size: 13px; font-weight: 600;">
+            <div class="mb-3 mb-md-0">&copy; 2026 TechPixels Studio. All rights reserved.</div>
+            <div class="d-flex gap-4">
+                <a href="{% url 'privacy_policy' %}" class="text-decoration-none" style="color: var(--text-muted); transition: color 0.3s;" onmouseover="this.style.color='#00F0FF'" onmouseout="this.style.color='var(--text-muted)'">Privacy Policy</a>
+                <a href="{% url 'terms_conditions' %}" class="text-decoration-none" style="color: var(--text-muted); transition: color 0.3s;" onmouseover="this.style.color='#00F0FF'" onmouseout="this.style.color='var(--text-muted)'">Terms & Conditions</a>
             </div>
-            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
-                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">02</div>
-                <h4 class="text-xl font-bold text-[#B026FF] mb-3">Provisioning</h4>
-                <p class="text-[var(--text-muted)] text-sm">Configuring Linux environments, Nginx reverse proxies, SSL certifications, and strict firewall rules.</p>
+        </div>
+    </footer>
+
+    <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out">
+        <div class="max-w-6xl mx-auto m-4 p-6 bg-[#0a0a0a]/90 backdrop-blur-2xl rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#00F0FF]/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+            <div class="text-sm text-[var(--text-muted)]">
+                <strong class="text-white text-lg block mb-1"><i class="fa-solid fa-cookie-bite text-[#B026FF] mr-2"></i> Your Privacy Matters</strong>
+                We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking "Accept All", you consent to our backend storing these cookies.
             </div>
-            <div class="glass-card-premium p-8 relative interactive group hover:border-[#00F0FF]">
-                <div class="process-num group-hover:text-[#00F0FF]/20 transition-colors">03</div>
-                <h4 class="text-xl font-bold text-[#00F0FF] mb-3">Deploy & CI/CD</h4>
-                <p class="text-[var(--text-muted)] text-sm">Moving existing data securely, establishing Docker containers, and launching the application live via automated pipelines.</p>
-            </div>
-            <div class="glass-card-premium p-8 relative interactive group hover:border-[#B026FF]">
-                <div class="process-num group-hover:text-[#B026FF]/20 transition-colors">04</div>
-                <h4 class="text-xl font-bold text-[#B026FF] mb-3">24/7 Monitoring</h4>
-                <p class="text-[var(--text-muted)] text-sm">Setting up Grafana/Prometheus alerts to track CPU spikes and database loads continuously.</p>
+            <div class="flex gap-3 shrink-0 w-full md:w-auto justify-end">
+                <button id="decline-cookies" class="px-6 py-3 rounded-xl border border-gray-600 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors text-sm font-bold w-full md:w-auto">Decline</button>
+                <button id="accept-cookies" class="px-6 py-3 rounded-xl bg-gradient-to-r from-[#B026FF] to-[#00F0FF] text-white font-bold text-sm shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:scale-105 transition-transform w-full md:w-auto">Accept All</button>
             </div>
         </div>
     </div>
-</section>
 
-<section id="audit" class="py-24 relative z-10 border-t border-[var(--card-border)] bg-black/10">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="glass-card-premium p-12 md:p-16 text-center gs-slide-up interactive">
-            <div class="card-glow-orb" style="top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; opacity: 0.1;"></div>
-            <h2 class="text-3xl md:text-5xl font-extrabold text-[var(--text-main)] mb-6 relative z-10 transition-colors">Is Your Server Costing Too Much?</h2>
-            <p class="text-[var(--text-muted)] text-lg mb-10 max-w-2xl mx-auto relative z-10 transition-colors">
-                Let our DevOps experts audit your current cloud setup. We identify performance bottlenecks, security vulnerabilities, and strategies to cut your AWS/GCP bills by up to 40%.
-            </p>
-            <div class="flex justify-center relative z-10">
-                <a href="{% url 'contact' %}" class="px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#B026FF] text-white rounded-xl font-bold tracking-wider hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] transition-all transform hover:-translate-y-1">
-                    GET FREE SERVER AUDIT
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{% endblock %}
+    <script>
+        // === OPTIMIZED THEME TOGGLE LOGIC (Default Dark) ===
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (currentTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeToggle.style.background = '#111115';
+            themeToggle.style.color = '#fff';
+        }
 
-{% block extra_js %}
-<script>
-    // Server Load Simulator Logic
-    setInterval(() => {
-        let load1 = Math.floor(Math.random() * 25) + 10;
-        let load2 = Math.floor(Math.random() * 20) + 5;
-        document.getElementById('load-1').innerText = load1 + '%';
-        document.getElementById('bar-1').style.width = load1 + '%';
-        document.getElementById('load-2').innerText = load2 + '%';
-        document.getElementById('bar-2').style.width = load2 + '%';
-    }, 2500);
-
-    // 1. Optimized 3D Tilt Effect for Server Mockup (Zero Lag)
-    if (window.innerWidth > 991) {
-        const tiltCards = document.querySelectorAll('.tilt-3d');
-        tiltCards.forEach(card => {
-            let ticking = false;
-            card.addEventListener('mousemove', e => {
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const rotateX = ((y - centerY) / centerY) * -5; 
-                        const rotateY = ((x - centerX) / centerX) * 5;
-                        
-                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                        ticking = false;
-                    });
-                    ticking = true;
+        themeToggle.addEventListener('click', () => {
+            window.requestAnimationFrame(() => {
+                document.body.classList.toggle('light-mode');
+                if(document.body.classList.contains('light-mode')) {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                    themeToggle.style.background = '#111115'; 
+                    themeToggle.style.color = '#fff';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                    themeToggle.style.background = '#0ea5e9'; 
+                    themeToggle.style.color = '#030303';
+                    localStorage.setItem('theme', 'dark');
                 }
             });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-                card.style.transition = 'transform 0.5s ease';
+        });
+
+        // === OPTIMIZED MAGNETIC BUTTON EFFECT ===
+        const magnets = document.querySelectorAll('.magnetic');
+        if (window.innerWidth > 991) {
+            magnets.forEach((magnet) => {
+                let magTicking = false;
+                magnet.addEventListener('mousemove', (e) => {
+                    if(!magTicking) {
+                        window.requestAnimationFrame(() => {
+                            const position = magnet.getBoundingClientRect();
+                            const x = e.clientX - position.left - position.width / 2;
+                            const y = e.clientY - position.top - position.height / 2;
+                            magnet.style.transform = `translate(${x * 0.22}px, ${y * 0.35}px)`;
+                            magTicking = false;
+                        });
+                        magTicking = true;
+                    }
+                });
+                magnet.addEventListener('mouseleave', () => { magnet.style.transform = 'translate(0px, 0px)'; });
             });
-            
-            card.addEventListener('mouseenter', () => {
-                card.style.transition = 'none';
+        }
+
+        // === COOKIE BANNER LOGIC (RESTORED) ===
+        document.addEventListener("DOMContentLoaded", function() {
+            const banner = document.getElementById('cookie-consent-banner');
+            const acceptBtn = document.getElementById('accept-cookies');
+            const declineBtn = document.getElementById('decline-cookies');
+
+            if (!document.cookie.split('; ').find(row => row.startsWith('techpixels_cookie_consent='))) {
+                setTimeout(() => {
+                    banner.classList.remove('translate-y-full');
+                }, 1500);
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                document.cookie = "techpixels_cookie_consent=accepted; max-age=" + (60*60*24*365) + "; path=/; SameSite=Lax";
+                banner.classList.add('translate-y-full');
+            });
+
+            declineBtn.addEventListener('click', () => {
+                document.cookie = "techpixels_cookie_consent=declined; max-age=" + (60*60*24*30) + "; path=/; SameSite=Lax";
+                banner.classList.add('translate-y-full');
             });
         });
-    }
+    </script>
 
-    // 2. Hardware Accelerated GSAP
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.config({ force3D: true });
-
-    gsap.from(".gs-reveal", { y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out" });
-
-    gsap.utils.toArray('.gs-slide-up').forEach((elem) => {
-        gsap.from(elem, {
-            scrollTrigger: { trigger: elem, start: "top 85%" },
-            y: 50, opacity: 0, duration: 0.8, ease: "power2.out"
+    {% if swal_trigger %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ swal_msg }}',
+                icon: 'success',
+                confirmButtonColor: '#00F0FF',
+                background: 'var(--card-bg)',
+                color: 'var(--text-main)',
+                customClass: {
+                    popup: 'glass-card-premium'
+                }
+            }).then((result) => {
+                window.location.href = '{{ redirect_url }}'; 
+            });
         });
-    });
-</script>
-{% endblock %}
+    </script>
+    {% endif %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
