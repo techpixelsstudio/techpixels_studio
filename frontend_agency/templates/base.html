@@ -8,17 +8,20 @@
 
     <link rel="icon" type="image/svg+xml" href="{% static 'images/favcon.svg' %}">
 
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            corePlugins: { preflight: true },
+            corePlugins: { preflight: false },
             theme: {
                 extend: {
                     colors: {
@@ -26,8 +29,7 @@
                         'dark-surface': '#0F0F13',
                         'neon-purple': '#B026FF',
                         'neon-cyan': '#00F0FF',
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    }
                 }
             }
         }
@@ -35,18 +37,17 @@
 
     <style>
         /* =========================================
-           1. 🚀 SMOOTH SCROLL & BUG FIXES (No Stuck Issue)
+           1. 🚀 BASIC RESET & SMOOTH SCROLL
            ========================================= */
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
         body { 
-            overflow-x: hidden; /* Fixed side scroll line safely */
+            overflow-x: hidden; 
             width: 100%; 
             margin: 0; 
             padding: 0; 
             -webkit-font-smoothing: antialiased; 
         }
 
-        /* Clean Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 10px; }
@@ -56,11 +57,10 @@
            ========================================= */
         :root {
             --bg-main: #05050a; --grid-color: rgba(255, 255, 255, 0.02);
-            --text-main: #f8fafc; --text-muted: #94a3b8;
+            --text-main: #ffffff; --text-muted: #94a3b8;
             --card-bg: rgba(13, 13, 23, 0.7); --card-border: rgba(255, 255, 255, 0.06);
-            --nav-bg: rgba(5, 5, 10, 0.95); --btn-bg: #ffffff; --btn-text: #05050a;
+            --nav-bg: rgba(5, 5, 10, 0.85); --btn-bg: #ffffff; --btn-text: #05050a;
             --box-shadow: 0 15px 35px rgba(0, 210, 255, 0.06);
-            --input-bg: rgba(255, 255, 255, 0.02); --input-border: rgba(255, 255, 255, 0.08);
             --footer-bg: #05050a;
         }
 
@@ -68,9 +68,8 @@
             --bg-main: #f8fafc; --grid-color: rgba(15, 23, 42, 0.03);
             --text-main: #0f172a; --text-muted: #475569;
             --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(15, 23, 42, 0.06);
-            --nav-bg: rgba(255, 255, 255, 0.98); --btn-bg: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            --nav-bg: rgba(255, 255, 255, 0.95); --btn-bg: linear-gradient(135deg, #0ea5e9, #8b5cf6);
             --btn-text: #ffffff; --box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-            --input-bg: #ffffff; --input-border: #cbd5e1;
             --footer-bg: #f1f5f9;
         }
 
@@ -83,29 +82,98 @@
             transition: background-color 0.4s, color 0.4s;
         }
 
-        /* Typography & Glows */
         h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text-main); }
         .text-cyan { color: #00d2ff !important; }
         .text-purple { color: #9d4edd !important; }
 
         /* =========================================
-           3. 🖥️ NAVBAR & DROPDOWN (Fixed Visibility)
+           3. 🖥️ NAVBAR DESKTOP
            ========================================= */
         .navbar { 
             background: var(--nav-bg) !important; 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--card-border) !important; 
-            padding: 12px 0; 
+            padding: 15px 0; 
             z-index: 1030; 
-            transition: background 0.4s; 
         }
-        .nav-link { color: var(--text-muted) !important; font-size: 14px; margin: 0 15px; font-weight: 700; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-link:hover { color: #0ea5e9 !important; }
-        .navbar-toggler { border: none !important; box-shadow: none !important; outline: none !important; }
+        
+        .nav-link { 
+            color: var(--text-main) !important; 
+            font-size: 14px; 
+            font-weight: 700; 
+            transition: 0.3s; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        .nav-link:hover { color: #00F0FF !important; }
+        body.light-mode .nav-link { color: #0f172a !important; }
+        body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
 
-        .dropdown-menu { background: var(--card-bg); border: 1px solid var(--card-border) !important; border-radius: 12px; padding: 10px 0; box-shadow: var(--box-shadow); z-index: 1031; }
-        .dropdown-item { color: var(--text-main); font-size: 13px; padding: 10px 25px; transition: 0.3s; font-weight: 600; }
-        .dropdown-item:hover { background: rgba(14,165,233,0.1); color: #0ea5e9; padding-left: 30px; }
+        .dropdown-menu { background: var(--bg-main); border: 1px solid var(--card-border) !important; border-radius: 12px; padding: 10px 0; box-shadow: var(--box-shadow); z-index: 1031; margin-top: 15px; }
+        .dropdown-item { color: var(--text-main) !important; font-size: 13px; padding: 10px 25px; transition: 0.3s; font-weight: 600; }
+        .dropdown-item:hover { background: rgba(14,165,233,0.1); color: #0ea5e9 !important; padding-left: 30px; }
         body.light-mode .dropdown-menu { background: #ffffff; }
+
+        /* =========================================
+           4. 📱 PREMIUM MOBILE MENU
+           ========================================= */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+            z-index: 9998; opacity: 0; visibility: hidden; transition: 0.4s ease;
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+
+        .custom-mobile-menu {
+            position: fixed; top: 0; left: -320px; 
+            width: 300px; height: 100vh;
+            background: #05050a;
+            border-right: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 15px 0 40px rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            padding: 30px 20px 100px; 
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow-y: auto;
+            will-change: transform;
+        }
+        body.light-mode .custom-mobile-menu { background: #ffffff; border-right: 1px solid rgba(14, 165, 233, 0.2); box-shadow: 15px 0 40px rgba(15, 23, 42, 0.1); }
+        .custom-mobile-menu.open { transform: translateX(320px); }
+
+        .mobile-close-btn {
+            position: absolute; top: 25px; right: 20px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
+            border-radius: 50%; width: 40px; height: 40px;
+            color: var(--text-main); font-size: 20px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .mobile-close-btn:hover { color: #00F0FF; border-color: #00F0FF; transform: rotate(90deg); }
+
+        .mobile-logo-area { border-bottom: 1px solid var(--card-border); padding-bottom: 20px; margin-bottom: 20px; }
+
+        .mobile-link {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 16px; font-weight: 700; padding: 15px 10px;
+            color: var(--text-main); text-decoration: none;
+            border-radius: 12px; transition: 0.3s; margin-bottom: 5px;
+        }
+        .mobile-link i.icon-main { color: var(--text-muted); width: 25px; transition: 0.3s; }
+        .mobile-link:hover, .mobile-link.active-link { background: rgba(0, 240, 255, 0.05); color: #00F0FF; padding-left: 15px; }
+        .mobile-link:hover i.icon-main, .mobile-link.active-link i.icon-main { color: #00F0FF; }
+
+        .mobile-dropdown-container {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out;
+            background: rgba(255,255,255,0.03); border-radius: 12px; margin: 0 10px;
+        }
+        body.light-mode .mobile-dropdown-container { background: rgba(14,165,233,0.03); }
+        .mobile-dropdown-container.open { max-height: 500px; padding: 10px 0; border: 1px solid var(--card-border); margin-bottom: 10px;}
+        
+        .mobile-sub-link {
+            display: block; padding: 12px 20px; color: var(--text-muted); font-size: 14px; font-weight: 600;
+            text-decoration: none; transition: 0.3s;
+        }
+        .mobile-sub-link:hover { color: #B026FF; padding-left: 25px; }
+        .mobile-sub-link i { color: #B026FF; margin-right: 8px; }
 
         /* Buttons & Footer */
         .magnetic-btn { background: var(--btn-bg); color: var(--btn-text); padding: 11px 28px; border-radius: 100px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; text-decoration: none; border: none; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: var(--box-shadow); }
@@ -117,63 +185,43 @@
         .mega-footer { border-top: 1px solid var(--card-border) !important; padding-top: 80px; padding-bottom: 30px; background: var(--footer-bg); transition: 0.4s; }
         .footer-link { color: var(--text-muted); text-decoration: none; transition: 0.3s; font-size: 14px; line-height: 2.5; font-weight: 600; }
         .footer-link:hover { color: #0ea5e9; padding-left: 8px; }
-
-        /* =========================================
-           4. 📱 MOBILE MENU BUG FIX (Smooth Slide)
-           ========================================= */
-        @media (max-width: 991px) {
-            /* Force Bootstrap collapse to act as a side menu without glitching */
-            .navbar-collapse.collapse:not(.show) { display: block !important; right: -100% !important; }
-            .navbar-collapse.collapsing { display: block !important; right: -100% !important; height: 100vh !important; transition: right 0.3s ease-in-out !important; }
-            .navbar-collapse.collapse.show { right: 0 !important; }
-            
-            .navbar-collapse {
-                position: fixed; top: 0; right: -100%;
-                width: 280px; height: 100vh;
-                background: #0f0f13; border-left: 1px solid var(--card-border);
-                z-index: 1040; padding: 80px 20px 20px;
-                transition: right 0.3s ease-in-out; overflow-y: auto;
-            }
-            body.light-mode .navbar-collapse { background: #ffffff; }
-            
-            .navbar-toggler { position: relative; z-index: 1050; }
-            .dropdown-menu { background: transparent; border: none !important; box-shadow: none; padding-left: 15px; }
-            .nav-item { margin-bottom: 15px; }
-            
-            .navbar { background-color: #0f0f13 !important; }
-            body.light-mode .navbar { background-color: #ffffff !important; }
-        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body> 
 
+    <!-- Theme Toggle -->
     <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
         <i class="fa-solid fa-sun" id="theme-icon"></i>
     </button>
 
+    <!-- Header Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a href="{% url 'home' %}" class="flex items-center gap-3 group text-decoration-none">
-                <div class="bg-[#050505] px-3 py-1.5 rounded-xl shadow-lg border border-gray-800/50 transition-transform duration-300 group-hover:scale-105">
-                    <img src="{% static 'images/logo.svg' %}" class="h-8 md:h-10 w-auto" alt="TechPixels Studio">
+            
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <div class="px-3 py-1.5 rounded-xl border border-gray-800/50" style="background: #050505;">
+                    <img src="{% static 'images/logo.svg' %}" style="height: 35px; width: auto;" alt="TechPixels Studio">
                 </div>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fa-solid fa-bars" style="color: var(--text-main); font-size: 26px;"></i>
+            <!-- Mobile Hamburger Button -->
+            <button class="navbar-toggler d-lg-none border-0 shadow-none" type="button" id="openMenuBtn">
+                <i class="fa-solid fa-bars-staggered" style="color: #00F0FF; font-size: 26px;"></i>
             </button>
             
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'products' %}">Products</a></li>
+            <!-- DESKTOP MENU (100% VISIBLE - Removed Collapse) -->
+            <div class="d-none d-lg-flex flex-grow-1 justify-content-center" id="navbarNavDesktop">
+                <ul class="navbar-nav d-flex flex-row align-items-center gap-1">
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'products' %}">Products</a></li>
                     
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="{% url 'services' %}" id="servicesDropdown" data-bs-toggle="dropdown">Services</a>
-                        <ul class="dropdown-menu" style="width: 260px;">
-                            <li><a class="dropdown-item fw-bold" href="{% url 'services' %}" style="color: #0ea5e9;">View All Services ➔</a></li>
+                        <a class="nav-link dropdown-toggle px-3" href="#" id="servicesDropdown" data-bs-toggle="dropdown">Services</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item fw-bold" href="{% url 'services' %}" style="color: #0ea5e9 !important;">View All Services ➔</a></li>
                             <li><hr class="dropdown-divider" style="border-color: var(--card-border);"></li>
                             <li><h6 class="dropdown-header text-cyan">Engineering & Tech</h6></li>
                             <li><a class="dropdown-item" href="{% url 'web_dev' %}">Website Development</a></li>
@@ -187,21 +235,75 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'career' %}">Career</a></li>
-                    <li class="nav-item d-lg-none"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'blog' %}">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'career' %}">Career</a></li>
                 </ul>
             </div>
             
+            <!-- Desktop Button -->
             <div class="d-none d-lg-block">
                 <a href="{% url 'contact' %}" class="magnetic-btn magnetic">Start a Project</a>
             </div>
+
         </div>
     </nav>
 
+    <!-- MOBILE MENU OUTSIDE NAVBAR -->
+    <div class="mobile-menu-overlay d-lg-none" id="mobileOverlay"></div>
+    <div class="custom-mobile-menu d-lg-none" id="customMobileMenu">
+        <button class="mobile-close-btn" id="closeMenuBtn"><i class="fa-solid fa-xmark"></i></button>
+
+        <div class="mobile-logo-area">
+            <img src="{% static 'images/logo.svg' %}" style="height: 35px; filter: drop-shadow(0 0 10px rgba(0,240,255,0.3));" alt="TechPixels Studio">
+        </div>
+
+        <div class="d-flex flex-column">
+            <a href="{% url 'home' %}" class="mobile-link close-on-click">
+                <div><i class="fa-solid fa-house icon-main"></i> Home</div>
+            </a>
+            
+            <a href="{% url 'about' %}" class="mobile-link close-on-click">
+                <div><i class="fa-solid fa-circle-info icon-main"></i> About Us</div>
+            </a>
+            
+            <a href="{% url 'products' %}" class="mobile-link close-on-click">
+                <div><i class="fa-solid fa-cube icon-main"></i> SaaS Products</div>
+            </a>
+            
+            <!-- Mobile Interactive Dropdown -->
+            <a href="javascript:void(0)" class="mobile-link" id="mobileServicesToggle">
+                <div><i class="fa-solid fa-layer-group icon-main"></i> Services</div>
+                <i class="fa-solid fa-chevron-down text-muted" id="msIcon" style="font-size: 12px; transition: 0.3s;"></i>
+            </a>
+            <div class="mobile-dropdown-container" id="mobileServicesDropdown">
+                <a href="{% url 'services' %}" class="mobile-sub-link close-on-click" style="color: #00F0FF;"><i class="fa-solid fa-arrow-right"></i> View All Services</a>
+                <a href="{% url 'web_dev' %}" class="mobile-sub-link close-on-click"><i class="fa-solid fa-laptop-code text-cyan"></i> Web Development</a>
+                <a href="{% url 'app_dev' %}" class="mobile-sub-link close-on-click"><i class="fa-brands fa-app-store text-purple"></i> App Development</a>
+                <a href="{% url 'custom_tech' %}" class="mobile-sub-link close-on-click"><i class="fa-solid fa-microchip text-cyan"></i> Custom Solutions</a>
+                <a href="{% url 'digital_marketing' %}" class="mobile-sub-link close-on-click"><i class="fa-solid fa-bullseye text-purple"></i> Digital Marketing</a>
+                <a href="{% url 'seo' %}" class="mobile-sub-link close-on-click"><i class="fa-solid fa-magnifying-glass-chart text-cyan"></i> SEO Optimization</a>
+                <a href="{% url 'video_editing' %}" class="mobile-sub-link close-on-click"><i class="fa-solid fa-video text-purple"></i> Video Editing</a>
+            </div>
+
+            <a href="{% url 'blog' %}" class="mobile-link close-on-click">
+                <div><i class="fa-solid fa-newspaper icon-main"></i> Tech Blog</div>
+            </a>
+            
+            <a href="{% url 'career' %}" class="mobile-link close-on-click">
+                <div><i class="fa-solid fa-briefcase icon-main"></i> Career</div>
+            </a>
+        </div>
+
+        <div class="mt-5">
+            <a href="{% url 'contact' %}" class="btn w-100 py-3 fw-bold rounded-xl text-white close-on-click" style="background: linear-gradient(135deg, #B026FF, #00F0FF); box-shadow: 0 10px 20px rgba(0,240,255,0.2);">Start a Project <i class="fa-solid fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
     {% block content %}
     {% endblock %}
 
+    <!-- Footer -->
     <footer class="mega-footer container-fluid px-4 px-md-5 py-5">
         <div class="row text-center text-md-start mb-4 justify-content-between">
             <div class="col-lg-4 col-md-12 mb-5 mb-lg-0">
@@ -215,7 +317,7 @@
             </div>
             
             <div class="col-lg-3 col-md-6 mb-5 mb-lg-0 text-center text-md-start">
-                <h6 class="footer-title" style="color: #0ea5e9;">QUICK LINKS</h6>
+                <h6 class="footer-title" style="color: #0ea5e9; font-weight: 800; letter-spacing: 2px;">QUICK LINKS</h6>
                 <ul class="list-unstyled" style="line-height: 2.8;">
                     <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
                     <li><a href="{% url 'products' %}" class="footer-link">SaaS Products</a></li>
@@ -224,7 +326,7 @@
             </div>
 
             <div class="col-lg-4 col-md-6 text-center text-md-start">
-                <h6 class="footer-title" style="color: #9d4edd;">CONTACT US</h6>
+                <h6 class="footer-title" style="color: #9d4edd; font-weight: 800; letter-spacing: 2px;">CONTACT US</h6>
                 <ul class="list-unstyled" style="font-size: 14px; line-height: 2.8; color: var(--text-muted);">
                     <li><i class="fa-solid fa-envelope me-3 text-cyan"></i> techpixelsstudio@gmail.com</li>
                     <li><i class="fa-solid fa-phone me-3 text-purple"></i> +91 98765 43210</li>
@@ -242,6 +344,7 @@
         </div>
     </footer>
 
+    <!-- COOKIE BANNER -->
     <div id="cookie-consent-banner" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-700 ease-in-out">
         <div class="max-w-6xl mx-auto m-4 p-6 bg-[#0a0a0a]/90 backdrop-blur-2xl rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-[#00F0FF]/30 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
             <div class="text-sm text-[var(--text-muted)]">
@@ -255,13 +358,53 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // === 1. THEME TOGGLE (Default Dark) ===
+        // === 1. ULTRA-SMOOTH MOBILE MENU LOGIC ===
+        const openBtn = document.getElementById('openMenuBtn');
+        const closeBtn = document.getElementById('closeMenuBtn');
+        const mobileMenu = document.getElementById('customMobileMenu');
+        const overlay = document.getElementById('mobileOverlay');
+        const closeLinks = document.querySelectorAll('.close-on-click');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        if(openBtn) openBtn.addEventListener('click', toggleMobileMenu);
+        if(closeBtn) closeBtn.addEventListener('click', toggleMobileMenu);
+        if(overlay) overlay.addEventListener('click', toggleMobileMenu);
+
+        closeLinks.forEach(link => {
+            link.addEventListener('click', toggleMobileMenu);
+        });
+
+        // Mobile Services Accordion Dropdown
+        const servicesToggle = document.getElementById('mobileServicesToggle');
+        const servicesDropdown = document.getElementById('mobileServicesDropdown');
+        const msIcon = document.getElementById('msIcon');
+
+        if(servicesToggle) {
+            servicesToggle.addEventListener('click', () => {
+                servicesDropdown.classList.toggle('open');
+                servicesToggle.classList.toggle('active-link');
+                if(servicesDropdown.classList.contains('open')) {
+                    msIcon.style.transform = 'rotate(180deg)';
+                    msIcon.style.color = '#00F0FF';
+                } else {
+                    msIcon.style.transform = 'rotate(0deg)';
+                    msIcon.style.color = 'var(--text-muted)';
+                }
+            });
+        }
+
+        // === 2. THEME TOGGLE ===
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const currentTheme = localStorage.getItem('theme');
@@ -288,7 +431,7 @@
             }
         });
 
-        // === 2. COOKIE BANNER ===
+        // === 3. COOKIE BANNER ===
         const banner = document.getElementById('cookie-consent-banner');
         if (!document.cookie.split('; ').find(row => row.startsWith('techpixels_cookie_consent='))) {
             setTimeout(() => { banner.classList.remove('translate-y-full'); }, 1500);
@@ -302,16 +445,18 @@
             banner.classList.add('translate-y-full');
         });
 
-        // === 3. STUCK ISSUE FIX (Wait for Load before GSAP) ===
+        // === 4. GSAP ANIMATIONS (Lag-Free) ===
         window.addEventListener('load', () => {
-            if (typeof gsap !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-                gsap.config({ force3D: true });
-                // Any specific page GSAP will now safely run without freezing
-            }
+            setTimeout(() => {
+                if (typeof gsap !== 'undefined') {
+                    gsap.registerPlugin(ScrollTrigger);
+                    ScrollTrigger.refresh();
+                }
+            }, 100);
         });
     </script>
 
+    <!-- FORM SUCCESS POP-UP -->
     {% if swal_trigger %}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -321,7 +466,7 @@
                 icon: 'success',
                 confirmButtonColor: '#00F0FF',
                 background: 'var(--card-bg)',
-                color: 'var(--text-main)',
+                color: '#ffffff',
                 customClass: { popup: 'glass-card-premium' }
             }).then(() => {
                 window.location.href = '{{ redirect_url }}'; 
