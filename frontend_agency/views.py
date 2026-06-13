@@ -8,9 +8,10 @@ from .models import ContactLead, JobApplication, JobOpening, BlogPost, Instagram
 # --- MAIN PAGES ---
 def home(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
+        # FIXED: Added '' as default to prevent NOT NULL errors
+        name = request.POST.get('name', '')
+        phone = request.POST.get('phone', '')
+        email = request.POST.get('email', '')
         message = request.POST.get('message', '')
         
         ContactLead.objects.create(
@@ -21,11 +22,11 @@ def home(request):
         email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nMessage: {message}"
         
         try:
-            send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
+            from_email = getattr(settings, 'EMAIL_HOST_USER', 'techpixelsstudio@gmail.com')
+            send_mail(subject, email_body, from_email, ['techpixelsstudio@gmail.com'], fail_silently=True)
         except Exception as e:
             print("Email sending failed:", e) 
         
-        # Pop-up & Redirect to Home
         context = {
             'swal_trigger': True,
             'swal_msg': "Your inquiry has been submitted! Our senior architect will contact you shortly.",
@@ -37,12 +38,12 @@ def home(request):
 
 def about(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        company = request.POST.get('company', 'Not Provided')
-        service_type = request.POST.get('service_type', 'Not Provided')
-        budget = request.POST.get('budget', 'Not Provided')
+        name = request.POST.get('name', '')
+        phone = request.POST.get('phone', '')
+        email = request.POST.get('email', '')
+        company = request.POST.get('company', '')
+        service_type = request.POST.get('service_type', '')
+        budget = request.POST.get('budget', '')
         message = request.POST.get('message', '')
         
         ContactLead.objects.create(
@@ -54,11 +55,11 @@ def about(request):
         email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nService Type: {service_type}\nMessage: {message}"
         
         try:
-            send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
+            from_email = getattr(settings, 'EMAIL_HOST_USER', 'techpixelsstudio@gmail.com')
+            send_mail(subject, email_body, from_email, ['techpixelsstudio@gmail.com'], fail_silently=True)
         except Exception as e:
             print("Email sending failed:", e)
         
-        # Pop-up & Redirect to About
         context = {
             'swal_trigger': True,
             'swal_msg': "Tumacha msg amhala milala. Amhi lavkarch tumchyashi contact karu!",
@@ -128,12 +129,13 @@ def terms_conditions(request):
 # --- CONTACT & CAREER ---
 def contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        company = request.POST.get('company', 'Not Provided')
-        service_type = request.POST.get('service_type', 'Not Provided')
-        budget = request.POST.get('budget', 'Not Provided')
+        # FIXED: Added '' as default to prevent NOT NULL errors
+        name = request.POST.get('name', '')
+        phone = request.POST.get('phone', '')
+        email = request.POST.get('email', '')
+        company = request.POST.get('company', '')
+        service_type = request.POST.get('service_type', '')
+        budget = request.POST.get('budget', '')
         message = request.POST.get('message', '')
         
         ContactLead.objects.create(
@@ -145,11 +147,11 @@ def contact(request):
         email_body = f"Name: {name}\nPhone: {phone}\nEmail: {email}\nService Type: {service_type}\nMessage: {message}"
         
         try:
-            send_mail(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'], fail_silently=False)
+            from_email = getattr(settings, 'EMAIL_HOST_USER', 'techpixelsstudio@gmail.com')
+            send_mail(subject, email_body, from_email, ['techpixelsstudio@gmail.com'], fail_silently=True)
         except Exception as e:
             print("Email sending failed:", e) 
         
-        # Pop-up & Redirect to Contact
         context = {
             'swal_trigger': True,
             'swal_msg': "Your inquiry has been submitted! Our senior architect will contact you shortly.",
@@ -163,10 +165,11 @@ def career(request):
     jobs = JobOpening.objects.filter(is_active=True).order_by('-created_at')
 
     if request.method == 'POST':
-        full_name = request.POST.get('full_name')
-        email = request.POST.get('email')
-        role = request.POST.get('role')
-        portfolio = request.POST.get('portfolio', 'Not Provided')
+        # FIXED: Added defaults
+        full_name = request.POST.get('full_name', '')
+        email = request.POST.get('email', '')
+        role = request.POST.get('role', '')
+        portfolio = request.POST.get('portfolio', '')
         short_note = request.POST.get('short_note', '')
         resume = request.FILES.get('resume') 
 
@@ -179,14 +182,14 @@ def career(request):
         email_body = f"Name: {full_name}\nEmail: {email}\nRole Applied For: {role}\nPortfolio: {portfolio}\n\nWhy TechPixels?\n{short_note}"
 
         try:
-            msg = EmailMessage(subject, email_body, settings.DEFAULT_FROM_EMAIL, ['techpixelsstudio@gmail.com'])
+            from_email = getattr(settings, 'EMAIL_HOST_USER', 'techpixelsstudio@gmail.com')
+            msg = EmailMessage(subject, email_body, from_email, ['techpixelsstudio@gmail.com'])
             if resume:
                 msg.attach(resume.name, resume.read(), resume.content_type)
-            msg.send(fail_silently=False)
+            msg.send(fail_silently=True)
         except Exception as e:
             print("Email sending failed:", e)
 
-        # Pop-up & Redirect to Career
         context = {
             'jobs': jobs,
             'swal_trigger': True,
