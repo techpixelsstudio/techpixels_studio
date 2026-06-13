@@ -379,6 +379,28 @@
             document.getElementById('decline-cookies').addEventListener('click', () => { document.cookie = "techpixels_cookie_consent=declined; max-age=2592000; path=/; SameSite=Lax"; banner.classList.add('translate-y-full'); });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if swal_trigger %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ swal_msg }}',
+                icon: 'success',
+                confirmButtonColor: '#00F0FF',
+                background: 'var(--card-bg)',
+                color: 'var(--text-main)',
+                customClass: {
+                    popup: 'glass-card-premium'
+                }
+            }).then((result) => {
+                // User ne 'OK' dablyavar backend ne pathavlelya url var redirect hoil
+                window.location.href = '{{ redirect_url }}'; 
+            });
+        });
+    </script>
+    {% endif %}
     {% block extra_js %}{% endblock %}
 </body>
 </html>
